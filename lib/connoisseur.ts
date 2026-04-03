@@ -4,25 +4,20 @@ const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || "");
 
 /**
  * Connoisseur Verification logic:
- * Analyze the 5 cultural questionnaire answers using Gemini's 'Emotion Detection' to score sincerity.
+ * Analyze the daily question answer using Gemini's 'Emotion Detection' to score sincerity.
  * If the tone is too generic or AI-generated, flag as 'normie' and waitlist.
  */
-export async function verifyVibeSincerity(answers: string[]): Promise<"approved" | "waitlisted"> {
+export async function verifyVibeSincerity(answer: string): Promise<"approved" | "waitlisted"> {
     try {
         const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
         const prompt = `You are the Connoisseur, an elite cultural vibe auditor for a private ABG/ABB boba dating club.
         
-Analyze these 5 answers provided by a new applicant.
-Answers:
-1. ${answers[0]}
-2. ${answers[1]}
-3. ${answers[2]}
-4. ${answers[3]}
-5. ${answers[4]}
+Analyze this answer provided by a new applicant to today's daily cultural question.
+Answer: "${answer}"
 
 Your job is emotion detection and sincerity analysis.
-If the answers sound generic, highly unoriginal, robotic, or AI-generated (e.g. "I like to hang out with friends and listen to music"), they are a 'normie'.
-If the answers sound genuine, culturally embedded, funny, or highly idiosyncratic to the ABG/ABB experience, approve them.
+If the answer sounds completely generic, highly unoriginal, robotic, or AI-generated (e.g. "I like to hang out with friends and listen to music"), they are a 'normie'.
+If the answer sounds genuine, culturally embedded, funny, or idiosyncratic to the ABG/ABB experience, approve them.
 
 Respond with ONLY exactly one word: "APPROVED" or "WAITLISTED".`;
 
@@ -41,15 +36,15 @@ Respond with ONLY exactly one word: "APPROVED" or "WAITLISTED".`;
  * Simulate a 50-turn conversation between two users to evaluate absolute chemistry score.
  */
 export async function simulateHangTheDJ(
-    userA: { name: string, order: string, answers: string[] },
-    userB: { name: string, order: string, answers: string[] }
+    userA: { name: string, order: string, answer: string },
+    userB: { name: string, order: string, answer: string }
 ): Promise<{ chemistryScore: number; reasoning: string }> {
     try {
         const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
         const prompt = `You are the "Hang the DJ" simulation engine.
 You are evaluating the absolute chemistry between User A and User B.
-User A: ${userA.name}, Order: ${userA.order}. Cultural Answers: ${JSON.stringify(userA.answers)}
-User B: ${userB.name}, Order: ${userB.order}. Cultural Answers: ${JSON.stringify(userB.answers)}
+User A: ${userA.name}, Order: ${userA.order}. Answer to today's question: "${userA.answer}"
+User B: ${userB.name}, Order: ${userB.order}. Answer to today's question: "${userB.answer}"
 
 Internally simulate a 50-turn conversation between them based on these traits, looking for banter, shared values, and conversational flow.
 Do not output the simulation. Just output the final chemistry score (1-100) and a short 1-sentence reasoning.

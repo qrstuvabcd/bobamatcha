@@ -1,8 +1,55 @@
-"use client";
-
+// @ts-nocheck
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
+  const router = useRouter();
+  const [question, setQuestion] = useState<string>("Loading today's question...");
+  const [questionId, setQuestionId] = useState<string>("");
+  const [answer, setAnswer] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+
+  useEffect(() => {
+    async function fetchQ() {
+      try {
+        const res = await fetch("/api/question");
+        const data = await res.json();
+        if (data.question) {
+          setQuestion(data.question.question_text);
+          setQuestionId(data.question.id);
+        }
+      } catch (err) {
+        setQuestion("What's your ultimate boba order and late night spot? 🧋");
+      }
+    }
+    fetchQ();
+  }, []);
+
+  const handleHeroSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!answer.trim()) return;
+
+    setSubmitting(true);
+    try {
+      const stored = localStorage.getItem("bobamatcha_user");
+      if (stored) {
+        const user = JSON.parse(stored);
+        await fetch("/api/answer", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ userId: user.id, questionId, answerText: answer })
+        });
+        router.push("/dashboard");
+      } else {
+        localStorage.setItem("bobamatcha_draft", answer);
+        localStorage.setItem("bobamatcha_q_id", questionId);
+        router.push("/signup");
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   return (
     <main className="flex flex-col min-h-screen bg-[#fef6ee] text-[#3d2b1f] overflow-hidden relative">
       {/* ── DOODLE BACKGROUND PATTERN ── */}
@@ -96,9 +143,27 @@ export default function Home() {
             <DoodleSparkle size={16} />
           </div>
 
-          <p className="text-lg sm:text-xl text-[#a0714f] max-w-xl mx-auto leading-relaxed animate-fade-in-up delay-200" style={{ fontFamily: "var(--font-serif)" }}>
-            Let AI find your Boba Date🧋 The daily 12 PM dating app for ABGs and ABBs
-          </p>
+          {/* Daily Question Live Hero Input */}
+          <form onSubmit={handleHeroSubmit} className="bg-white p-6 md:p-8 rounded-3xl shadow-xl border-2 border-[#f0e0cc] animate-fade-in-up delay-200 mt-8 mb-8 relative">
+            <h2 className="font-serif text-xl md:text-2xl font-bold text-[#6b4226] mb-4 leading-snug">
+              {question}
+            </h2>
+            <textarea
+              required
+              rows={3}
+              placeholder="Drop your most honest take here..."
+              value={answer}
+              onChange={(e) => setAnswer(e.target.value)}
+              className="w-full p-4 rounded-xl border-2 border-[#f0e0cc] focus:border-[#7cb342] outline-none text-sm resize-none mb-4"
+            ></textarea>
+            <button
+              type="submit"
+              disabled={submitting}
+              className="w-full bg-[#6b4226] text-white font-bold py-3 rounded-full hover:bg-[#4a2c17] transition-all duration-300 hover:scale-105 disabled:opacity-50"
+            >
+              {submitting ? "Analyzing Vibe..." : "Submit to Council ✨"}
+            </button>
+          </form>
 
           {/* Countdown to noon */}
           <div className="mt-8 animate-fade-in-up delay-300">
@@ -108,16 +173,6 @@ export default function Home() {
           <p className="mt-3 text-xs text-[#a0714f]/60">
             Next Match Drop: Today at 12:00 PM · <span className="text-[#7cb342] font-semibold">4,200+</span> boba lovers joined
           </p>
-
-          {/* CTA */}
-          <a
-            id="cta-hero"
-            href="/signup"
-            className="mt-8 inline-flex items-center gap-3 bg-[#6b4226] text-white text-lg font-bold px-11 py-4.5 hover:bg-[#4a2c17] transition-all duration-300 hover:scale-105 cursor-pointer"
-            style={{ borderRadius: "50px", border: "3px solid #4a2c17", boxShadow: "0 4px 0 #4a2c17" }}
-          >
-            🧋 Join Now
-          </a>
 
           <p className="mt-4 text-xs text-[#a0714f]/50">
             100% free · answer daily · matched at noon 🍵

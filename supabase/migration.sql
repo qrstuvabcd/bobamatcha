@@ -15,14 +15,27 @@ CREATE TABLE users (
   instagram TEXT,
   city TEXT NOT NULL,
   location GEOGRAPHY(POINT, 4326),
-  q1_answer TEXT,
-  q2_answer TEXT,
-  q3_answer TEXT,
-  q4_answer TEXT,
-  q5_answer TEXT,
   status user_status DEFAULT 'pending',
   bouncer_audit_result TEXT,
   created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- 1.5 Daily Questions & Answers Tables
+CREATE TABLE daily_questions (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  question_text TEXT NOT NULL,
+  question_date DATE UNIQUE NOT NULL DEFAULT CURRENT_DATE,
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE TABLE daily_answers (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id UUID NOT NULL REFERENCES users(id),
+  question_id UUID NOT NULL REFERENCES daily_questions(id),
+  answer_text TEXT NOT NULL,
+  answer_date DATE NOT NULL DEFAULT CURRENT_DATE,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  UNIQUE(user_id, question_id)
 );
 
 -- 2. Spatial index

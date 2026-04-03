@@ -16,13 +16,24 @@ export interface User {
     instagram: string;
     city: string;
     location?: string;
-    q1_answer: string;
-    q2_answer: string;
-    q3_answer: string;
-    q4_answer: string;
-    q5_answer: string;
     status: UserStatus;
     bouncer_audit_result?: string;
+    created_at: string;
+}
+
+export interface DailyQuestion {
+    id: string;
+    question_text: string;
+    question_date: string;
+    created_at: string;
+}
+
+export interface DailyAnswer {
+    id: string;
+    user_id: string;
+    question_id: string;
+    answer_text: string;
+    answer_date: string;
     created_at: string;
 }
 

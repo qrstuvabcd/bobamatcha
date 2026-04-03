@@ -3,32 +3,50 @@ import { supabase } from "@/lib/supabase";
 import { simulateHangTheDJ } from "@/lib/connoisseur";
 import { findBestVenue } from "@/lib/venues";
 
-// AGENT REQUIREMENT: "high-precision Edge Function to ensure simultaneous global delivery"
 export const runtime = 'edge';
 
 export async function GET() {
     try {
         const today = new Date().toISOString().split("T")[0];
 
-        // Fetch all approved users, grouped by city
-        const { data: users, error } = await supabase
-            .from("users")
+        // 1. Get today's question
+        const { data: question, error: qError } = await supabase
+            .from("daily_questions")
             .select("*")
-            .eq("status", "approved");
+            .eq("question_date", today)
+            .single();
 
-        if (error || !users) return NextResponse.json({ error: "DB Error" }, { status: 500 });
+        if (qError || !question) return NextResponse.json({ error: "No question found for today" }, { status: 404 });
 
-        const cities = [...new Set(users.map(u => u.city))];
+        // 2. Fetch all answers for today's question, joined with approved users
+        const { data: answers, error: aError } = await supabase
+            .from("daily_answers")
+            .select("*, users!inner(*)")
+            .eq("question_id", question.id)
+            .eq("users.status", "approved");
+
+        if (aError || !answers) return NextResponse.json({ message: "No approved answers today" });
+
+        // Format user pool
+        const usersPool = answers.map((a: any) => ({
+            id: a.users.id,
+            name: a.users.name,
+            gender: a.users.gender,
+            city: a.users.city,
+            order: a.users.favorite_order || "Surprise me",
+            answer: a.answer_text
+        }));
+
+        const cities = [...new Set(usersPool.map(u => u.city))];
         const matchesGenerated = [];
 
         for (const city of cities) {
-            const cityUsers = users.filter(u => u.city === city);
+            const cityUsers = usersPool.filter(u => u.city === city);
             const males = cityUsers.filter(u => u.gender === "male");
             const females = cityUsers.filter(u => u.gender === "female");
 
             if (males.length === 0 || females.length === 0) continue;
 
-            // Generate initial cross-matrix pairs (simple combinatorics for top 5 pairs simulation)
             const possiblePairs = [];
             for (const m of males) {
                 for (const f of females) {
@@ -36,7 +54,6 @@ export async function GET() {
                 }
             }
 
-            // Shuffle and slice top 5 to avoid blowing up Gemini tokens (in real world, pre-filter by ML)
             const top5Pairs = possiblePairs.sort(() => 0.5 - Math.random()).slice(0, 5);
 
             let bestPair = null;
@@ -45,16 +62,8 @@ export async function GET() {
 
             // AGENT: THE CONNOISSEUR — Hang The DJ
             for (const pair of top5Pairs) {
-                const userAData = {
-                    name: pair.male.name,
-                    order: pair.male.favorite_order,
-                    answers: [pair.male.q1_answer, pair.male.q2_answer, pair.male.q3_answer, pair.male.q4_answer, pair.male.q5_answer]
-                };
-                const userBData = {
-                    name: pair.female.name,
-                    order: pair.female.favorite_order,
-                    answers: [pair.female.q1_answer, pair.female.q2_answer, pair.female.q3_answer, pair.female.q4_answer, pair.female.q5_answer]
-                };
+                const userAData = { name: pair.male.name, order: pair.male.order, answer: pair.male.answer };
+                const userBData = { name: pair.female.name, order: pair.female.order, answer: pair.female.answer };
 
                 const result = await simulateHangTheDJ(userAData, userBData);
 
@@ -66,12 +75,8 @@ export async function GET() {
             }
 
             if (bestPair) {
-                // AGENT: THE BOUNCER — Secret Code Generator
                 const secretCode = Math.floor(1000 + Math.random() * 9000).toString();
 
-                // AGENT: THE CONNOISSEUR — Venue Logic
-                // Mock midpoint near city center for now (in real app, calculate true midpoint)
-                // For demonstration, defaulting to LA coordinates if city is LA, NY if NY, etc.
                 let lat = 34.0522; let lng = -118.2437;
                 if (city === "new york") { lat = 40.7128; lng = -74.0060; }
                 else if (city === "san francisco") { lat = 37.7749; lng = -122.4194; }
@@ -80,7 +85,6 @@ export async function GET() {
                     name: "Unknown Cafe", address: "Nearby", mapsLink: "https://maps.google.com"
                 };
 
-                // Insert into matches
                 const { data: matchObj } = await supabase
                     .from("matches")
                     .insert({
@@ -97,12 +101,7 @@ export async function GET() {
                     .select()
                     .single();
 
-                if (matchObj) {
-                    matchesGenerated.push(matchObj);
-
-                    // Mark them as "matched today" so they aren't matched again
-                    // Removed them from local array memory for this city
-                }
+                if (matchObj) matchesGenerated.push(matchObj);
             }
         }
 

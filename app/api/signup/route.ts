@@ -1,14 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
 import { supabase } from "@/lib/supabase";
-import { verifyVibeSincerity } from "@/lib/connoisseur";
 
 export async function POST(request: NextRequest) {
     try {
         const body = await request.json();
-        const { name, email, gender, favorite_order, instagram, city, answers } = body;
+        const { name, email, gender, favorite_order, instagram, city } = body;
 
-        if (!name || !email || !gender || !city || !answers || answers.length !== 5) {
-            return NextResponse.json({ error: "Missing required fields or 5 answers" }, { status: 400 });
+        if (!name || !email || !gender || !city) {
+            return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
         }
 
         // Check if email already exists
@@ -22,11 +21,7 @@ export async function POST(request: NextRequest) {
             return NextResponse.json({ error: "Email already registered", status: existing.status, userId: existing.id }, { status: 409 });
         }
 
-        // AGENT: THE CONNOISSEUR
-        // Run Vibe Check Sincerity Analysis
-        const status = await verifyVibeSincerity(answers);
-
-        // Store user
+        // Store user (Status is pending by default, Vibe Check happens on their first answer submission)
         const { data: user, error } = await supabase
             .from("users")
             .insert({
@@ -36,12 +31,7 @@ export async function POST(request: NextRequest) {
                 favorite_order: favorite_order?.trim() || null,
                 instagram: instagram?.trim() || null,
                 city: city.trim().toLowerCase(),
-                q1_answer: answers[0],
-                q2_answer: answers[1],
-                q3_answer: answers[2],
-                q4_answer: answers[3],
-                q5_answer: answers[4],
-                status: status
+                status: "pending"
             })
             .select()
             .single();
@@ -51,10 +41,7 @@ export async function POST(request: NextRequest) {
             return NextResponse.json({ error: "Failed to create account" }, { status: 500 });
         }
 
-        // The Bouncer will asynchronously audit the IG handle if provided 
-        // (Handled via background jobs in production, synchronously simulated if needed)
-
-        return NextResponse.json({ success: true, status, user });
+        return NextResponse.json({ success: true, user });
     } catch (error) {
         console.error("Signup error:", error);
         return NextResponse.json({ error: "Internal error" }, { status: 500 });
