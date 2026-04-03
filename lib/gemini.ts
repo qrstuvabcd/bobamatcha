@@ -49,7 +49,7 @@ export async function generateMatchPairs(
     if (males.length === 0 || females.length === 0) return [];
 
     try {
-        const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
+        const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
         const prompt = `You are the AI matchmaker for BobaMatcha, a daily boba dating app for ABGs and ABBs.
 
