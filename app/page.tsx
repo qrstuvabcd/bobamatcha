@@ -112,18 +112,15 @@ export default function Home() {
           {/* CTA */}
           <a
             id="cta-hero"
-            href="https://wa.me/1XXXXXXXXXX?text=Hi%20BobaMatcha%20🍵"
-            target="_blank"
-            rel="noopener noreferrer"
+            href="/signup"
             className="mt-8 inline-flex items-center gap-3 bg-[#6b4226] text-white text-lg font-bold px-11 py-4.5 hover:bg-[#4a2c17] transition-all duration-300 hover:scale-105 cursor-pointer"
             style={{ borderRadius: "50px", border: "3px solid #4a2c17", boxShadow: "0 4px 0 #4a2c17" }}
           >
-            <WhatsAppIcon size={22} color="#25D366" />
-            Message Us to Join
+            🧋 Join Now
           </a>
 
           <p className="mt-4 text-xs text-[#a0714f]/50">
-            via WhatsApp · 100% free · matched daily 🍵
+            100% free · answer daily · matched at noon 🍵
           </p>
         </div>
 
@@ -395,21 +392,18 @@ export default function Home() {
           <h2 className="font-serif text-4xl sm:text-5xl font-bold text-[#6b4226] mb-3">
             your boba date is
             <br />
-            <span className="italic text-[#7cb342]">one text away</span>
+            <span className="italic text-[#7cb342]">one click away</span>
           </h2>
           <p className="text-[#a0714f] text-sm mb-8">
             join 4,200+ boba lovers already matching ♡
           </p>
           <a
             id="cta-bottom"
-            href="https://wa.me/1XXXXXXXXXX?text=Hi%20BobaMatcha%20🧋"
-            target="_blank"
-            rel="noopener noreferrer"
+            href="/signup"
             className="inline-flex items-center gap-3 bg-[#6b4226] text-white text-lg font-bold px-11 py-4.5 hover:bg-[#4a2c17] transition-all duration-300 hover:scale-105"
             style={{ borderRadius: "50px", border: "3px solid #4a2c17", boxShadow: "0 4px 0 #4a2c17" }}
           >
-            <WhatsAppIcon size={22} color="#25D366" />
-            Message Us to Join
+            🧋 Join Now
           </a>
         </div>
       </section>

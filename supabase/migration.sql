@@ -1,55 +1,50 @@
--- BobaMatcha Database Migration
+-- BobaMatcha Database Migration (The Private Club System)
 -- Run this against your Supabase project via the SQL Editor
 
--- 1. Enable PostGIS extension for geospatial queries
 CREATE EXTENSION IF NOT EXISTS postgis;
 
--- 2. Create enum types
-CREATE TYPE onboarding_step AS ENUM (
-  'awaiting_name',
-  'awaiting_order',
-  'awaiting_location',
-  'complete'
-);
+CREATE TYPE user_status AS ENUM ('pending', 'approved', 'waitlisted');
 
-CREATE TYPE run_status AS ENUM (
-  'pending',    -- (unused historically, keeping for safety)
-  'offered',    -- Daily drop match offered to both users
-  'confirmed',  -- Both users accepted
-  'completed',  -- Date happened
-  'cancelled',  -- One user cancelled after confirming
-  'declined'    -- One user declined the initial offer
-);
-
--- 3. Users table
+-- 1. Users table (Vibe Check updated)
 CREATE TABLE users (
-  phone_number TEXT PRIMARY KEY,
-  name TEXT,
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  name TEXT NOT NULL,
+  email TEXT UNIQUE NOT NULL,
+  gender TEXT NOT NULL CHECK (gender IN ('male', 'female')),
   favorite_order TEXT,
+  instagram TEXT,
+  city TEXT NOT NULL,
   location GEOGRAPHY(POINT, 4326),
-  onboarding_step onboarding_step DEFAULT 'awaiting_name',
+  q1_answer TEXT,
+  q2_answer TEXT,
+  q3_answer TEXT,
+  q4_answer TEXT,
+  q5_answer TEXT,
+  status user_status DEFAULT 'pending',
+  bouncer_audit_result TEXT,
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- 4. Spatial index on user location for fast proximity queries
+-- 2. Spatial index
 CREATE INDEX idx_users_location ON users USING GIST (location);
+CREATE INDEX idx_users_city_status ON users (city, status);
 
--- 6. Boba Runs table
-CREATE TABLE boba_runs (
+-- 3. Matches table (Hang the DJ results + Secret Code + Edge Function Support)
+CREATE TABLE matches (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  user_a_phone TEXT NOT NULL REFERENCES users(phone_number),
-  user_b_phone TEXT NOT NULL REFERENCES users(phone_number),
-  user_a_accepted BOOLEAN, -- NULL = pending, TRUE = accepted, FALSE = declined
-  user_b_accepted BOOLEAN, -- NULL = pending, TRUE = accepted, FALSE = declined
+  user_a_id UUID NOT NULL REFERENCES users(id),
+  user_b_id UUID NOT NULL REFERENCES users(id),
+  match_reasoning TEXT,
+  hang_the_dj_score INTEGER,
+  secret_code TEXT NOT NULL,
   venue_name TEXT,
   venue_address TEXT,
   maps_link TEXT,
-  meetup_time TIMESTAMPTZ,
-  status run_status DEFAULT 'offered',
+  match_date DATE NOT NULL DEFAULT CURRENT_DATE,
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- 7. Indexes on boba_runs
-CREATE INDEX idx_boba_runs_status ON boba_runs (status);
-CREATE INDEX idx_boba_runs_user_a ON boba_runs (user_a_phone);
-CREATE INDEX idx_boba_runs_user_b ON boba_runs (user_b_phone);
+-- 4. Indexes
+CREATE INDEX idx_matches_date ON matches (match_date);
+CREATE INDEX idx_matches_user_a ON matches (user_a_id);
+CREATE INDEX idx_matches_user_b ON matches (user_b_id);

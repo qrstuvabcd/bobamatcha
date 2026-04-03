@@ -1,62 +1,41 @@
-import { createClient, SupabaseClient } from "@supabase/supabase-js";
+import { createClient } from "@supabase/supabase-js";
 
-let _supabase: SupabaseClient | null = null;
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || "";
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "";
 
-/**
- * Lazy-initialized Supabase client with service role key.
- * Only creates the client when first accessed (not at import/build time).
- */
-export function getSupabase(): SupabaseClient {
-    if (!_supabase) {
-        const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-        const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+export const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
-        if (!supabaseUrl || !supabaseServiceKey) {
-            throw new Error(
-                "Missing NEXT_PUBLIC_SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY environment variables"
-            );
-        }
-
-        _supabase = createClient(supabaseUrl, supabaseServiceKey);
-    }
-    return _supabase;
-}
-
-// Convenience alias — use this in all lib files
-export const supabase = new Proxy({} as SupabaseClient, {
-    get(_target, prop) {
-        return (getSupabase() as unknown as Record<string | symbol, unknown>)[prop];
-    },
-});
-
-// ── Types ──
-
-export type OnboardingStep =
-    | "awaiting_name"
-    | "awaiting_order"
-    | "awaiting_location"
-    | "complete";
-
-export type RunStatus = "pending" | "confirmed" | "completed" | "cancelled";
+export type UserStatus = "pending" | "approved" | "waitlisted";
 
 export interface User {
-    phone_number: string;
-    name: string | null;
-    favorite_order: string | null;
-    location: unknown; // PostGIS geography
-    availability_status: boolean;
-    onboarding_step: OnboardingStep;
+    id: string;
+    name: string;
+    email: string;
+    gender: "male" | "female";
+    favorite_order: string;
+    instagram: string;
+    city: string;
+    location?: string;
+    q1_answer: string;
+    q2_answer: string;
+    q3_answer: string;
+    q4_answer: string;
+    q5_answer: string;
+    status: UserStatus;
+    bouncer_audit_result?: string;
     created_at: string;
 }
 
-export interface BobaRun {
+export interface Match {
     id: string;
-    user_a_phone: string;
-    user_b_phone: string;
-    venue_name: string | null;
-    venue_address: string | null;
-    maps_link: string | null;
-    meetup_time: string | null;
-    status: RunStatus;
+    user_a_id: string;
+    user_b_id: string;
+    match_reasoning: string;
+    hang_the_dj_score: number;
+    secret_code: string;
+    venue_name: string;
+    venue_address: string;
+    maps_link: string;
+    match_date: string;
     created_at: string;
 }
