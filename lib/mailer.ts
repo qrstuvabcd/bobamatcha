@@ -19,7 +19,7 @@ export async function sendMatchEmail(
 
     try {
         await resend.emails.send({
-            from: "BobaMatcha Drop <drop@bobamatcha.com>", // Verify this domain in Resend
+            from: "onboarding@resend.dev", // Using Resend testing sandbox
             to: [toEmail],
             subject: "Your Daily Boba Match is Here! 🧋",
             html: `

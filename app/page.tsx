@@ -24,12 +24,15 @@ export default function Home() {
       try {
         const res = await fetch("/api/question");
         const data = await res.json();
-        if (data.question) {
+        if (res.ok && data.question) {
           setQuestion(data.question.question_text);
           setQuestionId(data.question.id);
+        } else {
+          throw new Error("Missing question");
         }
       } catch (err) {
         setQuestion("What's your ultimate boba order and late night spot? 🧋");
+        setQuestionId("fallback-id");
       }
     }
     fetchQ();
