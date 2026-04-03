@@ -1,26 +1,193 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #fef6ee;
+  --foreground: #3d2b1f;
+  --boba-brown: #6b4226;
+  --boba-dark: #4a2c17;
+  --boba-light: #a0714f;
+  --boba-cream: #f5e6d3;
+  --matcha: #7cb342;
+  --matcha-light: #a5d66f;
+  --matcha-dark: #558b2f;
+  --matcha-pale: #e8f5e9;
+  --taro: #c9a0dc;
+  --pink-soft: #f8bbd0;
+  --cream: #fff8f0;
+  --cream-dark: #f0e0cc;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-boba-brown: var(--boba-brown);
+  --color-boba-dark: var(--boba-dark);
+  --color-boba-light: var(--boba-light);
+  --color-boba-cream: var(--boba-cream);
+  --color-matcha: var(--matcha);
+  --color-matcha-light: var(--matcha-light);
+  --color-matcha-dark: var(--matcha-dark);
+  --color-matcha-pale: var(--matcha-pale);
+  --color-taro: var(--taro);
+  --color-pink-soft: var(--pink-soft);
+  --color-cream: var(--cream);
+  --color-cream-dark: var(--cream-dark);
+  --font-sans: var(--font-inter);
+  --font-serif: var(--font-playfair), 'Playfair Display', serif;
+
+  --animate-fade-in-up: fade-in-up 0.8s ease-out both;
+  --animate-fade-in: fade-in 0.6s ease-out both;
+  --animate-float: float 3s ease-in-out infinite;
+  --animate-wiggle: wiggle 2s ease-in-out infinite;
+  --animate-bounce-soft: bounce-soft 2s ease-in-out infinite;
+  --animate-ticker: ticker 35s linear infinite;
+  --animate-spin-slow: spin-slow 20s linear infinite;
+  --animate-sway: sway 4s ease-in-out infinite;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes float {
+
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes wiggle {
+
+  0%,
+  100% {
+    transform: rotate(-3deg);
+  }
+
+  50% {
+    transform: rotate(3deg);
+  }
+}
+
+@keyframes bounce-soft {
+
+  0%,
+  100% {
+    transform: translateY(0) scale(1);
+  }
+
+  50% {
+    transform: translateY(-8px) scale(1.05);
+  }
+}
+
+@keyframes ticker {
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes spin-slow {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes sway {
+
+  0%,
+  100% {
+    transform: rotate(-5deg) translateY(0);
+  }
+
+  25% {
+    transform: rotate(3deg) translateY(-4px);
+  }
+
+  50% {
+    transform: rotate(-2deg) translateY(2px);
+  }
+
+  75% {
+    transform: rotate(4deg) translateY(-3px);
   }
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans), sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+.delay-100 {
+  animation-delay: 0.1s;
+}
+
+.delay-200 {
+  animation-delay: 0.2s;
+}
+
+.delay-300 {
+  animation-delay: 0.3s;
+}
+
+.delay-400 {
+  animation-delay: 0.4s;
+}
+
+.delay-500 {
+  animation-delay: 0.5s;
+}
+
+.delay-600 {
+  animation-delay: 0.6s;
+}
+
+/* Cute card style */
+.cute-card {
+  background: white;
+  border: 2.5px solid var(--boba-cream);
+  border-radius: 20px;
+  box-shadow: 0 4px 0 var(--cream-dark), 0 8px 20px rgba(107, 66, 38, 0.06);
+  transition: all 0.3s ease;
+}
+
+.cute-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 0 var(--cream-dark), 0 12px 30px rgba(107, 66, 38, 0.1);
+  border-color: var(--matcha-light);
 }
