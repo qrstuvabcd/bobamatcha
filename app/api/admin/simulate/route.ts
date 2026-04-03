@@ -42,7 +42,7 @@ export async function GET() {
         const females = usersPool.filter(u => u.gender === "female");
 
         const simulationResults = [];
-        const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
+        const model = genAI.getGenerativeModel({ model: "gemini-flash-latest" });
 
         // Simulate 2 random pairs
         for (let i = 0; i < Math.min(males.length, females.length, 2); i++) {

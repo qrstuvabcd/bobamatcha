@@ -55,7 +55,7 @@ export async function GET() {
         let highestScore = -1;
         let bestReasoning = "";
 
-        const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
+        const model = genAI.getGenerativeModel({ model: "gemini-flash-latest" });
 
         for (const pair of top5Pairs) {
             const prompt = `You are evaluating absolute dating chemistry between two users based on their answers to today's question.
