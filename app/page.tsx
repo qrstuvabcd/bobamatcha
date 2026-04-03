@@ -1,3 +1,4 @@
+"use client";
 // @ts-nocheck
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";

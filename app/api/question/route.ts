@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 import { supabase } from "@/lib/supabase";
 import { generateDailyQuestion } from "@/lib/gemini";
 
+export const dynamic = 'force-dynamic';
+
 export async function GET() {
     try {
         const today = new Date().toISOString().split("T")[0]; // YYYY-MM-DD
