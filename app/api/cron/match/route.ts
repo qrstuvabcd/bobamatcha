@@ -55,15 +55,15 @@ export async function GET() {
         let highestScore = -1;
         let bestReasoning = "";
 
-        const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+        const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro" });
 
         for (const pair of top5Pairs) {
             const prompt = `You are evaluating absolute dating chemistry between two users based on their answers to today's question.
             Question: "${question.question_text}"
-            User A (Male) Answer: "${pair.male.answer}"
-            User B (Female) Answer: "${pair.female.answer}"
+            User A(Male) Answer: "${pair.male.answer}"
+            User B(Female) Answer: "${pair.female.answer}"
             
-            Return exactly JSON: {"score": 85, "reasoning": "1 sentence funny chemistry logic"}`;
+            Return exactly JSON: { "score": 85, "reasoning": "1 sentence funny chemistry logic" }`;
 
             const result = await model.generateContent(prompt);
             const text = result.response.text().trim().replace(/```json\n?/g, "").replace(/```\n?/g, "").trim();
