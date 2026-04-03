@@ -6,8 +6,17 @@ export default function Home() {
   const router = useRouter();
   const [question, setQuestion] = useState<string>("Loading today's question...");
   const [questionId, setQuestionId] = useState<string>("");
+
+  // Single pass info
   const [answer, setAnswer] = useState("");
+  const [showModal, setShowModal] = useState(false);
+
+  const [email, setEmail] = useState("");
+  const [instagram, setInstagram] = useState("");
+  const [gender, setGender] = useState("");
+
   const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     async function fetchQ() {
@@ -25,28 +34,33 @@ export default function Home() {
     fetchQ();
   }, []);
 
-  const handleHeroSubmit = async (e: React.FormEvent) => {
+  const handleInitialSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!answer.trim()) return;
+    setShowModal(true);
+  };
+
+  const handleFinalSubmit = async () => {
+    if (!email || !instagram || !gender) {
+      setError("We need these 3 things to make the match! 🧋");
+      return;
+    }
 
     setSubmitting(true);
+    setError("");
     try {
-      const stored = localStorage.getItem("bobamatcha_user");
-      if (stored) {
-        const user = JSON.parse(stored);
-        await fetch("/api/answer", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ userId: user.id, questionId, answerText: answer })
-        });
-        router.push("/dashboard");
-      } else {
-        localStorage.setItem("bobamatcha_draft", answer);
-        localStorage.setItem("bobamatcha_q_id", questionId);
-        router.push("/signup");
-      }
-    } catch (err) {
-      console.error(err);
+      const res = await fetch("/api/drop", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, instagram, gender, answer, questionId })
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error);
+
+      router.push("/success");
+    } catch (err: any) {
+      setError(err.message || "Failed to drop answer!");
+      setSubmitting(false);
     }
   };
 
@@ -144,26 +158,76 @@ export default function Home() {
           </div>
 
           {/* Daily Question Live Hero Input */}
-          <form onSubmit={handleHeroSubmit} className="bg-white p-6 md:p-8 rounded-3xl shadow-xl border-2 border-[#f0e0cc] animate-fade-in-up delay-200 mt-8 mb-8 relative">
-            <h2 className="font-serif text-xl md:text-2xl font-bold text-[#6b4226] mb-4 leading-snug">
-              {question}
-            </h2>
-            <textarea
-              required
-              rows={3}
-              placeholder="Drop your most honest take here..."
-              value={answer}
-              onChange={(e) => setAnswer(e.target.value)}
-              className="w-full p-4 rounded-xl border-2 border-[#f0e0cc] focus:border-[#7cb342] outline-none text-sm resize-none mb-4"
-            ></textarea>
-            <button
-              type="submit"
-              disabled={submitting}
-              className="w-full bg-[#6b4226] text-white font-bold py-3 rounded-full hover:bg-[#4a2c17] transition-all duration-300 hover:scale-105 disabled:opacity-50"
-            >
-              {submitting ? "Analyzing Vibe..." : "Submit to Council ✨"}
-            </button>
-          </form>
+          {!showModal ? (
+            <form onSubmit={handleInitialSubmit} className="bg-white p-6 md:p-8 rounded-3xl shadow-xl border-2 border-[#f0e0cc] animate-fade-in-up delay-200 mt-8 mb-8 relative w-full">
+              <h2 className="font-serif text-xl md:text-2xl font-bold text-[#6b4226] mb-4 leading-snug">
+                {question}
+              </h2>
+              <textarea
+                required
+                rows={3}
+                placeholder="Drop your most honest take here..."
+                value={answer}
+                onChange={(e) => setAnswer(e.target.value)}
+                className="w-full p-4 rounded-xl border-2 border-[#f0e0cc] focus:border-[#7cb342] outline-none text-sm resize-none mb-4 bg-[#fef6ee]"
+              ></textarea>
+              <button
+                type="submit"
+                className="w-full bg-[#6b4226] text-white font-bold py-3 rounded-full hover:bg-[#4a2c17] transition-all duration-300 hover:scale-105"
+              >
+                Confirm Answer ✨
+              </button>
+            </form>
+          ) : (
+            <div className="bg-white p-6 md:p-8 rounded-3xl shadow-2xl border-4 border-[#7cb342] animate-pop-in mt-8 mb-8 relative w-full z-20">
+              <div className="absolute -top-5 -right-5 text-4xl animate-bounce-soft">🧋</div>
+              <h3 className="font-serif text-2xl font-bold text-[#6b4226] mb-2">
+                Where should we drop the match?
+              </h3>
+              <p className="text-sm text-[#a0714f] mb-6">We'll email you a compatible partner's Instagram handle at 12:00 PM.</p>
+
+              {error && <p className="mb-4 text-xs font-bold text-red-500 bg-red-50 p-2 rounded-lg">{error}</p>}
+
+              <div className="space-y-4">
+                <input
+                  type="email"
+                  placeholder="Email Address"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="w-full p-4 rounded-xl border-2 border-[#f0e0cc] focus:border-[#7cb342] outline-none text-sm bg-[#fef6ee]"
+                />
+
+                <input
+                  type="text"
+                  placeholder="@instagram_handle"
+                  value={instagram}
+                  onChange={(e) => setInstagram(e.target.value)}
+                  className="w-full p-4 rounded-xl border-2 border-[#f0e0cc] focus:border-[#7cb342] outline-none text-sm bg-[#fef6ee]"
+                />
+
+                <div className="flex gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setGender('female')}
+                    className={`flex-1 py-3 rounded-xl font-bold border-2 transition-all ${gender === 'female' ? 'bg-[#f8bbd0] border-[#c2185b] text-[#880e4f]' : 'bg-[#fff8f0] border-[#f0e0cc] text-[#a0714f]'}`}
+                  >ABG 👸</button>
+                  <button
+                    type="button"
+                    onClick={() => setGender('male')}
+                    className={`flex-1 py-3 rounded-xl font-bold border-2 transition-all ${gender === 'male' ? 'bg-[#bbdefb] border-[#1976d2] text-[#0d47a1]' : 'bg-[#fff8f0] border-[#f0e0cc] text-[#a0714f]'}`}
+                  >ABB 🧋</button>
+                </div>
+
+                <button
+                  onClick={handleFinalSubmit}
+                  disabled={submitting}
+                  className="w-full bg-[#7cb342] text-white font-bold py-4 mt-2 rounded-full hover:bg-[#558b2f] transition-all duration-300 hover:scale-105 disabled:opacity-50 text-lg shadow-[0_4px_0_#558b2f] active:transform active:translate-y-1 active:shadow-none"
+                >
+                  {submitting ? "Dropping..." : "Join the Drop"}
+                </button>
+              </div>
+            </div>
+          )}
 
           {/* Countdown to noon */}
           <div className="mt-8 animate-fade-in-up delay-300">
