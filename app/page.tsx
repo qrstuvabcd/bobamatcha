@@ -1,12 +1,13 @@
 "use client";
-// @ts-nocheck
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { StickerBobaCup, StickerMatchaLeaf, StickerBobaPearls, StickerHeart } from "@/components/Stickers";
+import Link from "next/link";
+import { StickerHeart } from "@/components/Stickers";
 
 export default function Home() {
   const router = useRouter();
   const [question, setQuestion] = useState("");
+  const [questionId, setQuestionId] = useState("");
   const [answer, setAnswer] = useState("");
   const [email, setEmail] = useState("");
   const [instagram, setInstagram] = useState("");
@@ -14,15 +15,16 @@ export default function Home() {
   const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [showLearnMore, setShowLearnMore] = useState(false);
 
   useEffect(() => {
     async function fetchQuestion() {
       try {
         const res = await fetch("/api/question");
         const data = await res.json();
-        const qText = data.question?.question_text || data.question || "";
+        const qText = data.question?.question_text || data.question || "What's your go-to boba order and what does it say about you as a partner? 🧋";
+        const qId = data.question?.id || null;
         setQuestion(qText);
+        setQuestionId(qId);
       } catch (err) {
         setQuestion("What's your go-to boba order and what does it say about you as a partner? 🧋");
       }
@@ -46,10 +48,12 @@ export default function Home() {
     setError("");
 
     try {
+      // Pass the questionId now!
+      const bodyPayload = { email, instagram, gender, answer, questionId };
       const res = await fetch("/api/drop", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, instagram, gender, answer }),
+        body: JSON.stringify(bodyPayload),
       });
 
       const data = await res.json();
@@ -63,194 +67,117 @@ export default function Home() {
   };
 
   return (
-    <main className="min-h-screen relative overflow-x-hidden selection:bg-[var(--color-matcha)] selection:text-white pb-20">
-      <div className="noise-overlay" />
+    <main className="min-h-screen flex flex-col items-center justify-center p-6 bg-[#E8F5E9] selection:bg-[var(--color-matcha)] selection:text-white">
+      <div className="w-full max-w-md mx-auto space-y-8 animate-pop-in">
+        
+        {/* Header */}
+        <div className="text-center space-y-3">
+          <h1 className="text-5xl md:text-6xl font-black text-[#5C4033] tracking-tight leading-none" style={{ fontFamily: "var(--font-sans)" }}>
+            Get Your Boba<span className="text-[#A4C639]">Match</span>a
+          </h1>
+          <p className="text-lg font-medium text-[#5C4033] leading-snug">
+            The exclusive 12 PM daily drop for ABGs and ABBs.
+          </p>
+        </div>
 
-      {/* ── BACKGROUND STICKERS ── */}
-      <div className="fixed inset-0 pointer-events-none overflow-hidden z-0 opacity-20 lg:opacity-40">
-        <StickerBobaCup size={280} className="absolute -top-20 -left-20 rotate-[15deg] animate-bounce-soft" />
-        <StickerMatchaLeaf size={180} className="absolute top-[40%] -right-10 rotate-[-15deg] animate-bounce-soft" style={{ animationDelay: "1s" }} />
-        <StickerBobaPearls size={120} className="absolute bottom-[10%] left-[5%] rotate-[25deg] animate-bounce-soft" style={{ animationDelay: "2s" }} />
-        <StickerHeart size={100} className="absolute top-[10%] right-[15%] rotate-[-10deg] animate-pulse" />
-      </div>
-
-      {/* ── HEADER ── */}
-      <div className="w-full relative z-50">
-        <nav className="max-w-5xl mx-auto px-8 py-8 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <StickerBobaCup size={45} />
-            <span className="text-3xl font-black tracking-tighter text-[#5C4033]">bobamatcha</span>
+        {/* The Daily Drop Card */}
+        <div className="bg-[#FDFBF7] border-4 border-[#5C4033] rounded-[2rem] shadow-[6px_6px_0px_#5C4033] p-6 flex flex-col gap-6 relative">
+          <div className="absolute -top-6 -right-6 rotate-[15deg] z-20">
+             <StickerHeart size={50} />
           </div>
-          <button
-            onClick={() => setShowLearnMore(!showLearnMore)}
-            className="neubrutalism-button px-8 py-3 text-base font-bold"
-          >
-            {showLearnMore ? "Close" : "Learn More"}
-          </button>
-        </nav>
-      </div>
 
-      {/* ── HERO / POLAROID SECTION ── */}
-      <section className="relative z-10 flex flex-col items-center justify-center pt-10 pb-20 px-6 w-full">
-        <div className="w-full max-w-[450px] mx-auto flex flex-col items-stretch space-y-8">
-          {/* Title */}
-          <div className="text-center animate-pop-in" style={{ animationDelay: "0.2s" }}>
-            <h1 className="text-3xl md:text-4xl font-black tracking-tighter text-[#5C4033] mb-4" 
-                style={{ fontFamily: "var(--font-sans)" }}>
-              Get Your Boba<br />
-              <span className="text-[var(--color-matcha)]">Match</span>a
-            </h1>
-            <div className="px-4">
-              <p className="text-base md:text-lg font-bold text-[#5C4033] leading-snug italic">
-                The exclusive <span className="bg-[#A4C639] text-white px-2 py-0.5 rounded-lg">12 PM</span> daily drop for ABGs and ABBs. One question, one IG handle.
-              </p>
+          {/* Timer Badge */}
+          <div className="text-center">
+            <div className="inline-block bg-[#E8F5E9] border-2 border-[#5C4033] rounded-full px-6 py-2 shadow-[2px_2px_0px_#5C4033] text-xl font-bold font-mono text-[#5C4033]">
+              Next Drop: <NoonCountdown />
             </div>
           </div>
 
-          {/* The Polaroid Card */}
-          <div className="neubrutalism-card w-full bg-white p-8 md:p-10 relative animate-pop-in" style={{ animationDelay: "0.4s" }}>
-            <div className="absolute -top-6 -right-6 rotate-[15deg] z-20">
-              <StickerHeart size={60} />
+          {/* Form Step Content */}
+          {step === 1 ? (
+            <div className="flex flex-col gap-6 animate-pop-in">
+              <h2 className="text-3xl font-black text-[#5C4033] leading-tight text-center">
+                “{question}”
+              </h2>
+              
+              <textarea
+                placeholder="Drop your answer..."
+                value={answer}
+                onChange={(e) => setAnswer(e.target.value)}
+                className="w-full p-4 rounded-xl border-2 border-[#5C4033] bg-white text-lg font-medium focus:outline-none focus:border-[#A4C639] min-h-[120px] resize-none"
+              />
+
+              <button
+                onClick={handleSubmitAnswer}
+                disabled={!answer.trim()}
+                className="w-full py-4 bg-[#A4C639] text-white text-xl font-black rounded-xl border-4 border-[#5C4033] shadow-[4px_4px_0px_#5C4033] hover:-translate-y-1 hover:shadow-[6px_6px_0px_#5C4033] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                NEXT ➔
+              </button>
             </div>
+          ) : (
+            <form onSubmit={handleFinalSubmit} className="flex flex-col gap-5 animate-pop-in">
+              <button 
+                type="button" 
+                onClick={() => setStep(1)} 
+                className="self-start text-[#5C4033]/50 hover:text-[#5C4033] font-bold text-sm tracking-widest uppercase transition-colors"
+               >
+                ← Back
+              </button>
 
-            {/* Countdown Badge */}
-            <div className="flex flex-col items-center mb-6">
-              <div className="inline-block bg-[#E8F5E9] border-2 border-[#5C4033] rounded-full px-6 py-2 shadow-[2px_2px_0px_#5C4033] mb-1">
-                <NoonCountdown />
-              </div>
-              <p className="text-[#5C4033]/40 text-[9px] font-bold uppercase tracking-[0.2em] mt-2">Next Match Drop: Today at 12:00 PM</p>
-            </div>
+              {error && (
+                <p className="p-3 bg-red-50 border-2 border-red-200 text-red-600 rounded-xl text-sm font-bold text-center">
+                  {error}
+                </p>
+              )}
 
-            {/* Step 1: Answer Today */}
-            {step === 1 ? (
-              <div className="animate-pop-in flex flex-col items-stretch space-y-6">
-                <div className="flex justify-center">
-                  <span className="neubrutalism-button w-12 h-12 rounded-full bg-[var(--color-matcha)] text-white shadow-none border-2 text-xl font-black">1</span>
-                </div>
-
-                <div className="w-full text-center">
-                  <p className="text-2xl md:text-3xl font-black text-[#5C4033] leading-tight">
-                    &ldquo;{question}&rdquo;
-                  </p>
-                </div>
-
-                <textarea
-                  placeholder="Drop your answer..."
-                  value={answer}
-                  onChange={(e) => setAnswer(e.target.value)}
-                  className="neubrutalism-input min-h-[140px] my-4 p-4 text-lg font-medium w-full box-border"
-                />
-
+              <input
+                placeholder="Your Email"
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="w-full p-4 rounded-xl border-2 border-[#5C4033] bg-white text-lg font-medium focus:outline-none focus:border-[#A4C639]"
+                required
+              />
+              <input
+                placeholder="Instagram Handle (e.g. @bobalover)"
+                value={instagram}
+                onChange={(e) => setInstagram(e.target.value)}
+                className="w-full p-4 rounded-xl border-2 border-[#5C4033] bg-white text-lg font-medium focus:outline-none focus:border-[#A4C639]"
+                required
+              />
+              <div className="flex gap-3">
                 <button
-                  onClick={handleSubmitAnswer}
-                  disabled={!answer.trim()}
-                  className="matcha-button w-full py-4 text-lg font-black disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  NEXT ➔
-                </button>
-              </div>
-            ) : (
-              /* Step 2: Final Details */
-              <form onSubmit={handleFinalSubmit} className="animate-pop-in flex flex-col items-stretch space-y-6">
-                <div className="flex items-center justify-between w-full mb-4">
-                  <button type="button" onClick={() => setStep(1)} className="text-[#5C4033]/40 hover:text-[#5C4033] transition-colors font-black text-sm uppercase tracking-widest bg-white border-2 border-[#5C4033]/10 px-4 py-2 rounded-xl">← Back</button>
-                  <span className="neubrutalism-button w-12 h-12 rounded-full bg-[var(--color-matcha)] text-white shadow-none border-2 text-xl font-black">2</span>
-                  <div className="w-20" /> {/* Spacer */}
-                </div>
-
-                {error && <p className="mb-6 p-4 bg-red-50 border-2 border-red-200 text-red-600 rounded-2xl text-xs font-bold leading-tight">{error}</p>}
-
-                <div className="space-y-4">
-                  <input
-                    placeholder="Your Email"
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    className="neubrutalism-input py-3"
-                    required
-                  />
-                  <input
-                    placeholder="Instagram Handle (e.g. @bobalover)"
-                    value={instagram}
-                    onChange={(e) => setInstagram(e.target.value)}
-                    className="neubrutalism-input py-3"
-                    required
-                  />
-
-                  <div className="flex gap-3">
-                    <button
-                      type="button"
-                      onClick={() => setGender('female')}
-                      className={`flex-1 py-3 neubrutalism-button border-4 text-sm ${gender === 'female' ? 'bg-[var(--color-matcha)] text-white border-[#5C4033]' : 'bg-white opacity-60'}`}
-                    >👸 ABG</button>
-                    <button
-                      type="button"
-                      onClick={() => setGender('male')}
-                      className={`flex-1 py-3 neubrutalism-button border-4 text-sm ${gender === 'male' ? 'bg-[var(--color-matcha)] text-white border-[#5C4033]' : 'bg-white opacity-60'}`}
-                    >🧋 ABB</button>
-                  </div>
-                </div>
-
+                  type="button"
+                  onClick={() => setGender('female')}
+                  className={`flex-1 p-3 font-bold border-2 rounded-xl text-sm transition-all focus:outline-none ${gender === 'female' ? 'bg-[#A4C639] text-white border-[#5C4033]' : 'bg-white text-[#5C4033] border-[#5C4033]/30'}`}
+                >🤴 ABG</button>
                 <button
-                  type="submit"
-                  disabled={loading}
-                  className="matcha-button w-full py-4 text-xl mt-8"
-                >
-                  {loading ? "Matching..." : "Join Drop ✨"}
-                </button>
-              </form>
-            )}
-          </div>
+                  type="button"
+                  onClick={() => setGender('male')}
+                  className={`flex-1 p-3 font-bold border-2 rounded-xl text-sm transition-all focus:outline-none ${gender === 'male' ? 'bg-[#A4C639] text-white border-[#5C4033]' : 'bg-white text-[#5C4033] border-[#5C4033]/30'}`}
+                >🧋 ABB</button>
+              </div>
+
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full py-4 mt-2 bg-[#A4C639] text-white text-xl font-black rounded-xl border-4 border-[#5C4033] shadow-[4px_4px_0px_#5C4033] hover:-translate-y-1 hover:shadow-[6px_6px_0px_#5C4033] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {loading ? "Matching..." : "Join Drop ✨"}
+              </button>
+            </form>
+          )}
         </div>
-      </section>
 
-      {/* ── LEARN MORE / CONDITIONAL SECTIONS ── */}
-      {showLearnMore && (
-        <div className="relative z-20 px-6 max-w-5xl mx-auto space-y-24 animate-pop-in">
-
-          {/* How It Works */}
-          <div className="neubrutalism-card bg-white p-12">
-            <h2 className="text-4xl font-bold text-center mb-12">how it works</h2>
-            <div className="grid md:grid-cols-2 gap-8">
-              {[
-                { num: "01", icon: <StickerHeart size={40} />, title: "The Daily Question", desc: "Every day at noon, we drop a fresh question. Answer it to join the pool." },
-                { num: "02", icon: <StickerBobaCup size={40} />, title: "AI Matchmaking", desc: "Our Gemini AI reads every answer to find your cultural counterpart." },
-                { num: "03", icon: <StickerMatchaLeaf size={40} />, title: "The Noon Drop", desc: "At exactly 12:00 PM PST, matches are sent directly to your inbox." },
-                { num: "04", icon: <StickerBobaPearls size={40} />, title: "Slide into DMs", desc: "You get their IG handle. The rest of the vibe check is on you." },
-              ].map((step) => (
-                <div key={step.num} className="flex gap-5 p-6 bg-[#E8F5E9]/30 rounded-3xl border-2 border-[#5C4033]/5">
-                  <div className="shrink-0">{step.icon}</div>
-                  <div>
-                    <h3 className="font-bold text-xl mb-1">{step.title}</h3>
-                    <p className="text-[#5C4033]/60 text-sm leading-relaxed">{step.desc}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Testimonial Placeholder Card */}
-          <div className="neubrutalism-card bg-[#5C4033] text-white p-12 text-center">
-            <StickerHeart size={80} className="mx-auto mb-6 opacity-30" />
-            <h2 className="text-3xl font-bold mb-4">4,200+ matches made</h2>
-            <p className="text-white/60 mb-8 italic">&ldquo;Way better than Hinge. The AI actually gets the boba culture vibe.&rdquo;</p>
-            <div className="flex justify-center gap-2">
-              <div className="w-10 h-10 rounded-full border-2 border-white overflow-hidden bg-white/10" />
-              <div className="w-10 h-10 rounded-full border-2 border-white overflow-hidden bg-white/10" />
-              <div className="w-10 h-10 rounded-full border-2 border-white overflow-hidden bg-white/10" />
-            </div>
-          </div>
+        {/* Footer Link */}
+        <div className="text-center pt-2">
+          <Link href="/about" className="text-sm font-bold text-[#5C4033] underline hover:text-[#5C4033]/70 transition-colors">
+            Wait, how does the 12 PM drop work?
+          </Link>
         </div>
-      )}
 
-      {/* ── FOOTER ── */}
-      <footer className="relative z-10 py-12 px-8 text-center text-[#5C4033]/40 text-sm font-bold">
-        <div className="flex items-center justify-center gap-3 mb-4">
-          <StickerBobaCup size={30} />
-          <span className="font-bold">bobamatcha</span>
-        </div>
-        <p>&copy; 2026 BobaMatcha — Keep it 🧋</p>
-      </footer>
+      </div>
     </main>
   );
 }
@@ -262,7 +189,6 @@ function NoonCountdown() {
 
   useEffect(() => {
     setMounted(true);
-    // Move all date logic into the effect to be 100% client-side
     const getNextNoon = () => {
       const now = new Date();
       const noon = new Date(now);
@@ -289,21 +215,11 @@ function NoonCountdown() {
   }, []);
 
   if (!mounted) {
-    return (
-      <div className="flex items-center gap-1 opacity-0">
-         <div className="text-xl font-bold font-mono tracking-wider">00:00:00</div>
-      </div>
-    );
+    return <span>00:00:00</span>;
   }
 
   const pad = (n: number) => n.toString().padStart(2, "0");
   const timeString = `${pad(timeLeft.hours)}:${pad(timeLeft.minutes)}:${pad(timeLeft.seconds)}`;
 
-  return (
-    <div className="flex items-center gap-2">
-      <div className="text-xl font-bold text-[#5C4033] tracking-wider font-mono">
-        {timeString}
-      </div>
-    </div>
-  );
+  return <span>{timeString}</span>;
 }
