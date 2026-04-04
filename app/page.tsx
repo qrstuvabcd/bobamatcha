@@ -68,7 +68,7 @@ export default function Home() {
 
   return (
     <main className="min-h-screen flex flex-col items-center justify-center p-6 bg-[#E8F5E9] selection:bg-[var(--color-matcha)] selection:text-white">
-      <div className="w-full max-w-md mx-auto space-y-8 animate-pop-in">
+      <div className="w-full max-w-[450px] mx-auto space-y-8 animate-pop-in">
         
         {/* Header */}
         <div className="text-center space-y-3">

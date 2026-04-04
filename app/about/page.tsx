@@ -11,7 +11,7 @@ export default function About() {
 
   return (
     <main className="min-h-screen bg-[#E8F5E9] p-6 text-[#5C4033] pb-20">
-      <div className="w-full max-w-md mx-auto space-y-8 animate-pop-in">
+      <div className="w-full max-w-[450px] mx-auto space-y-8 animate-pop-in">
         
         {/* Top Nav */}
         <div className="pt-6">
