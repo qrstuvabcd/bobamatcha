@@ -85,7 +85,7 @@ export default function Home() {
             Get Your Boba<span className="text-[#A4C639]">Match</span>a
           </h1>
           <p className="text-xl font-bold text-[#5C4033] leading-snug">
-            The 12 PM dating match for ABGs and ABBs.
+            The AI dating match for ABGs and ABBs at 12PM.
           </p>
         </div>
 
