@@ -32,7 +32,17 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${fredoka.variable} ${caveat.variable} h-full antialiased`}>
-      <body className="min-h-full flex flex-col font-sans">{children}</body>
+      <body className="min-h-full flex flex-col font-sans">
+        <main className="flex-grow">
+          {children}
+        </main>
+        
+        <footer className="footer-layout flex justify-center gap-6 pb-8 pt-4 text-sm font-medium text-[#5C4033]/70">
+          <a href="/terms" className="hover:text-[#5C4033] transition-colors">Terms of Use</a>
+          <a href="/privacy" className="hover:text-[#5C4033] transition-colors">Privacy Policy</a>
+          <a href="mailto:hello@bobamatcha.xyz" className="hover:text-[#5C4033] transition-colors">Contact</a>
+        </footer>
+      </body>
     </html>
   );
 }
