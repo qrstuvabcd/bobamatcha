@@ -97,7 +97,7 @@ export default function Home() {
 
           {/* Timer Badge */}
           <div className="text-center">
-            <div className="inline-block bg-[#E8F5E9] border-2 border-[#5C4033] rounded-full px-4 py-1.5 shadow-[2px_2px_0px_#5C4033] text-lg font-bold font-mono text-[#5C4033]">
+            <div className="inline-block bg-[#E8F5E9] border-2 border-[#5C4033] rounded-full px-4 py-1.5 shadow-[2px_2px_0px_#5C4033] text-lg font-bold text-[#5C4033]">
               Next Drop: <NoonCountdown />
             </div>
           </div>
