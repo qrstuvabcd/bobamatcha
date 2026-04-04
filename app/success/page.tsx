@@ -22,8 +22,8 @@ export default function Success() {
                         <circle cx="50" cy="58" r="3.5" fill="#6b4226" stroke="#4a2c17" strokeWidth="1" />
                         <circle cx="33" cy="42" r="2.5" fill="white" />
                         <circle cx="47" cy="42" r="2.5" fill="white" />
-                        <circle cx="34" cy="42" r="1" fill="#2a1f1a" />
-                        <circle cx="48" cy="42" r="1" fill="#2a1f1a" />
+                        <circle cx="34" cy="42" r="1" fill="#3d2b1f" />
+                        <circle cx="48" cy="42" r="1" fill="#3d2b1f" />
                         <ellipse cx="28" cy="46" rx="4" ry="2.5" fill="#7cb342" opacity="0.3" />
                         <ellipse cx="52" cy="46" rx="4" ry="2.5" fill="#7cb342" opacity="0.3" />
                         <path d="M36 47 C38 50 42 50 44 47" fill="none" stroke="#3d2b1f" strokeWidth="1.5" strokeLinecap="round" />
@@ -48,7 +48,7 @@ export default function Success() {
 
                 <a
                     href="/"
-                    className="text-sm font-medium border border-[#5C4033]/20 rounded-full px-8 py-3 bg-white/30 backdrop-blur-md hover:bg-white/50 transition-all text-[#3d2b1f]"
+                    className="text-sm font-bold border border-[#3d2b1f]/30 rounded-full px-8 py-3 bg-[#3d2b1f] text-white hover:bg-[#3d2b1f]/90 transition-all shadow-sm"
                 >
                     Return Home
                 </a>

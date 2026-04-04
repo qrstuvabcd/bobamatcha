@@ -80,13 +80,13 @@ export default function Home() {
         <div className="max-w-6xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-3">
             <StickerBobaCup size={36} />
-            <span className="text-xl font-bold tracking-tight" style={{ fontFamily: "var(--font-serif)" }}>
+            <span className="text-xl font-bold tracking-tight text-[#3d2b1f]" style={{ fontFamily: "var(--font-serif)" }}>
               bobamatcha
             </span>
           </div>
           <div className="flex gap-3 items-center">
-            <a href="#question" className="text-sm text-[#5C4033]/60 hover:text-[#5C4033] transition-colors hidden sm:block">Answer Today</a>
-            <button className="text-sm font-medium border border-[#5C4033]/20 rounded-full px-5 py-2.5 bg-white/30 backdrop-blur-md hover:bg-white/50 transition-all">
+            <a href="#question" className="text-sm text-[#3d2b1f]/70 hover:text-[#3d2b1f] font-medium transition-colors hidden sm:block">Answer Today</a>
+            <button className="text-sm font-bold border border-[#3d2b1f]/30 rounded-full px-5 py-2.5 bg-[#3d2b1f] text-white hover:bg-[#3d2b1f]/90 transition-all shadow-sm">
               Join Now
             </button>
           </div>
@@ -128,8 +128,8 @@ export default function Home() {
           {/* Sub info */}
           <div className="flex flex-col items-center gap-2 mb-10 animate-fade-in" style={{ animationDelay: "0.35s" }}>
             <NoonCountdown />
-            <p className="text-[#5C4033]/60 text-sm mt-2">
-              Next Match Drop: Today at 12:00 PM · <span className="text-[var(--color-matcha)] font-semibold">4,200+</span> boba lovers joined
+            <p className="text-[#3d2b1f]/70 text-sm mt-2 font-medium">
+              Next Match Drop: Today at 12:00 PM · <span className="text-[var(--color-matcha)] font-bold">4,200+</span> boba lovers joined
             </p>
           </div>
 
@@ -429,7 +429,7 @@ function NoonCountdown() {
             >
               {t.val}
             </div>
-            <div className="text-[10px] text-[#5C4033]/40 mt-0.5">{t.label}</div>
+            <div className="text-[10px] text-[#3d2b1f]/60 mt-0.5 font-bold uppercase tracking-wider">{t.label}</div>
           </div>
           {i < 2 && <span className="font-serif text-2xl text-[#5C4033]/20 font-bold -mt-4">:</span>}
         </div>

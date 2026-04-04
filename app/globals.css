@@ -2,8 +2,10 @@
 
 @theme {
   /* BobaMatcha — Ditto-Matcha Hybrid Palette */
-  --color-boba: #5C4033;
-  --color-matcha: #7cb342;
+  --color-boba: #3d2b1f;
+  /* Deeper Brown */
+  --color-matcha: #558b2f;
+  /* Deeper Green for contrast */
   --color-dark: #c9956b;
   --color-dark-card: #b8844e;
   --font-serif: var(--font-playfair);
