@@ -94,19 +94,19 @@ export default function Home() {
       <section className="relative z-10 flex flex-col items-center justify-center pt-10 pb-20 px-6 w-full">
         <div className="w-full max-w-[450px] mx-auto flex flex-col items-stretch">
           {/* Title */}
-          <div className="text-center mb-14 animate-pop-in" style={{ animationDelay: "0.2s" }}>
-            <h1 className="leading-[0.7] tracking-[-0.05em] text-[#5C4033] mb-4"
-              style={{ fontFamily: "var(--font-marker)", fontSize: "clamp(4rem, 15vw, 10rem)" }}>
+          <div className="text-center mb-16 animate-pop-in" style={{ animationDelay: "0.2s" }}>
+            <h1 className="leading-[0.8] tracking-[-0.06em] text-[#5C4033] mb-6" 
+                style={{ fontFamily: "var(--font-marker)", fontSize: "clamp(3.5rem, 15vw, 11rem)" }}>
               Get Your Boba<br />
               <span className="font-bold">
                 <span className="text-[var(--color-matcha)]">Match</span>a
               </span>
             </h1>
-            <div className="px-2">
-              <p className="text-2xl md:text-4xl font-black text-[#5C4033] leading-[1] mb-2 uppercase tracking-tight">
-                The exclusive <span className="bg-[#A4C639] text-white px-3 py-1 rounded-xl shadow-[4px_4px_0px_#5C4033]">12 PM</span> daily drop
+            <div className="px-4">
+              <p className="text-3xl md:text-5xl font-black text-[#5C4033] leading-none mb-4 uppercase tracking-tighter">
+                The exclusive <span className="inline-block bg-[#A4C639] text-white px-4 py-1 rounded-2xl shadow-[5px_5px_0px_#5C4033] -rotate-1">12 PM</span> daily drop
               </p>
-              <p className="text-xl md:text-2xl font-bold text-[#5C4033]/70 italic">
+              <p className="text-xl md:text-3xl font-bold text-[#5C4033]/60 italic leading-tight">
                 for ABGs and ABBs. One question, one IG handle.
               </p>
             </div>
@@ -126,40 +126,37 @@ export default function Home() {
 
             {/* Step 1: Answer Today */}
             {step === 1 ? (
-              <div className="animate-pop-in">
-                <div className="flex items-center gap-3 mb-6">
-                  <span className="neubrutalism-button w-10 h-10 rounded-full bg-[var(--color-matcha)] text-white shadow-none border-2 text-sm">1</span>
-                  <h2 className="text-xl font-extrabold uppercase tracking-tight">Daily Question</h2>
+              <div className="animate-pop-in flex flex-col items-center w-full">
+                <div className="mb-8">
+                  <span className="neubrutalism-button w-14 h-14 rounded-full bg-[var(--color-matcha)] text-white shadow-none border-2 text-2xl font-black">1</span>
                 </div>
 
-                <div className="p-5 bg-[#E8F5E9]/50 rounded-[1.5rem] border-2 border-[#5C4033]/10 mb-6">
-                  <p className="text-lg font-bold leading-snug italic text-[var(--color-matcha)]">&ldquo;{question}&rdquo;</p>
+                <div className="w-full p-6 bg-[#E8F5E9]/50 rounded-[1.5rem] border-2 border-[#5C4033]/10 mb-8 text-center box-border">
+                  <p className="text-xl font-bold leading-tight italic text-[var(--color-matcha)]">&ldquo;{question}&rdquo;</p>
                 </div>
 
                 <textarea
                   placeholder="Drop your answer..."
                   value={answer}
                   onChange={(e) => setAnswer(e.target.value)}
-                  className="neubrutalism-input min-h-[100px] mb-6 text-base"
+                  className="neubrutalism-input min-h-[140px] mb-8 text-lg w-full box-border"
                 />
 
                 <button
                   onClick={handleSubmitAnswer}
                   disabled={!answer.trim()}
-                  className="matcha-button w-full py-4 text-xl disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="matcha-button w-full py-5 text-2xl font-black disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   NEXT ➔
                 </button>
               </div>
             ) : (
               /* Step 2: Final Details */
-              <form onSubmit={handleFinalSubmit} className="animate-pop-in">
-                <div className="flex items-center gap-3 mb-6">
-                  <button type="button" onClick={() => setStep(1)} className="text-[#5C4033]/40 hover:text-[#5C4033] transition-colors font-bold text-sm">← Back</button>
-                  <div className="flex items-center gap-3">
-                    <span className="neubrutalism-button w-10 h-10 rounded-full bg-[var(--color-matcha)] text-white shadow-none border-2 text-sm">2</span>
-                    <h2 className="text-xl font-extrabold uppercase tracking-tight">Details</h2>
-                  </div>
+              <form onSubmit={handleFinalSubmit} className="animate-pop-in flex flex-col items-center w-full">
+                <div className="flex items-center justify-between w-full mb-10">
+                  <button type="button" onClick={() => setStep(1)} className="text-[#5C4033]/40 hover:text-[#5C4033] transition-colors font-black text-sm uppercase tracking-widest bg-white border-2 border-[#5C4033]/10 px-4 py-2 rounded-xl">← Back</button>
+                  <span className="neubrutalism-button w-14 h-14 rounded-full bg-[var(--color-matcha)] text-white shadow-none border-2 text-2xl font-black">2</span>
+                  <div className="w-20" /> {/* Spacer */}
                 </div>
 
                 {error && <p className="mb-6 p-4 bg-red-50 border-2 border-red-200 text-red-600 rounded-2xl text-xs font-bold leading-tight">{error}</p>}
