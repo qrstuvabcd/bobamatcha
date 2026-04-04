@@ -18,14 +18,26 @@ export async function GET() {
     try {
         const period = getQuestionPeriod();
         
-        // Delete today's question to force regeneration
-        const { error } = await supabase
+        // Find the question to delete its associated answers first to prevent foreign key errors
+        const { data: question } = await supabase
             .from("daily_questions")
-            .delete()
-            .eq("question_date", period);
+            .select("id")
+            .eq("question_date", period)
+            .single();
 
-        if (error) {
-            return NextResponse.json({ error: error.message }, { status: 500 });
+        if (question) {
+            // Delete answers
+            await supabase.from("daily_answers").delete().eq("question_id", question.id);
+            
+            // Delete today's question to force regeneration
+            const { error } = await supabase
+                .from("daily_questions")
+                .delete()
+                .eq("question_date", period);
+
+            if (error) {
+                return NextResponse.json({ error: error.message }, { status: 500 });
+            }
         }
 
         return NextResponse.json({ success: true, message: `Question for period ${period} reset. Navigate to the homepage to trigger Gemini generation!` });
