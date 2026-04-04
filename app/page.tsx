@@ -451,10 +451,10 @@ function StickerBobaCup({ size = 64 }: { size?: number }) {
       <circle cx="46" cy="5" r="4" fill="#7cb342" opacity="0.6" />
 
       {/* Cup lid */}
-      <path d="M18 22 C18 19 22 17 40 17 C58 17 62 19 62 22 C62 25 58 27 40 27 C22 27 18 25 18 22Z" fill="#2a2a4a" stroke="#7cb342" strokeWidth="2" strokeLinejoin="round" />
+      <path d="M18 22 C18 19 22 17 40 17 C58 17 62 19 62 22 C62 25 58 27 40 27 C22 27 18 25 18 22Z" fill="#3d2b1f" stroke="#7cb342" strokeWidth="2" strokeLinejoin="round" />
 
       {/* Cup body */}
-      <path d="M20 27 C20 27 21 60 23 65 C25 68 35 70 40 70 C45 70 55 68 57 65 C59 60 60 27 60 27" fill="#1e1e3a" stroke="#7cb342" strokeWidth="2" strokeLinejoin="round" strokeLinecap="round" />
+      <path d="M20 27 C20 27 21 60 23 65 C25 68 35 70 40 70 C45 70 55 68 57 65 C59 60 60 27 60 27" fill="#2a1f1a" stroke="#7cb342" strokeWidth="2" strokeLinejoin="round" strokeLinecap="round" />
 
       {/* Matcha liquid fill */}
       <path d="M22 35 C26 32 32 38 40 35 C48 32 54 38 58 35 L57 60 C56 64 48 67 40 67 C32 67 24 64 23 60 Z" fill="#7cb342" opacity="0.25" />
@@ -473,8 +473,8 @@ function StickerBobaCup({ size = 64 }: { size?: number }) {
       <circle cx="33" cy="42" r="2.5" fill="white" />
       <circle cx="47" cy="42" r="2.5" fill="white" />
       {/* Eye dots */}
-      <circle cx="34" cy="42" r="1" fill="#1a1a2e" />
-      <circle cx="48" cy="42" r="1" fill="#1a1a2e" />
+      <circle cx="34" cy="42" r="1" fill="#2a1f1a" />
+      <circle cx="48" cy="42" r="1" fill="#2a1f1a" />
 
       {/* Blush */}
       <ellipse cx="28" cy="46" rx="4" ry="2.5" fill="#7cb342" opacity="0.3" />
