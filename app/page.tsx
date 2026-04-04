@@ -75,34 +75,41 @@ export default function Home() {
       </div>
 
       {/* ── HEADER ── */}
-      <nav className="relative z-50 w-full max-w-5xl mx-auto px-8 py-8 flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <StickerBobaCup size={45} />
-          <span className="text-3xl font-black tracking-tighter text-[#5C4033]">bobamatcha</span>
-        </div>
-        <button
-          onClick={() => setShowLearnMore(!showLearnMore)}
-          className="neubrutalism-button px-8 py-3 text-base font-bold"
-        >
-          {showLearnMore ? "Close" : "Learn More"}
-        </button>
-      </nav>
+      <div className="w-full relative z-50">
+        <nav className="max-w-5xl mx-auto px-8 py-8 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <StickerBobaCup size={45} />
+            <span className="text-3xl font-black tracking-tighter text-[#5C4033]">bobamatcha</span>
+          </div>
+          <button
+            onClick={() => setShowLearnMore(!showLearnMore)}
+            className="neubrutalism-button px-8 py-3 text-base font-bold"
+          >
+            {showLearnMore ? "Close" : "Learn More"}
+          </button>
+        </nav>
+      </div>
 
       {/* ── HERO / POLAROID SECTION ── */}
       <section className="relative z-10 flex flex-col items-center justify-center pt-10 pb-20 px-6 w-full">
         <div className="w-full max-w-[450px] mx-auto flex flex-col items-stretch">
           {/* Title */}
           <div className="text-center mb-14 animate-pop-in" style={{ animationDelay: "0.2s" }}>
-            <h1 className="text-8xl md:text-9xl lg:text-[11rem] leading-[0.7] tracking-[ -0.05em] text-[#5C4033]" style={{ fontFamily: "var(--font-marker)" }}>
+            <h1 className="leading-[0.7] tracking-[-0.05em] text-[#5C4033] mb-4"
+              style={{ fontFamily: "var(--font-marker)", fontSize: "clamp(4rem, 15vw, 10rem)" }}>
               Get Your Boba<br />
               <span className="font-bold">
                 <span className="text-[var(--color-matcha)]">Match</span>a
               </span>
             </h1>
-            <p className="mt-10 text-2xl md:text-3xl font-black text-[#5C4033] leading-[1.1] px-2 italic">
-              The exclusive <span className="bg-[var(--color-matcha)] text-white px-2 rounded-lg">12 PM</span> daily drop for ABGs and ABBs.<br />
-              <span className="text-[#5C4033]/60 text-xl font-bold mt-2 block italic">One question, one IG handle.</span>
-            </p>
+            <div className="px-2">
+              <p className="text-2xl md:text-4xl font-black text-[#5C4033] leading-[1] mb-2 uppercase tracking-tight">
+                The exclusive <span className="bg-[#A4C639] text-white px-3 py-1 rounded-xl shadow-[4px_4px_0px_#5C4033]">12 PM</span> daily drop
+              </p>
+              <p className="text-xl md:text-2xl font-bold text-[#5C4033]/70 italic">
+                for ABGs and ABBs. One question, one IG handle.
+              </p>
+            </div>
           </div>
 
           {/* The Polaroid Card */}
