@@ -77,27 +77,27 @@ export default function Home() {
         <StickerHeart size={100} className="absolute top-[10%] right-[10%] rotate-[-10deg] animate-pulse" />
       </div>
 
-      <div className="w-full max-w-[380px] mx-auto space-y-6 animate-pop-in relative z-10">
+      <div className="w-full max-w-3xl mx-auto space-y-6 animate-pop-in relative z-10">
         
         {/* Header */}
-        <div className="text-center space-y-2">
-          <h1 className="text-5xl md:text-6xl font-black text-[#5C4033] tracking-tight leading-none" style={{ fontFamily: "var(--font-marker)" }}>
+        <div className="text-center space-y-3">
+          <h1 className="text-[9rem] md:text-[10rem] font-black text-[#5C4033] tracking-tighter leading-[0.85]" style={{ fontFamily: "var(--font-marker)" }}>
             Get Your Boba<span className="text-[#A4C639]">Match</span>a
           </h1>
-          <p className="text-xl font-bold text-[#5C4033] leading-snug">
+          <p className="text-4xl font-bold text-[#5C4033] leading-tight">
             The 12 PM dating match for ABGs and ABBs.
           </p>
         </div>
 
         {/* The Daily Drop Card */}
-        <div className="bg-[#FDFBF7] border-4 border-[#5C4033] rounded-[2rem] shadow-[6px_6px_0px_#5C4033] p-5 flex flex-col gap-5 relative">
+        <div className="max-w-[420px] mx-auto bg-[#FDFBF7] border-4 border-[#5C4033] rounded-[2rem] shadow-[6px_6px_0px_#5C4033] p-5 flex flex-col gap-5 relative">
           <div className="absolute -top-5 -right-5 rotate-[15deg] z-20">
              <StickerBobaCup size={60} />
           </div>
 
           {/* Timer Badge */}
           <div className="text-center">
-            <div className="inline-block bg-[#E8F5E9] border-2 border-[#5C4033] rounded-full px-6 py-3 shadow-[3px_3px_0px_#5C4033] text-3xl font-black text-[#5C4033]">
+            <div className="inline-block bg-[#E8F5E9] border-2 border-[#5C4033] rounded-full px-8 py-3 shadow-[3px_3px_0px_#5C4033] text-6xl font-black text-[#5C4033]">
               Next Drop: <NoonCountdown />
             </div>
           </div>
@@ -109,17 +109,17 @@ export default function Home() {
                 “{question}”
               </h2>
               
-              <textarea
+              <input
                 placeholder="Drop your answer..."
                 value={answer}
                 onChange={(e) => setAnswer(e.target.value)}
-                className="w-full p-3 rounded-xl border-2 border-[#5C4033] bg-white text-lg font-medium focus:outline-none focus:border-[#A4C639] min-h-[60px] resize-none"
+                className="w-full p-3 rounded-xl border-2 border-[#5C4033] bg-white text-lg font-medium focus:outline-none focus:border-[#A4C639]"
               />
 
               <button
                 onClick={handleSubmitAnswer}
                 disabled={!answer.trim()}
-                className="w-full py-4 bg-[#A4C639] text-white text-xl font-black rounded-xl border-4 border-[#5C4033] shadow-[8px_8px_0px_#5C4033] hover:-translate-y-1 hover:shadow-[12px_12px_0px_#5C4033] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full py-4 bg-[#5C4033] text-white text-xl font-black rounded-xl border-4 border-[#5C4033] shadow-[8px_8px_0px_#5C4033] hover:-translate-y-1 hover:shadow-[12px_12px_0px_#5C4033] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 NEXT ➔
               </button>
