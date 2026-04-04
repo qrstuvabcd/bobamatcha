@@ -6,363 +6,237 @@ import { StickerBobaCup, StickerMatchaLeaf, StickerBobaPearls, StickerHeart } fr
 
 export default function Home() {
   const router = useRouter();
-  const [question, setQuestion] = useState<string>("Loading today's question...");
-  const [questionId, setQuestionId] = useState<string>("");
-
+  const [question, setQuestion] = useState("");
   const [answer, setAnswer] = useState("");
-  const [showModal, setShowModal] = useState(false);
-
   const [email, setEmail] = useState("");
   const [instagram, setInstagram] = useState("");
   const [gender, setGender] = useState("");
-
-  const [submitting, setSubmitting] = useState(false);
+  const [step, setStep] = useState(1);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [showLearnMore, setShowLearnMore] = useState(false);
 
   useEffect(() => {
-    async function fetchQ() {
+    async function fetchQuestion() {
       try {
         const res = await fetch("/api/question");
         const data = await res.json();
-        if (res.ok && data.question) {
-          setQuestion(data.question.question_text);
-          setQuestionId(data.question.id);
-        } else {
-          throw new Error("Missing question");
-        }
+        setQuestion(data.question);
       } catch (err) {
-        setQuestion("What's your ultimate boba order and late night spot?");
-        setQuestionId("fallback-id");
+        setQuestion("What's your go-to boba order and what does it say about you as a partner? 🧋");
       }
     }
-    fetchQ();
+    fetchQuestion();
   }, []);
 
-  const handleInitialSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSubmitAnswer = () => {
     if (!answer.trim()) return;
-    setShowModal(true);
+    setStep(2);
   };
 
-  const handleFinalSubmit = async () => {
+  const handleFinalSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
     if (!email || !instagram || !gender) {
-      setError("We need these 3 things to make the match! 🧋");
+      setError("Please fill in all fields.");
       return;
     }
 
-    setSubmitting(true);
+    setLoading(true);
     setError("");
+
     try {
       const res = await fetch("/api/drop", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, instagram, gender, answer, questionId })
+        body: JSON.stringify({ email, instagram, gender, answer }),
       });
+
       const data = await res.json();
-      if (!res.ok) throw new Error(data.error);
+      if (!res.ok) throw new Error(data.error || "Something went wrong");
 
       router.push("/success");
     } catch (err: any) {
-      setError(err.message || "Failed to drop answer!");
-      setSubmitting(false);
+      setError(err.message);
+      setLoading(false);
     }
   };
 
   return (
-    <main className="min-h-screen bg-[var(--color-dark)] text-white overflow-hidden relative">
-      {/* NOISE OVERLAY */}
+    <main className="min-h-screen relative overflow-x-hidden selection:bg-[var(--color-matcha)] selection:text-white pb-20">
       <div className="noise-overlay" />
 
-      {/* AMBIENT GLOW */}
-      <div className="absolute top-[-200px] left-1/2 -translate-x-1/2 w-[800px] h-[800px] rounded-full bg-[#7cb342] opacity-[0.04] blur-[120px] pointer-events-none" />
+      {/* ── BACKGROUND STICKERS ── */}
+      <div className="fixed inset-0 pointer-events-none overflow-hidden z-0 opacity-20 lg:opacity-40">
+        <StickerBobaCup size={280} className="absolute -top-20 -left-20 rotate-[15deg] animate-bounce-soft" />
+        <StickerMatchaLeaf size={180} className="absolute top-[40%] -right-10 rotate-[-15deg] animate-bounce-soft" style={{ animationDelay: "1s" }} />
+        <StickerBobaPearls size={120} className="absolute bottom-[10%] left-[5%] rotate-[25deg] animate-bounce-soft" style={{ animationDelay: "2s" }} />
+        <StickerHeart size={100} className="absolute top-[10%] right-[15%] rotate-[-10deg] animate-pulse" />
+      </div>
 
-      {/* ── NAV ── */}
-      <nav className="fixed top-0 inset-x-0 z-40 py-5 px-6 md:px-10">
-        <div className="max-w-6xl mx-auto flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <StickerBobaCup size={36} />
-            <span className="text-xl font-bold tracking-tight text-[#3d2b1f]" style={{ fontFamily: "var(--font-serif)" }}>
-              bobamatcha
-            </span>
-          </div>
-          <div className="flex gap-3 items-center">
-            <a href="#question" className="text-sm text-[#3d2b1f]/70 hover:text-[#3d2b1f] font-medium transition-colors hidden sm:block">Answer Today</a>
-            <button className="text-sm font-bold border border-[#3d2b1f]/30 rounded-full px-5 py-2.5 bg-[#3d2b1f] text-white hover:bg-[#3d2b1f]/90 transition-all shadow-sm">
-              Join Now
-            </button>
-          </div>
+      {/* ── HEADER ── */}
+      <nav className="relative z-50 w-full px-8 py-6 flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <StickerBobaCup size={40} />
+          <span className="text-2xl font-bold tracking-tight text-[#5C4033]">bobamatcha</span>
         </div>
+        <button
+          onClick={() => setShowLearnMore(!showLearnMore)}
+          className="neubrutalism-button px-6 py-2.5 text-sm"
+        >
+          {showLearnMore ? "Close Info" : "Learn More"}
+        </button>
       </nav>
 
-      {/* ── HERO ── */}
-      <section className="relative z-10 flex flex-col items-center justify-center min-h-screen w-full px-6 pt-20 pb-12">
-        <div className="max-w-4xl w-full text-center relative flex flex-col items-center">
+      {/* ── HERO / POLAROID SECTION ── */}
+      <section className="relative z-10 flex flex-col items-center justify-center pt-10 pb-20 px-6">
 
-          {/* Floating Stickers */}
-          <div className="absolute top-8 left-[5%] md:left-[10%] animate-[float_4s_ease-in-out_infinite]" style={{ "--rotate": "-12deg" } as any}>
-            <StickerBobaCup size={72} />
-          </div>
-          <div className="absolute top-16 right-[5%] md:right-[8%] animate-[float_5s_ease-in-out_infinite_0.5s]" style={{ "--rotate": "8deg" } as any}>
-            <StickerMatchaLeaf size={56} />
-          </div>
-          <div className="absolute bottom-[30%] left-[3%] animate-[float_6s_ease-in-out_infinite_1s]" style={{ "--rotate": "-6deg" } as any}>
-            <StickerBobaPearls size={48} />
-          </div>
-          <div className="absolute bottom-[35%] right-[5%] animate-[sway_3s_ease-in-out_infinite]">
-            <StickerHeart size={36} />
+        {/* Title */}
+        <h1 className="text-6xl md:text-8xl lg:text-9xl text-center leading-[0.8] tracking-tighter text-[#5C4033] mb-12 animate-pop-in" style={{ fontFamily: "var(--font-marker)" }}>
+          get a boba date<br />
+          <span className="text-[var(--color-matcha)]">every day</span>
+        </h1>
+
+        {/* The Polaroid Card */}
+        <div className="neubrutalism-card w-full max-w-2xl bg-white p-8 md:p-12 relative animate-pop-in" style={{ animationDelay: "0.2s" }}>
+          <div className="absolute -top-6 -right-6 rotate-[15deg]">
+            <StickerHeart size={60} />
           </div>
 
-          {/* Handwritten Tagline */}
-          <div
-            className="text-[var(--color-matcha)] text-3xl md:text-4xl mb-4 animate-fade-in"
-            style={{ fontFamily: "var(--font-marker)", animationDelay: "0.1s" }}
-          >
-            Get your Boba Date with ABG/ABB
-          </div>
-
-          {/* Main Headline */}
-          <h1 className="font-serif text-5xl md:text-7xl lg:text-8xl leading-[0.95] tracking-tight text-[#3d2b1f] drop-shadow-lg mb-6 animate-fade-in" style={{ animationDelay: "0.2s" }}>
-            get a boba date<br />
-            <span className="italic text-[var(--color-matcha)]">every day</span>
-          </h1>
-
-          {/* Sub info */}
-          <div className="flex flex-col items-center gap-2 mb-10 animate-fade-in" style={{ animationDelay: "0.35s" }}>
+          {/* Countdown Wrapper */}
+          <div className="flex flex-col items-center mb-10 pb-10 border-b-4 border-[#5C4033]/10 border-dashed">
             <NoonCountdown />
-            <p className="text-[#3d2b1f]/70 text-sm mt-2 font-medium">
-              Next Match Drop: Today at 12:00 PM · <span className="text-[var(--color-matcha)] font-bold">4,200+</span> boba lovers joined
-            </p>
+            <p className="text-[#5C4033]/60 text-sm mt-4 font-bold uppercase tracking-widest">Next Match Drop: Today at 12:00 PM</p>
           </div>
 
-          {/* ── QUESTION CARD ── */}
-          <div id="question" className="relative w-full max-w-lg z-30 mb-16 animate-fade-in" style={{ animationDelay: "0.5s" }}>
-            {!showModal ? (
-              <form onSubmit={handleInitialSubmit} className="glass-card p-8 text-left relative">
-                {/* Sticker accent */}
-                <div className="absolute -top-6 -right-4 rotate-[12deg]">
-                  <StickerBobaCup size={48} />
-                </div>
-
-                <h2 className="font-serif text-xl md:text-2xl font-medium mb-5 leading-snug text-[#3d2b1f]">
-                  {question}
-                </h2>
-                <textarea
-                  required
-                  rows={2}
-                  placeholder="Drop your most honest take here..."
-                  value={answer}
-                  onChange={(e) => setAnswer(e.target.value)}
-                  className="w-full glass-input resize-none mb-5 text-sm"
-                ></textarea>
-                <button type="submit" className="w-full matcha-button text-base">
-                  Confirm Answer ✨
-                </button>
-              </form>
-            ) : (
-              <div className="glass-card p-8 text-left animate-pop-in relative">
-                <div className="absolute -top-5 -right-5 rotate-[-8deg]">
-                  <StickerHeart size={40} />
-                </div>
-
-                <h3 className="font-serif text-2xl font-medium mb-2">
-                  Almost there.
-                </h3>
-                <p className="text-[#5C4033]/60 text-sm mb-6">We'll email you your match's Instagram handle at 12:00 PM.</p>
-
-                {error && <p className="mb-4 text-xs font-bold text-red-700 bg-red-100 border border-red-200 p-3 rounded-xl">{error}</p>}
-
-                <div className="space-y-4">
-                  <input
-                    type="email"
-                    placeholder="Email Address"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    className="w-full glass-input text-sm"
-                  />
-                  <input
-                    type="text"
-                    placeholder="@instagram_handle"
-                    value={instagram}
-                    onChange={(e) => setInstagram(e.target.value)}
-                    className="w-full glass-input text-sm"
-                  />
-
-                  <div className="flex gap-3">
-                    <button
-                      type="button"
-                      onClick={() => setGender('female')}
-                      className={`flex-1 py-3.5 rounded-xl text-sm font-semibold border transition-all ${gender === 'female' ? 'bg-[var(--color-matcha)] border-[var(--color-matcha)] text-white' : 'bg-transparent border-[#5C4033]/20 text-[#5C4033]/50 hover:bg-white/20'}`}
-                    >ABG 👸</button>
-                    <button
-                      type="button"
-                      onClick={() => setGender('male')}
-                      className={`flex-1 py-3.5 rounded-xl text-sm font-semibold border transition-all ${gender === 'male' ? 'bg-[var(--color-matcha)] border-[var(--color-matcha)] text-white' : 'bg-transparent border-[#5C4033]/20 text-[#5C4033]/50 hover:bg-white/20'}`}
-                    >ABB 🧋</button>
-                  </div>
-
-                  <button
-                    onClick={handleFinalSubmit}
-                    disabled={submitting}
-                    className="w-full matcha-button py-4 mt-2 text-base"
-                  >
-                    {submitting ? "Processing..." : "Join the Drop 🧋"}
-                  </button>
-                </div>
+          {/* Step 1: Answer Today */}
+          {step === 1 ? (
+            <div className="animate-pop-in">
+              <div className="flex items-center gap-3 mb-6">
+                <span className="neubrutalism-button w-10 h-10 rounded-full bg-[var(--color-matcha)] text-white shadow-none border-2">1</span>
+                <h2 className="text-2xl font-bold">Answer Today&apos;s Question</h2>
               </div>
-            )}
-          </div>
-        </div>
-      </section>
 
-      {/* ── HOW IT WORKS ── */}
-      <section className="relative z-10 py-24 px-6">
-        <div className="max-w-5xl mx-auto">
-          <div className="text-center mb-16">
-            <div className="text-[var(--color-matcha)] text-2xl mb-2" style={{ fontFamily: "var(--font-marker)" }}>
-              super simple
+              <div className="p-6 bg-[#E8F5E9]/50 rounded-[1.5rem] border-2 border-[#5C4033]/10 mb-6">
+                <p className="text-xl font-bold leading-snug">&ldquo;{question}&rdquo;</p>
+              </div>
+
+              <textarea
+                placeholder="Write your answer here..."
+                value={answer}
+                onChange={(e) => setAnswer(e.target.value)}
+                className="neubrutalism-input min-h-[120px] mb-8"
+              />
+
+              <button
+                onClick={handleSubmitAnswer}
+                disabled={!answer.trim()}
+                className="matcha-button w-full py-5 text-xl disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                Next Step ➔
+              </button>
             </div>
-            <h2 className="font-serif text-4xl md:text-5xl font-medium tracking-tight">
-              how it <span className="italic text-[var(--color-matcha)]">works</span>
-            </h2>
-          </div>
-
-          <div className="grid md:grid-cols-4 gap-5">
-            {[
-              { num: "01", icon: "💬", title: "Answer the question", desc: "Every day we ask one fun, flirty question. Answer honestly — it reveals your personality." },
-              { num: "02", icon: "🤖", title: "AI does its thing", desc: "At noon, our Gemini AI evaluates every answer and pairs you with someone who vibes." },
-              { num: "03", icon: "📧", title: "Check your email", desc: "We email you your match's Instagram handle with a cute reasoning why you'd click." },
-              { num: "04", icon: "📸", title: "Slide into DMs", desc: "Follow them, say hi, grab boba together. The rest is on you!" },
-            ].map((step) => (
-              <div key={step.num} className="glass-card p-6 text-center group hover:bg-white/40 transition-all">
-                <div className="text-[var(--color-matcha)] text-xs font-bold mb-3 tracking-widest font-serif">{step.num}</div>
-                <div className="text-3xl mb-4 group-hover:scale-110 transition-transform">{step.icon}</div>
-                <h3 className="text-sm font-bold text-[#3d2b1f] mb-2">{step.title}</h3>
-                <p className="text-[#5C4033]/60 text-xs leading-relaxed">{step.desc}</p>
+          ) : (
+            /* Step 2: Final Details */
+            <form onSubmit={handleFinalSubmit} className="animate-pop-in">
+              <div className="flex items-center gap-3 mb-6">
+                <button type="button" onClick={() => setStep(1)} className="text-[#5C4033]/40 hover:text-[#5C4033] transition-colors">← Back</button>
+                <div className="flex items-center gap-3">
+                  <span className="neubrutalism-button w-10 h-10 rounded-full bg-[var(--color-matcha)] text-white shadow-none border-2">2</span>
+                  <h2 className="text-2xl font-bold">Final Vitals</h2>
+                </div>
               </div>
-            ))}
-          </div>
+
+              {error && <p className="mb-6 p-4 bg-red-50 border-2 border-red-200 text-red-600 rounded-2xl text-sm font-bold">{error}</p>}
+
+              <div className="space-y-5">
+                <input
+                  placeholder="Your Email"
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="neubrutalism-input"
+                  required
+                />
+                <input
+                  placeholder="Instagram Handle (e.g. @bobalover)"
+                  value={instagram}
+                  onChange={(e) => setInstagram(e.target.value)}
+                  className="neubrutalism-input"
+                  required
+                />
+
+                <div className="flex gap-4">
+                  <button
+                    type="button"
+                    onClick={() => setGender('female')}
+                    className={`flex-1 py-4 neubrutalism-button border-4 ${gender === 'female' ? 'bg-[var(--color-matcha)] text-white border-[#5C4033]' : 'bg-white opacity-60'}`}
+                  >👸 ABG</button>
+                  <button
+                    type="button"
+                    onClick={() => setGender('male')}
+                    className={`flex-1 py-4 neubrutalism-button border-4 ${gender === 'male' ? 'bg-[var(--color-matcha)] text-white border-[#5C4033]' : 'bg-white opacity-60'}`}
+                  >🧋 ABB</button>
+                </div>
+              </div>
+
+              <button
+                type="submit"
+                disabled={loading}
+                className="matcha-button w-full py-5 text-xl mt-8"
+              >
+                {loading ? "Matching..." : "Join the Drop ✨"}
+              </button>
+            </form>
+          )}
         </div>
       </section>
 
-      {/* ── YOUR AI MATCHMAKER ── */}
-      <section className="relative z-10 py-20 px-6">
-        <div className="max-w-5xl mx-auto">
-          <div className="text-center mb-14">
-            <h2 className="font-serif text-4xl md:text-5xl font-medium tracking-tight">
-              your AI <span className="italic text-[var(--color-matcha)]">matchmaker</span>
-            </h2>
-            <p className="mt-3 text-[#5C4033]/60 text-sm">powered by magic (and a lot of math) ✨</p>
-          </div>
+      {/* ── LEARN MORE / CONDITIONAL SECTIONS ── */}
+      {showLearnMore && (
+        <div className="relative z-20 px-6 max-w-5xl mx-auto space-y-24 animate-pop-in">
 
-          <div className="grid md:grid-cols-3 gap-5">
-            {[
-              { icon: "🧠", title: "Learns your taste", desc: "Not just in boba — in people. The more you interact, the smarter your matches get.", color: "var(--color-matcha)" },
-              { icon: "🔍", title: "Scans everyone", desc: "Our AI checks every profile to find the one. Not random — intentional.", color: "var(--color-boba)" },
-              { icon: "🎯", title: "One perfect match", desc: "Every day at noon. No swiping. No overwhelm. Just one curated person.", color: "var(--color-matcha)" },
-            ].map((item) => (
-              <div key={item.title} className="glass-card p-7 text-center hover:bg-white/40 transition-all">
-                <div className="text-4xl mb-4">{item.icon}</div>
-                <h3 className="text-sm font-bold mb-2" style={{ color: item.color }}>{item.title}</h3>
-                <p className="text-[#5C4033]/60 text-xs leading-relaxed">{item.desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── TESTIMONIALS ── */}
-      <section className="relative z-10 py-20 px-6">
-        <div className="max-w-5xl mx-auto">
-          <div className="text-center mb-4">
-            <h2 className="font-serif text-4xl md:text-5xl font-medium tracking-tight">
-              real <span className="italic text-[var(--color-matcha)]">boba dates</span>
-            </h2>
-            <p className="mt-3 text-[#5C4033]/60 text-sm">matches made over matcha ♡</p>
-          </div>
-
-          {/* Stats */}
-          <div className="flex flex-wrap justify-center gap-4 mb-12 mt-8">
-            {[
-              { num: "4,200+", label: "dates" },
-              { num: "89%", label: "second dates" },
-              { num: "12", label: "cities" },
-            ].map((s) => (
-              <div key={s.label} className="px-6 py-3 rounded-full border border-[#5C4033]/15 bg-white/30 text-center">
-                <span className="font-serif text-lg font-bold text-[var(--color-matcha)]">{s.num}</span>
-                <span className="text-xs ml-1.5 text-[#5C4033]/60">{s.label}</span>
-              </div>
-            ))}
-          </div>
-
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-            {[
-              { name: "Jasmine", school: "Edinburgh", quote: "He ordered the exact same oat milk matcha as me. We've been together 3 months now 💚", emoji: "🍵" },
-              { name: "Kevin", school: "UCLA", quote: "Way better than Hinge. She was actually cute AND we had stuff to talk about over boba.", emoji: "🧋" },
-              { name: "Michelle", school: "NYU", quote: "The AI literally read my mind. He was tall, liked matcha, and had a golden retriever 😭", emoji: "✨" },
-              { name: "Daniel", school: "Berkeley", quote: "She showed up in the cutest outfit and we ended up walking around for 3 hours after boba.", emoji: "💕" },
-              { name: "Tina", school: "UofT", quote: "I'm literally an ABG and this app gets me. Taro milk tea + cute guy = perfect first date.", emoji: "💜" },
-              { name: "Ryan", school: "Edinburgh", quote: "Met at Machi Machi. She ordered brown sugar boba. I knew she was the one right there.", emoji: "🤎" },
-            ].map((t, i) => (
-              <div key={i} className="glass-card p-5 relative hover:bg-white/40 transition-all">
-                <div className="absolute top-3 right-4 text-lg opacity-30">{t.emoji}</div>
-                <div className="flex items-center gap-2.5 mb-3">
-                  <div className="w-8 h-8 rounded-full bg-[var(--color-matcha)] flex items-center justify-center text-xs font-bold text-white">
-                    {t.name[0]}
-                  </div>
+          {/* How It Works */}
+          <div className="neubrutalism-card bg-white p-12">
+            <h2 className="text-4xl font-bold text-center mb-12">how it works</h2>
+            <div className="grid md:grid-cols-2 gap-8">
+              {[
+                { num: "01", icon: <StickerHeart size={40} />, title: "The Daily Question", desc: "Every day at noon, we drop a fresh question. Answer it to join the pool." },
+                { num: "02", icon: <StickerBobaCup size={40} />, title: "AI Matchmaking", desc: "Our Gemini AI reads every answer to find your cultural counterpart." },
+                { num: "03", icon: <StickerMatchaLeaf size={40} />, title: "The Noon Drop", desc: "At exactly 12:00 PM PST, matches are sent directly to your inbox." },
+                { num: "04", icon: <StickerBobaPearls size={40} />, title: "Slide into DMs", desc: "You get their IG handle. The rest of the vibe check is on you." },
+              ].map((step) => (
+                <div key={step.num} className="flex gap-5 p-6 bg-[#E8F5E9]/30 rounded-3xl border-2 border-[#5C4033]/5">
+                  <div className="shrink-0">{step.icon}</div>
                   <div>
-                    <div className="text-sm font-bold">{t.name}</div>
-                    <div className="text-[10px] text-[#5C4033]/40">@{t.school}</div>
+                    <h3 className="font-bold text-xl mb-1">{step.title}</h3>
+                    <p className="text-[#5C4033]/60 text-sm leading-relaxed">{step.desc}</p>
                   </div>
                 </div>
-                <p className="text-sm text-[#5C4033]/70 leading-relaxed italic">
-                  &ldquo;{t.quote}&rdquo;
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── FINAL CTA ── */}
-      <section className="relative z-10 py-24 px-6 text-center">
-        <div className="max-w-2xl mx-auto">
-          {/* Sticker accent */}
-          <div className="flex justify-center mb-6 animate-[bounce-soft_3s_ease-in-out_infinite]">
-            <StickerBobaCup size={80} />
+              ))}
+            </div>
           </div>
 
-          <h2 className="font-serif text-4xl md:text-5xl font-medium tracking-tight mb-3">
-            your boba date is<br />
-            <span className="italic text-[var(--color-matcha)]">one answer away</span>
-          </h2>
-
-          <p className="text-[#5C4033]/60 text-sm mb-8">
-            join 4,200+ boba lovers already matching ♡
-          </p>
-
-          <a
-            href="#question"
-            className="inline-flex items-center gap-3 matcha-button px-10 py-4 text-lg"
-          >
-            🧋 Answer Today's Question
-          </a>
+          {/* Testimonial Placeholder Card */}
+          <div className="neubrutalism-card bg-[#5C4033] text-white p-12 text-center">
+            <StickerHeart size={80} className="mx-auto mb-6 opacity-30" />
+            <h2 className="text-3xl font-bold mb-4">4,200+ matches made</h2>
+            <p className="text-white/60 mb-8 italic">&ldquo;Way better than Hinge. The AI actually gets the boba culture vibe.&rdquo;</p>
+            <div className="flex justify-center gap-2">
+              <div className="w-10 h-10 rounded-full border-2 border-white overflow-hidden bg-white/10" />
+              <div className="w-10 h-10 rounded-full border-2 border-white overflow-hidden bg-white/10" />
+              <div className="w-10 h-10 rounded-full border-2 border-white overflow-hidden bg-white/10" />
+            </div>
+          </div>
         </div>
-      </section>
+      )}
 
       {/* ── FOOTER ── */}
-      <footer className="relative z-10 py-10 px-8 border-t border-[#5C4033]/10">
-        <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[#5C4033]/40">
-          <div className="flex items-center gap-2.5">
-            <StickerBobaCup size={22} />
-            <span className="font-bold text-[#5C4033]/70 font-serif text-sm">bobamatcha</span>
-          </div>
-          <p>made with 🧋 for boba lovers everywhere</p>
-          <div className="flex gap-5">
-            <span className="hover:text-[#3d2b1f] cursor-pointer transition-colors">Terms</span>
-            <span className="hover:text-[#3d2b1f] cursor-pointer transition-colors">Privacy</span>
-            <span className="hover:text-[#3d2b1f] cursor-pointer transition-colors">Manifesto</span>
-          </div>
+      <footer className="relative z-10 py-12 px-8 text-center text-[#5C4033]/40 text-sm font-bold">
+        <div className="flex items-center justify-center gap-3 mb-4">
+          <StickerBobaCup size={30} />
+          <span className="font-bold">bobamatcha</span>
         </div>
+        <p>&copy; 2026 BobaMatcha — Keep it 🧋</p>
       </footer>
     </main>
   );
@@ -375,7 +249,6 @@ function NoonCountdown() {
 
   useEffect(() => {
     setMounted(true);
-
     function getNextNoon() {
       const now = new Date();
       const noon = new Date(now);
@@ -383,20 +256,17 @@ function NoonCountdown() {
       if (noon <= now) noon.setDate(noon.getDate() + 1);
       return noon;
     }
-
     const target = getNextNoon();
-
     function tick() {
       const now = new Date();
       const diff = target.getTime() - now.getTime();
       if (diff <= 0) return;
       setTimeLeft({
         hours: Math.floor((diff / (1000 * 60 * 60)) % 24),
-        minutes: Math.floor((diff / (1000 * 60)) % 60),
+        minutes: Math.floor((diff / 1000 / 60) % 60),
         seconds: Math.floor((diff / 1000) % 60),
       });
     }
-
     tick();
     const timer = setInterval(tick, 1000);
     return () => clearInterval(timer);
@@ -417,26 +287,18 @@ function NoonCountdown() {
     ];
 
   return (
-    <div className="inline-flex items-center gap-2.5">
+    <div className="inline-flex items-center gap-6">
       {display.map((t, i) => (
-        <div key={i} className="flex items-center gap-2.5">
+        <div key={i} className="flex items-center gap-4">
           <div className="text-center">
-            <div
-              className="font-serif text-3xl sm:text-4xl font-bold px-3.5 py-2 rounded-xl"
-              style={{
-                fontFamily: "var(--font-marker)",
-                color: "var(--color-matcha)",
-              }}
-            >
+            <div className="text-6xl md:text-7xl font-bold tracking-tighter" style={{ fontFamily: "var(--font-marker)" }}>
               {t.val}
             </div>
-            <div className="text-[10px] text-[#3d2b1f]/60 mt-0.5 font-bold uppercase tracking-wider">{t.label}</div>
+            <div className="text-[12px] font-bold uppercase tracking-widest text-[#5C4033]/40">{t.label}</div>
           </div>
-          {i < 2 && <span className="font-serif text-2xl text-[#5C4033]/20 font-bold -mt-4">:</span>}
+          {i < 2 && <span className="text-4xl font-bold text-[#5C4033]/20">:</span>}
         </div>
       ))}
     </div>
   );
 }
-
-

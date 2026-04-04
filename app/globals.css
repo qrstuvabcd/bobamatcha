@@ -1,138 +1,131 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* BobaMatcha — Neubrutalism Kawaii Palette */
+  --color-boba: #5C4033;
+  --color-matcha: #558b2f;
+  --color-matcha-soft: #E8F5E9;
+  --color-white: #FFFFFF;
+
+  --font-fredoka: "Fredoka", sans-serif;
+  --font-caveat: "Caveat", cursive;
+
+  /* Neubrutalism Tokens */
+  --border-thick: 4px solid var(--color-boba);
+  --shadow-hard: 6px 6px 0px var(--color-boba);
+  --shadow-hard-hover: 4px 4px 0px var(--color-boba);
+  --rounded-kawaii: 2.5rem;
+}
 
 @theme {
-  /* BobaMatcha — Ditto-Matcha Hybrid Palette */
-  --color-boba: #3d2b1f;
-  /* Deeper Brown */
-  --color-matcha: #558b2f;
-  /* Deeper Green for contrast */
-  --color-dark: #c9956b;
-  --color-dark-card: #b8844e;
-  --font-serif: var(--font-playfair);
+  --font-sans: var(--font-fredoka);
   --font-marker: var(--font-caveat);
 }
 
-@layer utilities {
+@layer base {
+  body {
+    background-color: var(--color-matcha-soft);
+    color: var(--color-boba);
+    font-family: var(--font-fredoka);
+    margin: 0;
+    padding: 0;
+  }
+}
 
-  /* Film grain noise overlay */
-  .noise-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    pointer-events: none;
-    z-index: 50;
-    opacity: 0.06;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+@layer components {
+  .neubrutalism-card {
+    background-color: var(--color-white);
+    border: var(--border-thick);
+    border-radius: var(--rounded-kawaii);
+    box-shadow: var(--shadow-hard);
+    transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   }
 
-  /* Glassmorphism card */
-  .glass-card {
-    background: rgba(255, 255, 255, 0.35);
-    backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.5);
-    border-radius: 24px;
-    box-shadow: 0 8px 32px rgba(92, 64, 51, 0.15);
-  }
-
-  /* Glass input */
-  .glass-input {
-    background: rgba(255, 255, 255, 0.5);
-    border: 1px solid rgba(92, 64, 51, 0.2);
-    color: #3d2b1f;
-    border-radius: 16px;
-    padding: 1rem 1.25rem;
-    transition: border-color 0.2s;
-  }
-
-  .glass-input:focus {
-    outline: none;
-    border-color: var(--color-matcha);
-    box-shadow: 0 0 0 3px rgba(124, 179, 66, 0.2);
-  }
-
-  .glass-input::placeholder {
-    color: rgba(92, 64, 51, 0.4);
-  }
-
-  /* Matcha pill button */
-  .matcha-button {
-    background: var(--color-matcha);
-    color: white;
+  .neubrutalism-button {
+    background-color: var(--color-white);
+    border: var(--border-thick);
+    border-radius: 999px;
+    box-shadow: var(--shadow-hard);
+    color: var(--color-boba);
     font-weight: 700;
-    border-radius: 9999px;
-    padding: 1rem 2.5rem;
-    border: none;
     transition: all 0.2s ease;
-    box-shadow: 0 4px 16px rgba(124, 179, 66, 0.3);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+
+  .neubrutalism-button:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 8px 8px 0px var(--color-boba);
+  }
+
+  .neubrutalism-button:active {
+    transform: translate(4px, 4px);
+    box-shadow: 2px 2px 0px var(--color-boba);
+  }
+
+  .matcha-button {
+    background-color: #A4C639;
+    /* More saturated matcha */
+    color: white;
+    border: var(--border-thick);
+    border-radius: 999px;
+    box-shadow: var(--shadow-hard);
+    font-weight: 700;
+    transition: all 0.2s ease;
   }
 
   .matcha-button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(124, 179, 66, 0.4);
+    transform: translate(-2px, -2px);
+    box-shadow: 8px 8px 0px var(--color-boba);
+    background-color: #8fa12c;
   }
 
-  .matcha-button:active {
-    transform: translateY(0);
+  .neubrutalism-input {
+    background-color: white;
+    border: var(--border-thick);
+    border-radius: 1.5rem;
+    padding: 1rem 1.5rem;
+    color: var(--color-boba);
+    font-family: var(--font-fredoka);
+    width: 100%;
+    outline: none;
+    transition: all 0.2s ease;
   }
 
-  .matcha-button:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-  }
-
-  /* Fade in animation */
-  .animate-fade-in {
-    animation: fadeIn 0.8s ease-out forwards;
-    opacity: 0;
-  }
-}
-
-body {
-  background-color: var(--color-dark);
-  color: #3d2b1f;
-  overflow-x: hidden;
-  scroll-behavior: smooth;
-}
-
-/* Animations */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(12px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
+  .neubrutalism-input:focus {
+    box-shadow: 4px 4px 0px var(--color-boba);
   }
 }
 
-@keyframes float {
-
-  0%,
-  100% {
-    transform: translateY(0) rotate(var(--rotate, 0deg));
-  }
-
-  50% {
-    transform: translateY(-14px) rotate(var(--rotate, 0deg));
-  }
+/* Polaroids & Custom Effects */
+.polaroid {
+  background: white;
+  padding: 1.5rem;
+  padding-bottom: 4rem;
+  border: var(--border-thick);
+  box-shadow: var(--shadow-hard);
+  transform: rotate(-1deg);
+  border-radius: 0.5rem;
 }
 
-@keyframes sway {
-
-  0%,
-  100% {
-    transform: rotate(-6deg);
-  }
-
-  50% {
-    transform: rotate(6deg);
-  }
+.noise-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.05;
+  pointer-events: none;
+  z-index: 9999;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3%3Ffilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
 }
 
+/* Custom animations */
 @keyframes bounce-soft {
 
   0%,
@@ -147,34 +140,20 @@ body {
 
 @keyframes pop-in {
   0% {
-    transform: scale(0.85) translateY(16px);
+    transform: scale(0.9);
     opacity: 0;
   }
 
   100% {
-    transform: scale(1) translateY(0);
+    transform: scale(1);
     opacity: 1;
   }
 }
 
+.animate-bounce-soft {
+  animation: bounce-soft 3s ease-in-out infinite;
+}
+
 .animate-pop-in {
-  animation: pop-in 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-}
-
-/* Scrollbar */
-::-webkit-scrollbar {
-  width: 8px;
-}
-
-::-webkit-scrollbar-track {
-  background: var(--color-dark);
-}
-
-::-webkit-scrollbar-thumb {
-  background: rgba(92, 64, 51, 0.3);
-  border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: rgba(92, 64, 51, 0.5);
+  animation: pop-in 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
 }
