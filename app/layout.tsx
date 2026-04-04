@@ -37,10 +37,10 @@ export default function RootLayout({
           {children}
         </main>
         
-        <footer className="flex justify-center gap-6 pb-8 text-xs font-bold text-[#5C4033]/50 uppercase tracking-widest">
-          <a href="/terms">Terms</a>
-          <a href="/privacy">Privacy</a>
-          <a href="/cookies">Cookies</a>
+        <footer className="flex justify-center gap-6 pb-8 text-xs font-bold uppercase tracking-widest text-[#5C4033]/50">
+          <a href="/terms" className="hover:text-[#5C4033] transition-colors no-underline">Terms</a>
+          <a href="/privacy" className="hover:text-[#5C4033] transition-colors no-underline">Privacy</a>
+          <a href="/cookies" className="hover:text-[#5C4033] transition-colors no-underline">Cookies</a>
         </footer>
       </body>
     </html>
