@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Fredoka, Caveat } from "next/font/google";
+import Link from "next/link";
 import "./globals.css";
 
 const fredoka = Fredoka({
@@ -37,10 +38,10 @@ export default function RootLayout({
           {children}
         </main>
         
-        <footer className="flex justify-center gap-6 pb-8 text-xs font-bold uppercase tracking-widest text-[#5C4033]/50">
-          <a href="/terms" className="hover:text-[#5C4033] transition-colors no-underline">Terms</a>
-          <a href="/privacy" className="hover:text-[#5C4033] transition-colors no-underline">Privacy</a>
-          <a href="/cookies" className="hover:text-[#5C4033] transition-colors no-underline">Cookies</a>
+        <footer className="flex justify-center gap-6 pb-8 text-[10px] sm:text-xs font-bold uppercase tracking-[0.2em] text-[#5C4033]/50">
+          <Link href="/terms" className="hover:text-[#5C4033] transition-colors no-underline">Terms</Link>
+          <Link href="/privacy" className="hover:text-[#5C4033] transition-colors no-underline">Privacy</Link>
+          <Link href="/cookies" className="hover:text-[#5C4033] transition-colors no-underline">Cookies</Link>
         </footer>
       </body>
     </html>
