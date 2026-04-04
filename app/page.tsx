@@ -91,11 +91,18 @@ export default function Home() {
       {/* ── HERO / POLAROID SECTION ── */}
       <section className="relative z-10 flex flex-col items-center justify-center pt-10 pb-20 px-6">
 
-        {/* Title */}
-        <h1 className="text-6xl md:text-8xl lg:text-9xl text-center leading-[0.8] tracking-tighter text-[#5C4033] mb-12 animate-pop-in" style={{ fontFamily: "var(--font-marker)" }}>
-          get a boba date<br />
-          <span className="text-[var(--color-matcha)]">every day</span>
-        </h1>
+        <div className="text-center mb-12 animate-pop-in" style={{ animationDelay: "0.2s" }}>
+          <h1 className="text-7xl md:text-9xl lg:text-[10rem] leading-[0.75] tracking-tighter text-[#5C4033]" style={{ fontFamily: "var(--font-marker)" }}>
+            Get Your Boba<br />
+            <span className="font-bold">
+              <span className="text-[var(--color-matcha)]">Match</span>a
+            </span>
+          </h1>
+          <p className="mt-8 text-xl md:text-2xl font-bold text-[#5C4033]/60 max-w-xl mx-auto leading-relaxed">
+            The exclusive 12 PM daily drop for ABGs and ABBs.<br />
+            One question, one IG handle.
+          </p>
+        </div>
 
         {/* The Polaroid Card */}
         <div className="neubrutalism-card w-full max-w-2xl bg-white p-8 md:p-12 relative animate-pop-in" style={{ animationDelay: "0.2s" }}>
@@ -117,8 +124,8 @@ export default function Home() {
                 <h2 className="text-2xl font-bold">Answer Today&apos;s Question</h2>
               </div>
 
-              <div className="p-6 bg-[#E8F5E9]/50 rounded-[1.5rem] border-2 border-[#5C4033]/10 mb-6">
-                <p className="text-xl font-bold leading-snug">&ldquo;{question}&rdquo;</p>
+              <div className="p-4 md:p-6 bg-[#E8F5E9]/50 rounded-[1.5rem] border-2 border-[#5C4033]/10 mb-6">
+                <p className="text-lg md:text-xl font-bold leading-snug">&ldquo;{question}&rdquo;</p>
               </div>
 
               <textarea
