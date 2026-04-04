@@ -21,7 +21,8 @@ export default function Home() {
       try {
         const res = await fetch("/api/question");
         const data = await res.json();
-        setQuestion(data.question);
+        const qText = data.question?.question_text || data.question || "";
+        setQuestion(qText);
       } catch (err) {
         setQuestion("What's your go-to boba order and what does it say about you as a partner? 🧋");
       }
