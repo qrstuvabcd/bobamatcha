@@ -1,6 +1,6 @@
 export default function Success() {
     return (
-        <main className="min-h-screen bg-[var(--color-dark)] text-white overflow-hidden relative flex items-center justify-center">
+        <main className="min-h-screen bg-[var(--color-dark)] text-[#3d2b1f] overflow-hidden relative flex items-center justify-center">
             {/* NOISE OVERLAY */}
             <div className="noise-overlay" />
 
@@ -26,7 +26,7 @@ export default function Success() {
                         <circle cx="48" cy="42" r="1" fill="#2a1f1a" />
                         <ellipse cx="28" cy="46" rx="4" ry="2.5" fill="#7cb342" opacity="0.3" />
                         <ellipse cx="52" cy="46" rx="4" ry="2.5" fill="#7cb342" opacity="0.3" />
-                        <path d="M36 47 C38 50 42 50 44 47" fill="none" stroke="white" strokeWidth="1.5" strokeLinecap="round" />
+                        <path d="M36 47 C38 50 42 50 44 47" fill="none" stroke="#3d2b1f" strokeWidth="1.5" strokeLinecap="round" />
                     </svg>
                 </div>
 
@@ -42,13 +42,13 @@ export default function Success() {
                     check your<br /><span className="italic text-[var(--color-matcha)]">email</span>
                 </h1>
 
-                <p className="text-white/40 font-medium md:text-lg mb-12">
+                <p className="text-[#5C4033]/60 font-medium md:text-lg mb-12">
                     Your daily match will be dropped into your inbox today at <span className="text-[var(--color-matcha)] font-bold">12:00 PM</span>.
                 </p>
 
                 <a
                     href="/"
-                    className="text-sm font-medium border border-white/15 rounded-full px-8 py-3 bg-white/5 backdrop-blur-md hover:bg-white/10 transition-all"
+                    className="text-sm font-medium border border-[#5C4033]/20 rounded-full px-8 py-3 bg-white/30 backdrop-blur-md hover:bg-white/50 transition-all text-[#3d2b1f]"
                 >
                     Return Home
                 </a>

@@ -2,10 +2,10 @@
 
 @theme {
   /* BobaMatcha — Ditto-Matcha Hybrid Palette */
-  --color-boba: #6b4226;
+  --color-boba: #5C4033;
   --color-matcha: #7cb342;
-  --color-dark: #2a1f1a;
-  --color-dark-card: #3d2b1f;
+  --color-dark: #c9956b;
+  --color-dark-card: #b8844e;
   --font-serif: var(--font-playfair);
   --font-marker: var(--font-caveat);
 }
@@ -27,18 +27,18 @@
 
   /* Glassmorphism card */
   .glass-card {
-    background: rgba(255, 255, 255, 0.04);
+    background: rgba(255, 255, 255, 0.35);
     backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.5);
     border-radius: 24px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 8px 32px rgba(92, 64, 51, 0.15);
   }
 
   /* Glass input */
   .glass-input {
-    background: rgba(255, 255, 255, 0.06);
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    color: white;
+    background: rgba(255, 255, 255, 0.5);
+    border: 1px solid rgba(92, 64, 51, 0.2);
+    color: #3d2b1f;
     border-radius: 16px;
     padding: 1rem 1.25rem;
     transition: border-color 0.2s;
@@ -51,7 +51,7 @@
   }
 
   .glass-input::placeholder {
-    color: rgba(255, 255, 255, 0.3);
+    color: rgba(92, 64, 51, 0.4);
   }
 
   /* Matcha pill button */
@@ -89,7 +89,7 @@
 
 body {
   background-color: var(--color-dark);
-  color: white;
+  color: #3d2b1f;
   overflow-x: hidden;
   scroll-behavior: smooth;
 }
@@ -169,10 +169,10 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.15);
+  background: rgba(92, 64, 51, 0.3);
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.25);
+  background: rgba(92, 64, 51, 0.5);
 }

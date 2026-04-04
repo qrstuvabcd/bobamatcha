@@ -85,8 +85,8 @@ export default function Home() {
             </span>
           </div>
           <div className="flex gap-3 items-center">
-            <a href="#question" className="text-sm text-white/60 hover:text-white transition-colors hidden sm:block">Answer Today</a>
-            <button className="text-sm font-medium border border-white/15 rounded-full px-5 py-2.5 bg-white/5 backdrop-blur-md hover:bg-white/10 transition-all">
+            <a href="#question" className="text-sm text-[#5C4033]/60 hover:text-[#5C4033] transition-colors hidden sm:block">Answer Today</a>
+            <button className="text-sm font-medium border border-[#5C4033]/20 rounded-full px-5 py-2.5 bg-white/30 backdrop-blur-md hover:bg-white/50 transition-all">
               Join Now
             </button>
           </div>
@@ -120,7 +120,7 @@ export default function Home() {
           </div>
 
           {/* Main Headline */}
-          <h1 className="font-serif text-5xl md:text-7xl lg:text-8xl leading-[0.95] tracking-tight text-white drop-shadow-lg mb-6 animate-fade-in" style={{ animationDelay: "0.2s" }}>
+          <h1 className="font-serif text-5xl md:text-7xl lg:text-8xl leading-[0.95] tracking-tight text-[#3d2b1f] drop-shadow-lg mb-6 animate-fade-in" style={{ animationDelay: "0.2s" }}>
             get a boba date<br />
             <span className="italic text-[var(--color-matcha)]">every day</span>
           </h1>
@@ -128,7 +128,7 @@ export default function Home() {
           {/* Sub info */}
           <div className="flex flex-col items-center gap-2 mb-10 animate-fade-in" style={{ animationDelay: "0.35s" }}>
             <NoonCountdown />
-            <p className="text-white/40 text-sm mt-2">
+            <p className="text-[#5C4033]/60 text-sm mt-2">
               Next Match Drop: Today at 12:00 PM · <span className="text-[var(--color-matcha)] font-semibold">4,200+</span> boba lovers joined
             </p>
           </div>
@@ -142,7 +142,7 @@ export default function Home() {
                   <StickerBobaCup size={48} />
                 </div>
 
-                <h2 className="font-serif text-xl md:text-2xl font-medium mb-5 leading-snug text-white/90">
+                <h2 className="font-serif text-xl md:text-2xl font-medium mb-5 leading-snug text-[#3d2b1f]">
                   {question}
                 </h2>
                 <textarea
@@ -166,9 +166,9 @@ export default function Home() {
                 <h3 className="font-serif text-2xl font-medium mb-2">
                   Almost there.
                 </h3>
-                <p className="text-white/40 text-sm mb-6">We'll email you your match's Instagram handle at 12:00 PM.</p>
+                <p className="text-[#5C4033]/60 text-sm mb-6">We'll email you your match's Instagram handle at 12:00 PM.</p>
 
-                {error && <p className="mb-4 text-xs font-bold text-red-400 bg-red-950/40 border border-red-900/50 p-3 rounded-xl">{error}</p>}
+                {error && <p className="mb-4 text-xs font-bold text-red-700 bg-red-100 border border-red-200 p-3 rounded-xl">{error}</p>}
 
                 <div className="space-y-4">
                   <input
@@ -190,12 +190,12 @@ export default function Home() {
                     <button
                       type="button"
                       onClick={() => setGender('female')}
-                      className={`flex-1 py-3.5 rounded-xl text-sm font-semibold border transition-all ${gender === 'female' ? 'bg-[var(--color-matcha)] border-[var(--color-matcha)] text-white' : 'bg-transparent border-white/15 text-white/40 hover:bg-white/5'}`}
+                      className={`flex-1 py-3.5 rounded-xl text-sm font-semibold border transition-all ${gender === 'female' ? 'bg-[var(--color-matcha)] border-[var(--color-matcha)] text-white' : 'bg-transparent border-[#5C4033]/20 text-[#5C4033]/50 hover:bg-white/20'}`}
                     >ABG 👸</button>
                     <button
                       type="button"
                       onClick={() => setGender('male')}
-                      className={`flex-1 py-3.5 rounded-xl text-sm font-semibold border transition-all ${gender === 'male' ? 'bg-[var(--color-matcha)] border-[var(--color-matcha)] text-white' : 'bg-transparent border-white/15 text-white/40 hover:bg-white/5'}`}
+                      className={`flex-1 py-3.5 rounded-xl text-sm font-semibold border transition-all ${gender === 'male' ? 'bg-[var(--color-matcha)] border-[var(--color-matcha)] text-white' : 'bg-transparent border-[#5C4033]/20 text-[#5C4033]/50 hover:bg-white/20'}`}
                     >ABB 🧋</button>
                   </div>
 
@@ -232,11 +232,11 @@ export default function Home() {
               { num: "03", icon: "📧", title: "Check your email", desc: "We email you your match's Instagram handle with a cute reasoning why you'd click." },
               { num: "04", icon: "📸", title: "Slide into DMs", desc: "Follow them, say hi, grab boba together. The rest is on you!" },
             ].map((step) => (
-              <div key={step.num} className="glass-card p-6 text-center group hover:bg-white/[0.06] transition-all">
+              <div key={step.num} className="glass-card p-6 text-center group hover:bg-white/40 transition-all">
                 <div className="text-[var(--color-matcha)] text-xs font-bold mb-3 tracking-widest font-serif">{step.num}</div>
                 <div className="text-3xl mb-4 group-hover:scale-110 transition-transform">{step.icon}</div>
-                <h3 className="text-sm font-bold text-white mb-2">{step.title}</h3>
-                <p className="text-white/40 text-xs leading-relaxed">{step.desc}</p>
+                <h3 className="text-sm font-bold text-[#3d2b1f] mb-2">{step.title}</h3>
+                <p className="text-[#5C4033]/60 text-xs leading-relaxed">{step.desc}</p>
               </div>
             ))}
           </div>
@@ -250,7 +250,7 @@ export default function Home() {
             <h2 className="font-serif text-4xl md:text-5xl font-medium tracking-tight">
               your AI <span className="italic text-[var(--color-matcha)]">matchmaker</span>
             </h2>
-            <p className="mt-3 text-white/40 text-sm">powered by magic (and a lot of math) ✨</p>
+            <p className="mt-3 text-[#5C4033]/60 text-sm">powered by magic (and a lot of math) ✨</p>
           </div>
 
           <div className="grid md:grid-cols-3 gap-5">
@@ -259,10 +259,10 @@ export default function Home() {
               { icon: "🔍", title: "Scans everyone", desc: "Our AI checks every profile to find the one. Not random — intentional.", color: "var(--color-boba)" },
               { icon: "🎯", title: "One perfect match", desc: "Every day at noon. No swiping. No overwhelm. Just one curated person.", color: "var(--color-matcha)" },
             ].map((item) => (
-              <div key={item.title} className="glass-card p-7 text-center hover:bg-white/[0.06] transition-all">
+              <div key={item.title} className="glass-card p-7 text-center hover:bg-white/40 transition-all">
                 <div className="text-4xl mb-4">{item.icon}</div>
                 <h3 className="text-sm font-bold mb-2" style={{ color: item.color }}>{item.title}</h3>
-                <p className="text-white/40 text-xs leading-relaxed">{item.desc}</p>
+                <p className="text-[#5C4033]/60 text-xs leading-relaxed">{item.desc}</p>
               </div>
             ))}
           </div>
@@ -276,7 +276,7 @@ export default function Home() {
             <h2 className="font-serif text-4xl md:text-5xl font-medium tracking-tight">
               real <span className="italic text-[var(--color-matcha)]">boba dates</span>
             </h2>
-            <p className="mt-3 text-white/40 text-sm">matches made over matcha ♡</p>
+            <p className="mt-3 text-[#5C4033]/60 text-sm">matches made over matcha ♡</p>
           </div>
 
           {/* Stats */}
@@ -286,9 +286,9 @@ export default function Home() {
               { num: "89%", label: "second dates" },
               { num: "12", label: "cities" },
             ].map((s) => (
-              <div key={s.label} className="px-6 py-3 rounded-full border border-white/10 bg-white/5 text-center">
+              <div key={s.label} className="px-6 py-3 rounded-full border border-[#5C4033]/15 bg-white/30 text-center">
                 <span className="font-serif text-lg font-bold text-[var(--color-matcha)]">{s.num}</span>
-                <span className="text-xs ml-1.5 text-white/40">{s.label}</span>
+                <span className="text-xs ml-1.5 text-[#5C4033]/60">{s.label}</span>
               </div>
             ))}
           </div>
@@ -302,7 +302,7 @@ export default function Home() {
               { name: "Tina", school: "UofT", quote: "I'm literally an ABG and this app gets me. Taro milk tea + cute guy = perfect first date.", emoji: "💜" },
               { name: "Ryan", school: "Edinburgh", quote: "Met at Machi Machi. She ordered brown sugar boba. I knew she was the one right there.", emoji: "🤎" },
             ].map((t, i) => (
-              <div key={i} className="glass-card p-5 relative hover:bg-white/[0.06] transition-all">
+              <div key={i} className="glass-card p-5 relative hover:bg-white/40 transition-all">
                 <div className="absolute top-3 right-4 text-lg opacity-30">{t.emoji}</div>
                 <div className="flex items-center gap-2.5 mb-3">
                   <div className="w-8 h-8 rounded-full bg-[var(--color-matcha)] flex items-center justify-center text-xs font-bold text-white">
@@ -310,10 +310,10 @@ export default function Home() {
                   </div>
                   <div>
                     <div className="text-sm font-bold">{t.name}</div>
-                    <div className="text-[10px] text-white/30">@{t.school}</div>
+                    <div className="text-[10px] text-[#5C4033]/40">@{t.school}</div>
                   </div>
                 </div>
-                <p className="text-sm text-white/60 leading-relaxed italic">
+                <p className="text-sm text-[#5C4033]/70 leading-relaxed italic">
                   &ldquo;{t.quote}&rdquo;
                 </p>
               </div>
@@ -335,7 +335,7 @@ export default function Home() {
             <span className="italic text-[var(--color-matcha)]">one answer away</span>
           </h2>
 
-          <p className="text-white/40 text-sm mb-8">
+          <p className="text-[#5C4033]/60 text-sm mb-8">
             join 4,200+ boba lovers already matching ♡
           </p>
 
@@ -349,17 +349,17 @@ export default function Home() {
       </section>
 
       {/* ── FOOTER ── */}
-      <footer className="relative z-10 py-10 px-8 border-t border-white/5">
-        <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-white/30">
+      <footer className="relative z-10 py-10 px-8 border-t border-[#5C4033]/10">
+        <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[#5C4033]/40">
           <div className="flex items-center gap-2.5">
             <StickerBobaCup size={22} />
-            <span className="font-bold text-white/60 font-serif text-sm">bobamatcha</span>
+            <span className="font-bold text-[#5C4033]/70 font-serif text-sm">bobamatcha</span>
           </div>
           <p>made with 🧋 for boba lovers everywhere</p>
           <div className="flex gap-5">
-            <span className="hover:text-white cursor-pointer transition-colors">Terms</span>
-            <span className="hover:text-white cursor-pointer transition-colors">Privacy</span>
-            <span className="hover:text-white cursor-pointer transition-colors">Manifesto</span>
+            <span className="hover:text-[#3d2b1f] cursor-pointer transition-colors">Terms</span>
+            <span className="hover:text-[#3d2b1f] cursor-pointer transition-colors">Privacy</span>
+            <span className="hover:text-[#3d2b1f] cursor-pointer transition-colors">Manifesto</span>
           </div>
         </div>
       </footer>
@@ -429,9 +429,9 @@ function NoonCountdown() {
             >
               {t.val}
             </div>
-            <div className="text-[10px] text-white/30 mt-0.5">{t.label}</div>
+            <div className="text-[10px] text-[#5C4033]/40 mt-0.5">{t.label}</div>
           </div>
-          {i < 2 && <span className="font-serif text-2xl text-white/20 font-bold -mt-4">:</span>}
+          {i < 2 && <span className="font-serif text-2xl text-[#5C4033]/20 font-bold -mt-4">:</span>}
         </div>
       ))}
     </div>
@@ -481,7 +481,7 @@ function StickerBobaCup({ size = 64 }: { size?: number }) {
       <ellipse cx="52" cy="46" rx="4" ry="2.5" fill="#7cb342" opacity="0.3" />
 
       {/* Smile */}
-      <path d="M36 47 C38 50 42 50 44 47" fill="none" stroke="white" strokeWidth="1.5" strokeLinecap="round" />
+      <path d="M36 47 C38 50 42 50 44 47" fill="none" stroke="#5C4033" strokeWidth="1.5" strokeLinecap="round" />
 
       {/* Heart above */}
       <path d="M40 10 C40 8 38 6.5 36.5 6.5 C35 6.5 33 8 33 10 C33 13 40 16 40 16 C40 16 47 13 47 10 C47 8 45 6.5 43.5 6.5 C42 6.5 40 8 40 10Z" fill="#7cb342" stroke="#7cb342" strokeWidth="0.8" opacity="0.6" />
