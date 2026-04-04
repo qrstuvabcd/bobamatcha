@@ -90,112 +90,113 @@ export default function Home() {
 
       {/* ── HERO / POLAROID SECTION ── */}
       <section className="relative z-10 flex flex-col items-center justify-center pt-10 pb-20 px-6">
-
-        <div className="text-center mb-12 animate-pop-in" style={{ animationDelay: "0.2s" }}>
-          <h1 className="text-7xl md:text-9xl lg:text-[10rem] leading-[0.75] tracking-tighter text-[#5C4033]" style={{ fontFamily: "var(--font-marker)" }}>
-            Get Your Boba<br />
-            <span className="font-bold">
-              <span className="text-[var(--color-matcha)]">Match</span>a
-            </span>
-          </h1>
-          <p className="mt-8 text-xl md:text-2xl font-bold text-[#5C4033]/60 max-w-xl mx-auto leading-relaxed">
-            The exclusive 12 PM daily drop for ABGs and ABBs.<br />
-            One question, one IG handle.
-          </p>
-        </div>
-
-        {/* The Polaroid Card */}
-        <div className="neubrutalism-card w-full max-w-2xl bg-white p-8 md:p-12 relative animate-pop-in" style={{ animationDelay: "0.2s" }}>
-          <div className="absolute -top-6 -right-6 rotate-[15deg]">
-            <StickerHeart size={60} />
+        <div className="w-full max-w-md mx-auto">
+          {/* Title */}
+          <div className="text-center mb-10 animate-pop-in" style={{ animationDelay: "0.2s" }}>
+            <h1 className="text-6xl md:text-7xl lg:text-8xl leading-[0.8] tracking-tighter text-[#5C4033]" style={{ fontFamily: "var(--font-marker)" }}>
+              Get Your Boba<br />
+              <span className="font-bold">
+                <span className="text-[var(--color-matcha)]">Match</span>a
+              </span>
+            </h1>
+            <p className="mt-6 text-lg font-bold text-[#5C4033]/60 leading-relaxed px-4">
+              The exclusive 12 PM daily drop for <span className="text-[var(--color-matcha)]">ABGs and ABBs</span>. One question, one IG handle.
+            </p>
           </div>
 
-          {/* Countdown Wrapper */}
-          <div className="flex flex-col items-center mb-10 pb-10 border-b-4 border-[#5C4033]/10 border-dashed">
-            <NoonCountdown />
-            <p className="text-[#5C4033]/60 text-sm mt-4 font-bold uppercase tracking-widest">Next Match Drop: Today at 12:00 PM</p>
-          </div>
-
-          {/* Step 1: Answer Today */}
-          {step === 1 ? (
-            <div className="animate-pop-in">
-              <div className="flex items-center gap-3 mb-6">
-                <span className="neubrutalism-button w-10 h-10 rounded-full bg-[var(--color-matcha)] text-white shadow-none border-2">1</span>
-                <h2 className="text-2xl font-bold">Answer Today&apos;s Question</h2>
-              </div>
-
-              <div className="p-4 md:p-6 bg-[#E8F5E9]/50 rounded-[1.5rem] border-2 border-[#5C4033]/10 mb-6">
-                <p className="text-lg md:text-xl font-bold leading-snug">&ldquo;{question}&rdquo;</p>
-              </div>
-
-              <textarea
-                placeholder="Write your answer here..."
-                value={answer}
-                onChange={(e) => setAnswer(e.target.value)}
-                className="neubrutalism-input min-h-[120px] mb-8"
-              />
-
-              <button
-                onClick={handleSubmitAnswer}
-                disabled={!answer.trim()}
-                className="matcha-button w-full py-5 text-xl disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                Next Step ➔
-              </button>
+          {/* The Polaroid Card */}
+          <div className="neubrutalism-card w-full bg-white p-8 md:p-10 relative animate-pop-in" style={{ animationDelay: "0.4s" }}>
+            <div className="absolute -top-6 -right-6 rotate-[15deg] z-20">
+              <StickerHeart size={60} />
             </div>
-          ) : (
-            /* Step 2: Final Details */
-            <form onSubmit={handleFinalSubmit} className="animate-pop-in">
-              <div className="flex items-center gap-3 mb-6">
-                <button type="button" onClick={() => setStep(1)} className="text-[#5C4033]/40 hover:text-[#5C4033] transition-colors">← Back</button>
-                <div className="flex items-center gap-3">
-                  <span className="neubrutalism-button w-10 h-10 rounded-full bg-[var(--color-matcha)] text-white shadow-none border-2">2</span>
-                  <h2 className="text-2xl font-bold">Final Vitals</h2>
+
+            {/* Countdown Wrapper */}
+            <div className="flex flex-col items-center mb-8 pb-8 border-b-4 border-[#5C4033]/10 border-dashed">
+              <NoonCountdown />
+              <p className="text-[#5C4033]/60 text-[10px] mt-4 font-bold uppercase tracking-[0.2em]">Next Match Drop: Today at 12:00 PM</p>
+            </div>
+
+            {/* Step 1: Answer Today */}
+            {step === 1 ? (
+              <div className="animate-pop-in">
+                <div className="flex items-center gap-3 mb-6">
+                  <span className="neubrutalism-button w-10 h-10 rounded-full bg-[var(--color-matcha)] text-white shadow-none border-2 text-sm">1</span>
+                  <h2 className="text-xl font-extrabold uppercase tracking-tight">Daily Question</h2>
                 </div>
-              </div>
 
-              {error && <p className="mb-6 p-4 bg-red-50 border-2 border-red-200 text-red-600 rounded-2xl text-sm font-bold">{error}</p>}
+                <div className="p-5 bg-[#E8F5E9]/50 rounded-[1.5rem] border-2 border-[#5C4033]/10 mb-6">
+                  <p className="text-lg font-bold leading-snug italic text-[var(--color-matcha)]">&ldquo;{question}&rdquo;</p>
+                </div>
 
-              <div className="space-y-5">
-                <input
-                  placeholder="Your Email"
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="neubrutalism-input"
-                  required
-                />
-                <input
-                  placeholder="Instagram Handle (e.g. @bobalover)"
-                  value={instagram}
-                  onChange={(e) => setInstagram(e.target.value)}
-                  className="neubrutalism-input"
-                  required
+                <textarea
+                  placeholder="Drop your answer..."
+                  value={answer}
+                  onChange={(e) => setAnswer(e.target.value)}
+                  className="neubrutalism-input min-h-[100px] mb-6 text-base"
                 />
 
-                <div className="flex gap-4">
-                  <button
-                    type="button"
-                    onClick={() => setGender('female')}
-                    className={`flex-1 py-4 neubrutalism-button border-4 ${gender === 'female' ? 'bg-[var(--color-matcha)] text-white border-[#5C4033]' : 'bg-white opacity-60'}`}
-                  >👸 ABG</button>
-                  <button
-                    type="button"
-                    onClick={() => setGender('male')}
-                    className={`flex-1 py-4 neubrutalism-button border-4 ${gender === 'male' ? 'bg-[var(--color-matcha)] text-white border-[#5C4033]' : 'bg-white opacity-60'}`}
-                  >🧋 ABB</button>
-                </div>
+                <button
+                  onClick={handleSubmitAnswer}
+                  disabled={!answer.trim()}
+                  className="matcha-button w-full py-4 text-xl disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  NEXT ➔
+                </button>
               </div>
+            ) : (
+              /* Step 2: Final Details */
+              <form onSubmit={handleFinalSubmit} className="animate-pop-in">
+                <div className="flex items-center gap-3 mb-6">
+                  <button type="button" onClick={() => setStep(1)} className="text-[#5C4033]/40 hover:text-[#5C4033] transition-colors font-bold text-sm">← Back</button>
+                  <div className="flex items-center gap-3">
+                    <span className="neubrutalism-button w-10 h-10 rounded-full bg-[var(--color-matcha)] text-white shadow-none border-2 text-sm">2</span>
+                    <h2 className="text-xl font-extrabold uppercase tracking-tight">Details</h2>
+                  </div>
+                </div>
 
-              <button
-                type="submit"
-                disabled={loading}
-                className="matcha-button w-full py-5 text-xl mt-8"
-              >
-                {loading ? "Matching..." : "Join the Drop ✨"}
-              </button>
-            </form>
-          )}
+                {error && <p className="mb-6 p-4 bg-red-50 border-2 border-red-200 text-red-600 rounded-2xl text-xs font-bold leading-tight">{error}</p>}
+
+                <div className="space-y-4">
+                  <input
+                    placeholder="Your Email"
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="neubrutalism-input py-3"
+                    required
+                  />
+                  <input
+                    placeholder="Instagram Handle (e.g. @bobalover)"
+                    value={instagram}
+                    onChange={(e) => setInstagram(e.target.value)}
+                    className="neubrutalism-input py-3"
+                    required
+                  />
+
+                  <div className="flex gap-3">
+                    <button
+                      type="button"
+                      onClick={() => setGender('female')}
+                      className={`flex-1 py-3 neubrutalism-button border-4 text-sm ${gender === 'female' ? 'bg-[var(--color-matcha)] text-white border-[#5C4033]' : 'bg-white opacity-60'}`}
+                    >👸 ABG</button>
+                    <button
+                      type="button"
+                      onClick={() => setGender('male')}
+                      className={`flex-1 py-3 neubrutalism-button border-4 text-sm ${gender === 'male' ? 'bg-[var(--color-matcha)] text-white border-[#5C4033]' : 'bg-white opacity-60'}`}
+                    >🧋 ABB</button>
+                  </div>
+                </div>
+
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="matcha-button w-full py-4 text-xl mt-8"
+                >
+                  {loading ? "Matching..." : "Join Drop ✨"}
+                </button>
+              </form>
+            )}
+          </div>
         </div>
       </section>
 
