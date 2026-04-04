@@ -79,15 +79,6 @@ export default function Home() {
 
       <div className="w-full max-w-3xl mx-auto space-y-6 animate-pop-in relative z-10">
         
-        {/* Logo */}
-        <div className="flex justify-center mb-4">
-          <img 
-            src="/logo.png" 
-            alt="BobaMatcha Logo" 
-            className="w-24 h-24 md:w-32 md:h-32 object-contain"
-          />
-        </div>
-
         {/* Header */}
         <div className="text-center space-y-2">
           <h1 className="text-5xl md:text-6xl font-black text-[#5C4033] tracking-tight leading-none" style={{ fontFamily: "var(--font-marker)" }}>

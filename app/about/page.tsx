@@ -22,15 +22,6 @@ export default function About() {
           </Link>
         </div>
 
-        {/* Logo */}
-        <div className="flex justify-center -mb-4">
-          <img 
-            src="/logo.png" 
-            alt="BobaMatcha Logo" 
-            className="w-24 h-24 object-contain"
-          />
-        </div>
-
         {/* Title Area */}
         <div className="text-center pt-8 mb-4">
           <h1 className="text-4xl font-black tracking-tighter mb-2">how it works</h1>
