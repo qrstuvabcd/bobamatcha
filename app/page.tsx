@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { StickerHeart } from "@/components/Stickers";
+import { StickerBobaCup, StickerMatchaLeaf, StickerBobaPearls, StickerHeart } from "@/components/Stickers";
 
 export default function Home() {
   const router = useRouter();
@@ -67,36 +67,45 @@ export default function Home() {
   };
 
   return (
-    <main className="min-h-screen flex flex-col items-center justify-center p-6 bg-[#E8F5E9] selection:bg-[var(--color-matcha)] selection:text-white">
-      <div className="w-full max-w-[450px] mx-auto space-y-8 animate-pop-in">
+    <main className="min-h-screen flex flex-col items-center justify-center p-4 bg-[#E8F5E9] selection:bg-[var(--color-matcha)] selection:text-white relative overflow-hidden">
+      
+      {/* ── BACKGROUND STICKERS ── */}
+      <div className="fixed inset-0 pointer-events-none overflow-hidden z-0 opacity-20 lg:opacity-30">
+        <StickerBobaCup size={280} className="absolute -top-10 -left-10 rotate-[15deg] animate-bounce-soft" />
+        <StickerMatchaLeaf size={180} className="absolute top-[40%] -right-10 rotate-[-15deg] animate-bounce-soft" style={{ animationDelay: "1s" }} />
+        <StickerBobaPearls size={120} className="absolute bottom-[5%] left-[5%] rotate-[25deg] animate-bounce-soft" style={{ animationDelay: "2s" }} />
+        <StickerHeart size={100} className="absolute top-[10%] right-[10%] rotate-[-10deg] animate-pulse" />
+      </div>
+
+      <div className="w-full max-w-[380px] mx-auto space-y-6 animate-pop-in relative z-10">
         
         {/* Header */}
-        <div className="text-center space-y-3">
-          <h1 className="text-5xl md:text-6xl font-black text-[#5C4033] tracking-tight leading-none" style={{ fontFamily: "var(--font-sans)" }}>
+        <div className="text-center space-y-2">
+          <h1 className="text-4xl md:text-5xl font-black text-[#5C4033] tracking-tight leading-none" style={{ fontFamily: "var(--font-marker)" }}>
             Get Your Boba<span className="text-[#A4C639]">Match</span>a
           </h1>
-          <p className="text-lg font-medium text-[#5C4033] leading-snug">
+          <p className="text-base font-medium text-[#5C4033] leading-snug">
             The exclusive 12 PM daily drop for ABGs and ABBs.
           </p>
         </div>
 
         {/* The Daily Drop Card */}
-        <div className="bg-[#FDFBF7] border-4 border-[#5C4033] rounded-[2rem] shadow-[6px_6px_0px_#5C4033] p-6 flex flex-col gap-6 relative">
-          <div className="absolute -top-6 -right-6 rotate-[15deg] z-20">
-             <StickerHeart size={50} />
+        <div className="bg-[#FDFBF7] border-4 border-[#5C4033] rounded-[2rem] shadow-[6px_6px_0px_#5C4033] p-5 flex flex-col gap-5 relative">
+          <div className="absolute -top-5 -right-5 rotate-[15deg] z-20">
+             <StickerBobaCup size={60} />
           </div>
 
           {/* Timer Badge */}
           <div className="text-center">
-            <div className="inline-block bg-[#E8F5E9] border-2 border-[#5C4033] rounded-full px-6 py-2 shadow-[2px_2px_0px_#5C4033] text-xl font-bold font-mono text-[#5C4033]">
+            <div className="inline-block bg-[#E8F5E9] border-2 border-[#5C4033] rounded-full px-4 py-1.5 shadow-[2px_2px_0px_#5C4033] text-lg font-bold font-mono text-[#5C4033]">
               Next Drop: <NoonCountdown />
             </div>
           </div>
 
           {/* Form Step Content */}
           {step === 1 ? (
-            <div className="flex flex-col gap-6 animate-pop-in">
-              <h2 className="text-3xl font-black text-[#5C4033] leading-tight text-center">
+            <div className="flex flex-col gap-5 animate-pop-in">
+              <h2 className="text-2xl font-black text-[#5C4033] leading-tight text-center">
                 “{question}”
               </h2>
               
@@ -104,7 +113,7 @@ export default function Home() {
                 placeholder="Drop your answer..."
                 value={answer}
                 onChange={(e) => setAnswer(e.target.value)}
-                className="w-full p-4 rounded-xl border-2 border-[#5C4033] bg-white text-lg font-medium focus:outline-none focus:border-[#A4C639] min-h-[120px] resize-none"
+                className="w-full p-4 rounded-xl border-2 border-[#5C4033] bg-white text-lg font-medium focus:outline-none focus:border-[#A4C639] min-h-[90px] resize-none"
               />
 
               <button

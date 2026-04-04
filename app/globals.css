@@ -20,7 +20,7 @@
 }
 
 @theme {
-  --font-sans: var(--font-fredoka);
+  --font-sans: var(--font-caveat);
   --font-marker: var(--font-caveat);
 }
 
@@ -28,7 +28,7 @@
   body {
     background-color: var(--color-matcha-soft);
     color: var(--color-boba);
-    font-family: var(--font-fredoka);
+    font-family: var(--font-caveat);
     margin: 0;
     padding: 0;
   }
@@ -91,7 +91,7 @@
     border-radius: 1.5rem;
     padding: 1rem 1.5rem;
     color: var(--color-boba);
-    font-family: var(--font-fredoka);
+    font-family: var(--font-caveat);
     width: 100%;
     outline: none;
     transition: all 0.2s ease;
