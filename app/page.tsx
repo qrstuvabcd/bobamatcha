@@ -92,22 +92,17 @@ export default function Home() {
 
       {/* ── HERO / POLAROID SECTION ── */}
       <section className="relative z-10 flex flex-col items-center justify-center pt-10 pb-20 px-6 w-full">
-        <div className="w-full max-w-[450px] mx-auto flex flex-col items-stretch">
+        <div className="w-full max-w-[450px] mx-auto flex flex-col items-stretch space-y-8">
           {/* Title */}
-          <div className="text-center mb-16 animate-pop-in" style={{ animationDelay: "0.2s" }}>
-            <h1 className="leading-[0.8] tracking-[-0.06em] text-[#5C4033] mb-6" 
-                style={{ fontFamily: "var(--font-marker)", fontSize: "clamp(3.5rem, 15vw, 11rem)" }}>
+          <div className="text-center animate-pop-in" style={{ animationDelay: "0.2s" }}>
+            <h1 className="text-3xl md:text-4xl font-black tracking-tighter text-[#5C4033] mb-4" 
+                style={{ fontFamily: "var(--font-sans)" }}>
               Get Your Boba<br />
-              <span className="font-bold">
-                <span className="text-[var(--color-matcha)]">Match</span>a
-              </span>
+              <span className="text-[var(--color-matcha)]">Match</span>a
             </h1>
             <div className="px-4">
-              <p className="text-3xl md:text-5xl font-black text-[#5C4033] leading-none mb-4 uppercase tracking-tighter">
-                The exclusive <span className="inline-block bg-[#A4C639] text-white px-4 py-1 rounded-2xl shadow-[5px_5px_0px_#5C4033] -rotate-1">12 PM</span> daily drop
-              </p>
-              <p className="text-xl md:text-3xl font-bold text-[#5C4033]/60 italic leading-tight">
-                for ABGs and ABBs. One question, one IG handle.
+              <p className="text-base md:text-lg font-bold text-[#5C4033] leading-snug italic">
+                The exclusive <span className="bg-[#A4C639] text-white px-2 py-0.5 rounded-lg">12 PM</span> daily drop for ABGs and ABBs. One question, one IG handle.
               </p>
             </div>
           </div>
@@ -118,44 +113,48 @@ export default function Home() {
               <StickerHeart size={60} />
             </div>
 
-            {/* Countdown Wrapper */}
-            <div className="flex flex-col items-center mb-8 pb-8 border-b-4 border-[#5C4033]/10 border-dashed">
-              <NoonCountdown />
-              <p className="text-[#5C4033]/60 text-[10px] mt-4 font-bold uppercase tracking-[0.2em]">Next Match Drop: Today at 12:00 PM</p>
+            {/* Countdown Badge */}
+            <div className="flex flex-col items-center mb-6">
+              <div className="inline-block bg-[#E8F5E9] border-2 border-[#5C4033] rounded-full px-6 py-2 shadow-[2px_2px_0px_#5C4033] mb-1">
+                <NoonCountdown />
+              </div>
+              <p className="text-[#5C4033]/40 text-[9px] font-bold uppercase tracking-[0.2em] mt-2">Next Match Drop: Today at 12:00 PM</p>
             </div>
 
             {/* Step 1: Answer Today */}
             {step === 1 ? (
-              <div className="animate-pop-in flex flex-col items-center w-full">
-                <div className="mb-8">
-                  <span className="neubrutalism-button w-14 h-14 rounded-full bg-[var(--color-matcha)] text-white shadow-none border-2 text-2xl font-black">1</span>
+              <div className="animate-pop-in flex flex-col items-stretch space-y-6">
+                <div className="flex justify-center">
+                  <span className="neubrutalism-button w-12 h-12 rounded-full bg-[var(--color-matcha)] text-white shadow-none border-2 text-xl font-black">1</span>
                 </div>
 
-                <div className="w-full p-6 bg-[#E8F5E9]/50 rounded-[1.5rem] border-2 border-[#5C4033]/10 mb-8 text-center box-border">
-                  <p className="text-xl font-bold leading-tight italic text-[var(--color-matcha)]">&ldquo;{question}&rdquo;</p>
+                <div className="w-full text-center">
+                  <p className="text-2xl md:text-3xl font-black text-[#5C4033] leading-tight">
+                    &ldquo;{question}&rdquo;
+                  </p>
                 </div>
 
                 <textarea
                   placeholder="Drop your answer..."
                   value={answer}
                   onChange={(e) => setAnswer(e.target.value)}
-                  className="neubrutalism-input min-h-[140px] mb-8 text-lg w-full box-border"
+                  className="neubrutalism-input min-h-[140px] my-4 p-4 text-lg font-medium w-full box-border"
                 />
 
                 <button
                   onClick={handleSubmitAnswer}
                   disabled={!answer.trim()}
-                  className="matcha-button w-full py-5 text-2xl font-black disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="matcha-button w-full py-4 text-lg font-black disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   NEXT ➔
                 </button>
               </div>
             ) : (
               /* Step 2: Final Details */
-              <form onSubmit={handleFinalSubmit} className="animate-pop-in flex flex-col items-center w-full">
-                <div className="flex items-center justify-between w-full mb-10">
+              <form onSubmit={handleFinalSubmit} className="animate-pop-in flex flex-col items-stretch space-y-6">
+                <div className="flex items-center justify-between w-full mb-4">
                   <button type="button" onClick={() => setStep(1)} className="text-[#5C4033]/40 hover:text-[#5C4033] transition-colors font-black text-sm uppercase tracking-widest bg-white border-2 border-[#5C4033]/10 px-4 py-2 rounded-xl">← Back</button>
-                  <span className="neubrutalism-button w-14 h-14 rounded-full bg-[var(--color-matcha)] text-white shadow-none border-2 text-2xl font-black">2</span>
+                  <span className="neubrutalism-button w-12 h-12 rounded-full bg-[var(--color-matcha)] text-white shadow-none border-2 text-xl font-black">2</span>
                   <div className="w-20" /> {/* Spacer */}
                 </div>
 
@@ -291,36 +290,20 @@ function NoonCountdown() {
 
   if (!mounted) {
     return (
-      <div className="inline-flex items-center gap-6 opacity-0">
-        <div className="flex items-center gap-4">
-          <div className="text-center">
-            <div className="text-6xl md:text-7xl font-bold tracking-tighter" style={{ fontFamily: "var(--font-marker)" }}>00</div>
-          </div>
-        </div>
+      <div className="flex items-center gap-1 opacity-0">
+         <div className="text-xl font-bold font-mono tracking-wider">00:00:00</div>
       </div>
     );
   }
 
   const pad = (n: number) => n.toString().padStart(2, "0");
-  const display = [
-    { val: pad(timeLeft.hours), label: "hrs" },
-    { val: pad(timeLeft.minutes), label: "min" },
-    { val: pad(timeLeft.seconds), label: "sec" },
-  ];
+  const timeString = `${pad(timeLeft.hours)}:${pad(timeLeft.minutes)}:${pad(timeLeft.seconds)}`;
 
   return (
-    <div className="inline-flex items-center gap-6">
-      {display.map((t, i) => (
-        <div key={i} className="flex items-center gap-4">
-          <div className="text-center">
-            <div className="text-6xl md:text-7xl font-bold tracking-tighter" style={{ fontFamily: "var(--font-marker)" }}>
-              {t.val}
-            </div>
-            <div className="text-[12px] font-bold uppercase tracking-widest text-[#5C4033]/40">{t.label}</div>
-          </div>
-          {i < 2 && <span className="text-4xl font-bold text-[#5C4033]/20">:</span>}
-        </div>
-      ))}
+    <div className="flex items-center gap-2">
+      <div className="text-xl font-bold text-[#5C4033] tracking-wider font-mono">
+        {timeString}
+      </div>
     </div>
   );
 }
