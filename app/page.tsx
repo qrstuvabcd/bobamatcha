@@ -85,7 +85,7 @@ export default function Home() {
             Get Your Boba<span className="text-[#A4C639]">Match</span>a
           </h1>
           <p className="text-base font-medium text-[#5C4033] leading-snug">
-            The exclusive 12 PM daily drop for ABGs and ABBs.
+            The 12 PM dating match for ABGs and ABBs.
           </p>
         </div>
 
@@ -97,7 +97,7 @@ export default function Home() {
 
           {/* Timer Badge */}
           <div className="text-center">
-            <div className="inline-block bg-[#E8F5E9] border-2 border-[#5C4033] rounded-full px-4 py-1.5 shadow-[2px_2px_0px_#5C4033] text-lg font-bold text-[#5C4033]">
+            <div className="inline-block bg-[#E8F5E9] border-2 border-[#5C4033] rounded-full px-6 py-2.5 shadow-[3px_3px_0px_#5C4033] text-2xl font-bold text-[#5C4033]">
               Next Drop: <NoonCountdown />
             </div>
           </div>
@@ -119,7 +119,7 @@ export default function Home() {
               <button
                 onClick={handleSubmitAnswer}
                 disabled={!answer.trim()}
-                className="w-full py-4 bg-[#A4C639] text-white text-xl font-black rounded-xl border-4 border-[#5C4033] shadow-[4px_4px_0px_#5C4033] hover:-translate-y-1 hover:shadow-[6px_6px_0px_#5C4033] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full py-4 bg-[#A4C639] text-white text-xl font-black rounded-xl border-4 border-[#5C4033] shadow-[8px_8px_0px_#5C4033] hover:-translate-y-1 hover:shadow-[12px_12px_0px_#5C4033] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 NEXT ➔
               </button>
@@ -171,7 +171,7 @@ export default function Home() {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full py-4 mt-2 bg-[#A4C639] text-white text-xl font-black rounded-xl border-4 border-[#5C4033] shadow-[4px_4px_0px_#5C4033] hover:-translate-y-1 hover:shadow-[6px_6px_0px_#5C4033] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full py-4 mt-2 bg-[#A4C639] text-white text-xl font-black rounded-xl border-4 border-[#5C4033] shadow-[8px_8px_0px_#5C4033] hover:-translate-y-1 hover:shadow-[12px_12px_0px_#5C4033] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {loading ? "Matching..." : "Join Drop ✨"}
               </button>
