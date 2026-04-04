@@ -1,85 +1,104 @@
 @import "tailwindcss";
 
 @theme {
-  /* BobaMatcha Kawaii-Minimal Palette */
-  --color-boba: #5C4033;
-  /* Boba Brown */
-  --color-matcha: #A4C639;
-  /* Matcha Green */
-  --color-cream: #FFF4E6;
-  --color-taro: #D8B4E2;
-
-  --font-serif: "Fraunces", "Georgia", serif;
+  /* BobaMatcha — Ditto-Matcha Hybrid Palette */
+  --color-boba: #6b4226;
+  --color-matcha: #7cb342;
+  --color-dark: #1a1a2e;
+  --color-dark-card: #16213e;
+  --font-serif: var(--font-playfair);
+  --font-marker: var(--font-caveat);
 }
 
 @layer utilities {
-  .chibi-container {
-    background-color: white;
-    border-radius: 36px;
-    border: 4px solid var(--color-boba);
-    box-shadow: 0 8px 0 var(--color-boba);
-    transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* Film grain noise overlay */
+  .noise-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    z-index: 50;
+    opacity: 0.06;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
   }
 
-  .chibi-container:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 12px 0 var(--color-boba);
+  /* Glassmorphism card */
+  .glass-card {
+    background: rgba(255, 255, 255, 0.04);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 24px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
   }
 
-  .chibi-input {
-    width: 100%;
-    padding: 1rem 1.5rem;
-    border-radius: 20px;
-    background-color: var(--color-cream);
-    border: 3px solid var(--color-boba);
-    color: var(--color-boba);
-    font-weight: 600;
+  /* Glass input */
+  .glass-input {
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    color: white;
+    border-radius: 16px;
+    padding: 1rem 1.25rem;
+    transition: border-color 0.2s;
   }
 
-  .chibi-input:focus {
+  .glass-input:focus {
     outline: none;
     border-color: var(--color-matcha);
-    box-shadow: 0 0 0 4px rgba(164, 198, 57, 0.3);
+    box-shadow: 0 0 0 3px rgba(124, 179, 66, 0.2);
   }
 
-  .chibi-button {
-    background-color: var(--color-matcha);
+  .glass-input::placeholder {
+    color: rgba(255, 255, 255, 0.3);
+  }
+
+  /* Matcha pill button */
+  .matcha-button {
+    background: var(--color-matcha);
     color: white;
-    font-weight: 900;
-    font-size: 1.125rem;
-    border-radius: 24px;
-    border: 3px solid var(--color-boba);
-    box-shadow: 0 6px 0 var(--color-boba);
-    padding: 1rem 2rem;
-    transition: transform 0.1s, box-shadow 0.1s;
-    text-transform: uppercase;
-    letter-spacing: 1px;
+    font-weight: 700;
+    border-radius: 9999px;
+    padding: 1rem 2.5rem;
+    border: none;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 16px rgba(124, 179, 66, 0.3);
   }
 
-  .chibi-button:active {
-    transform: translateY(6px);
-    box-shadow: 0 0 0 var(--color-boba);
+  .matcha-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(124, 179, 66, 0.4);
   }
 
-  .animate-fade-in-up {
-    animation: fadeInUp 0.8s ease-out forwards;
+  .matcha-button:active {
+    transform: translateY(0);
+  }
+
+  .matcha-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  /* Fade in animation */
+  .animate-fade-in {
+    animation: fadeIn 0.8s ease-out forwards;
     opacity: 0;
   }
 }
 
 body {
-  font-family: var(--font-sans);
-  background-color: var(--color-cream);
-  color: var(--color-boba);
+  background-color: var(--color-dark);
+  color: white;
   overflow-x: hidden;
   scroll-behavior: smooth;
 }
 
-/* ── ANIMATIONS ── */
-@keyframes fadeInUp {
+/* Animations */
+@keyframes fadeIn {
   from {
     opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(12px);
   }
 
   to {
@@ -88,27 +107,27 @@ body {
   }
 }
 
+@keyframes float {
+
+  0%,
+  100% {
+    transform: translateY(0) rotate(var(--rotate, 0deg));
+  }
+
+  50% {
+    transform: translateY(-14px) rotate(var(--rotate, 0deg));
+  }
+}
+
 @keyframes sway {
 
   0%,
   100% {
-    transform: rotate(-5deg);
+    transform: rotate(-6deg);
   }
 
   50% {
-    transform: rotate(5deg);
-  }
-}
-
-@keyframes wiggle {
-
-  0%,
-  100% {
-    transform: rotate(-3deg) translateY(0);
-  }
-
-  50% {
-    transform: rotate(3deg) translateY(-8px);
+    transform: rotate(6deg);
   }
 }
 
@@ -120,13 +139,13 @@ body {
   }
 
   50% {
-    transform: translateY(-12px);
+    transform: translateY(-10px);
   }
 }
 
 @keyframes pop-in {
   0% {
-    transform: scale(0.8) translateY(20px);
+    transform: scale(0.85) translateY(16px);
     opacity: 0;
   }
 
@@ -137,19 +156,23 @@ body {
 }
 
 .animate-pop-in {
-  animation: pop-in 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  animation: pop-in 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
 }
 
-/* Scrollbar Customization */
+/* Scrollbar */
 ::-webkit-scrollbar {
-  width: 10px;
+  width: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--color-cream);
+  background: var(--color-dark);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--color-boba);
-  border-radius: 5px;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.25);
 }

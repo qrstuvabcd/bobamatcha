@@ -1,44 +1,57 @@
-// @ts-nocheck
-
-export default function SuccessPage() {
+export default function Success() {
     return (
-        <main className="min-h-screen bg-[var(--color-cream)] flex items-center justify-center p-4">
-            <div className="absolute top-20 right-20 text-4xl animate-sway opacity-30">✨</div>
-            <div className="absolute bottom-20 left-20 text-5xl animate-bounce-soft opacity-30">🧋</div>
+        <main className="min-h-screen bg-[var(--color-dark)] text-white overflow-hidden relative flex items-center justify-center">
+            {/* NOISE OVERLAY */}
+            <div className="noise-overlay" />
 
-            <div className="chibi-container max-w-sm w-full p-8 text-center animate-pop-in relative z-10 shadow-2xl">
-                <div className="flex justify-center mb-6 animate-bounce-soft">
-                    <svg width="64" height="64" viewBox="0 0 120 150" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        {/* Cup */}
-                        <path d="M20 30 L30 130 C32 140 38 145 50 145 L70 145 C82 145 88 140 90 130 L100 30 Z" fill="#FFF4E6" stroke="#5C4033" strokeWidth="6" strokeLinejoin="round" />
-                        {/* Liquid */}
-                        <path d="M25 50 L28 125 C30 135 35 140 50 140 L70 140 C85 140 90 135 92 125 L95 50 C80 55 60 45 40 55 C30 58 25 50 25 50 Z" fill="#A4C639" />
-                        {/* Pearls */}
-                        <circle cx="45" cy="130" r="8" fill="#5C4033" />
-                        <circle cx="70" cy="125" r="9" fill="#5C4033" />
-                        <circle cx="58" cy="115" r="7" fill="#5C4033" />
-                        <circle cx="35" cy="115" r="8" fill="#5C4033" />
-                        <circle cx="82" cy="112" r="7" fill="#5C4033" />
-                        {/* Straw */}
-                        <path d="M85 10 L60 140" stroke="#5C4033" strokeWidth="8" strokeLinecap="round" />
-                        {/* Lid */}
-                        <path d="M15 30 C15 15 105 15 105 30 Z" fill="#FFF4E6" stroke="#5C4033" strokeWidth="6" strokeLinejoin="round" />
+            {/* AMBIENT GLOW */}
+            <div className="absolute top-[-100px] left-1/2 -translate-x-1/2 w-[600px] h-[600px] rounded-full bg-[var(--color-matcha)] opacity-[0.04] blur-[120px] pointer-events-none" />
+
+            <div className="relative z-10 text-center flex flex-col items-center max-w-lg px-6 animate-fade-in">
+
+                {/* Boba Sticker */}
+                <div className="mb-6 animate-[bounce-soft_3s_ease-in-out_infinite]">
+                    <svg width={80} height={80} viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg" className="drop-shadow-lg">
+                        <rect x="44" y="4" width="5" height="28" rx="2.5" fill="#7cb342" transform="rotate(6 46 18)" />
+                        <circle cx="46" cy="5" r="4" fill="#7cb342" opacity="0.6" />
+                        <path d="M18 22 C18 19 22 17 40 17 C58 17 62 19 62 22 C62 25 58 27 40 27 C22 27 18 25 18 22Z" fill="#2a2a4a" stroke="#7cb342" strokeWidth="2" strokeLinejoin="round" />
+                        <path d="M20 27 C20 27 21 60 23 65 C25 68 35 70 40 70 C45 70 55 68 57 65 C59 60 60 27 60 27" fill="#1e1e3a" stroke="#7cb342" strokeWidth="2" strokeLinejoin="round" strokeLinecap="round" />
+                        <path d="M22 35 C26 32 32 38 40 35 C48 32 54 38 58 35 L57 60 C56 64 48 67 40 67 C32 67 24 64 23 60 Z" fill="#7cb342" opacity="0.25" />
+                        <circle cx="30" cy="58" r="4" fill="#6b4226" stroke="#4a2c17" strokeWidth="1" />
+                        <circle cx="40" cy="62" r="4" fill="#6b4226" stroke="#4a2c17" strokeWidth="1" />
+                        <circle cx="50" cy="58" r="3.5" fill="#6b4226" stroke="#4a2c17" strokeWidth="1" />
+                        <circle cx="33" cy="42" r="2.5" fill="white" />
+                        <circle cx="47" cy="42" r="2.5" fill="white" />
+                        <circle cx="34" cy="42" r="1" fill="#1a1a2e" />
+                        <circle cx="48" cy="42" r="1" fill="#1a1a2e" />
+                        <ellipse cx="28" cy="46" rx="4" ry="2.5" fill="#7cb342" opacity="0.3" />
+                        <ellipse cx="52" cy="46" rx="4" ry="2.5" fill="#7cb342" opacity="0.3" />
+                        <path d="M36 47 C38 50 42 50 44 47" fill="none" stroke="white" strokeWidth="1.5" strokeLinecap="round" />
                     </svg>
                 </div>
 
-                <h2 className="font-serif text-3xl font-bold text-[var(--color-boba)] mb-2 leading-tight">
-                    Vibe successfully dropped!
-                </h2>
+                {/* Handwritten accent */}
+                <div
+                    className="text-[var(--color-matcha)] text-3xl transform rotate-[-6deg] mb-2"
+                    style={{ fontFamily: "var(--font-marker)" }}
+                >
+                    you&apos;re in!
+                </div>
 
-                <p className="text-[var(--color-boba-light)] text-sm mb-6 mt-4">
-                    The Connoisseur AI is evaluating your answers alongside everyone else.
+                <h1 className="font-serif text-5xl md:text-7xl font-medium tracking-tighter drop-shadow-lg leading-none mb-6">
+                    check your<br /><span className="italic text-[var(--color-matcha)]">email</span>
+                </h1>
+
+                <p className="text-white/40 font-medium md:text-lg mb-12">
+                    Your daily match will be dropped into your inbox today at <span className="text-[var(--color-matcha)] font-bold">12:00 PM</span>.
                 </p>
 
-                <div className="bg-[#e8f5e9] p-4 rounded-2xl border border-[#c5e1a5]">
-                    <p className="text-sm font-bold text-[var(--color-matcha-dark)]">
-                        Check your email at exactly 12:00 PM for your match's IG. 🍵
-                    </p>
-                </div>
+                <a
+                    href="/"
+                    className="text-sm font-medium border border-white/15 rounded-full px-8 py-3 bg-white/5 backdrop-blur-md hover:bg-white/10 transition-all"
+                >
+                    Return Home
+                </a>
             </div>
         </main>
     );
