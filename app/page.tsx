@@ -80,11 +80,11 @@ export default function Home() {
       <div className="w-full max-w-3xl mx-auto space-y-6 animate-pop-in relative z-10">
         
         {/* Header */}
-        <div className="text-center space-y-3">
-          <h1 className="text-[9rem] md:text-[10rem] font-black text-[#5C4033] tracking-tighter leading-[0.85]" style={{ fontFamily: "var(--font-marker)" }}>
+        <div className="text-center space-y-2">
+          <h1 className="text-5xl md:text-6xl font-black text-[#5C4033] tracking-tight leading-none" style={{ fontFamily: "var(--font-marker)" }}>
             Get Your Boba<span className="text-[#A4C639]">Match</span>a
           </h1>
-          <p className="text-4xl font-bold text-[#5C4033] leading-tight">
+          <p className="text-xl font-bold text-[#5C4033] leading-snug">
             The 12 PM dating match for ABGs and ABBs.
           </p>
         </div>
@@ -119,7 +119,7 @@ export default function Home() {
               <button
                 onClick={handleSubmitAnswer}
                 disabled={!answer.trim()}
-                className="w-full py-4 bg-[#5C4033] text-white text-xl font-black rounded-xl border-4 border-[#5C4033] shadow-[8px_8px_0px_#5C4033] hover:-translate-y-1 hover:shadow-[12px_12px_0px_#5C4033] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full py-4 bg-[#5C4033] text-[#A4C639] text-xl font-black rounded-xl border-4 border-[#5C4033] shadow-[8px_8px_0px_#A4C639] hover:-translate-y-1 hover:shadow-[12px_12px_0px_#A4C639] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 NEXT ➔
               </button>
@@ -171,7 +171,7 @@ export default function Home() {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full py-4 mt-2 bg-[#A4C639] text-white text-xl font-black rounded-xl border-4 border-[#5C4033] shadow-[8px_8px_0px_#5C4033] hover:-translate-y-1 hover:shadow-[12px_12px_0px_#5C4033] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full py-4 mt-2 bg-[#5C4033] text-[#A4C639] text-xl font-black rounded-xl border-4 border-[#5C4033] shadow-[8px_8px_0px_#A4C639] hover:-translate-y-1 hover:shadow-[12px_12px_0px_#A4C639] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {loading ? "Matching..." : "Join Drop ✨"}
               </button>
