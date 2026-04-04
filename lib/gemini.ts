@@ -7,7 +7,7 @@ const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || "");
  */
 export async function generateDailyQuestion(): Promise<string> {
     try {
-        const model = genAI.getGenerativeModel({ model: "gemini-flash-latest" });
+        const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
         const prompt = `You are the AI brain for BobaMatcha, a daily boba dating app for ABGs (Asian Baby Girls) and ABBs (Asian Baby Boys).
 
@@ -49,7 +49,7 @@ export async function generateMatchPairs(
     if (males.length === 0 || females.length === 0) return [];
 
     try {
-        const model = genAI.getGenerativeModel({ model: "gemini-flash-latest" });
+        const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
         const prompt = `You are the AI matchmaker for BobaMatcha, a daily boba dating app for ABGs and ABBs.
 
