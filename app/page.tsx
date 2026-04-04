@@ -81,10 +81,10 @@ export default function Home() {
         
         {/* Header */}
         <div className="text-center space-y-2">
-          <h1 className="text-4xl md:text-5xl font-black text-[#5C4033] tracking-tight leading-none" style={{ fontFamily: "var(--font-marker)" }}>
+          <h1 className="text-5xl md:text-6xl font-black text-[#5C4033] tracking-tight leading-none" style={{ fontFamily: "var(--font-marker)" }}>
             Get Your Boba<span className="text-[#A4C639]">Match</span>a
           </h1>
-          <p className="text-base font-medium text-[#5C4033] leading-snug">
+          <p className="text-xl font-bold text-[#5C4033] leading-snug">
             The 12 PM dating match for ABGs and ABBs.
           </p>
         </div>
@@ -97,7 +97,7 @@ export default function Home() {
 
           {/* Timer Badge */}
           <div className="text-center">
-            <div className="inline-block bg-[#E8F5E9] border-2 border-[#5C4033] rounded-full px-6 py-2.5 shadow-[3px_3px_0px_#5C4033] text-2xl font-bold text-[#5C4033]">
+            <div className="inline-block bg-[#E8F5E9] border-2 border-[#5C4033] rounded-full px-6 py-3 shadow-[3px_3px_0px_#5C4033] text-3xl font-black text-[#5C4033]">
               Next Drop: <NoonCountdown />
             </div>
           </div>
@@ -113,7 +113,7 @@ export default function Home() {
                 placeholder="Drop your answer..."
                 value={answer}
                 onChange={(e) => setAnswer(e.target.value)}
-                className="w-full p-4 rounded-xl border-2 border-[#5C4033] bg-white text-lg font-medium focus:outline-none focus:border-[#A4C639] min-h-[90px] resize-none"
+                className="w-full p-3 rounded-xl border-2 border-[#5C4033] bg-white text-lg font-medium focus:outline-none focus:border-[#A4C639] min-h-[60px] resize-none"
               />
 
               <button
