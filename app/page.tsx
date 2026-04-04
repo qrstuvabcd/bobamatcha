@@ -89,8 +89,8 @@ export default function Home() {
       </nav>
 
       {/* ── HERO / POLAROID SECTION ── */}
-      <section className="relative z-10 flex flex-col items-center justify-center pt-10 pb-20 px-6">
-        <div className="w-full max-w-md mx-auto">
+      <section className="relative z-10 flex flex-col items-center justify-center pt-10 pb-20 px-6 w-full">
+        <div className="w-full max-w-[450px] mx-auto flex flex-col items-stretch">
           {/* Title */}
           <div className="text-center mb-10 animate-pop-in" style={{ animationDelay: "0.2s" }}>
             <h1 className="text-6xl md:text-7xl lg:text-8xl leading-[0.8] tracking-tighter text-[#5C4033]" style={{ fontFamily: "var(--font-marker)" }}>
@@ -258,15 +258,17 @@ function NoonCountdown() {
 
   useEffect(() => {
     setMounted(true);
-    function getNextNoon() {
+    // Move all date logic into the effect to be 100% client-side
+    const getNextNoon = () => {
       const now = new Date();
       const noon = new Date(now);
       noon.setHours(12, 0, 0, 0);
       if (noon <= now) noon.setDate(noon.getDate() + 1);
       return noon;
-    }
+    };
+
     const target = getNextNoon();
-    function tick() {
+    const tick = () => {
       const now = new Date();
       const diff = target.getTime() - now.getTime();
       if (diff <= 0) return;
@@ -275,25 +277,31 @@ function NoonCountdown() {
         minutes: Math.floor((diff / 1000 / 60) % 60),
         seconds: Math.floor((diff / 1000) % 60),
       });
-    }
+    };
+
     tick();
     const timer = setInterval(tick, 1000);
     return () => clearInterval(timer);
   }, []);
 
-  const pad = (n: number) => n.toString().padStart(2, "0");
+  if (!mounted) {
+    return (
+      <div className="inline-flex items-center gap-6 opacity-0">
+        <div className="flex items-center gap-4">
+          <div className="text-center">
+            <div className="text-6xl md:text-7xl font-bold tracking-tighter" style={{ fontFamily: "var(--font-marker)" }}>00</div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
-  const display = mounted
-    ? [
-      { val: pad(timeLeft.hours), label: "hrs" },
-      { val: pad(timeLeft.minutes), label: "min" },
-      { val: pad(timeLeft.seconds), label: "sec" },
-    ]
-    : [
-      { val: "--", label: "hrs" },
-      { val: "--", label: "min" },
-      { val: "--", label: "sec" },
-    ];
+  const pad = (n: number) => n.toString().padStart(2, "0");
+  const display = [
+    { val: pad(timeLeft.hours), label: "hrs" },
+    { val: pad(timeLeft.minutes), label: "min" },
+    { val: pad(timeLeft.seconds), label: "sec" },
+  ];
 
   return (
     <div className="inline-flex items-center gap-6">
