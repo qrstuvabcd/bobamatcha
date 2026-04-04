@@ -90,7 +90,7 @@ export default function Home() {
         </div>
 
         {/* The Daily Drop Card */}
-        <div className="max-w-[420px] mx-auto bg-[#FDFBF7] border-4 border-[#5C4033] rounded-[2rem] shadow-[6px_6px_0px_#5C4033] p-5 flex flex-col gap-5 relative">
+        <div className="max-w-[420px] mx-auto bg-[#FDFBF7] border-4 border-[#5C4033] rounded-[2rem] shadow-[6px_6px_0px_#5C4033] p-5 pb-9 flex flex-col gap-5 relative">
           <div className="absolute -top-5 -right-5 rotate-[15deg] z-20">
              <StickerBobaCup size={60} />
           </div>
@@ -119,7 +119,7 @@ export default function Home() {
               <button
                 onClick={handleSubmitAnswer}
                 disabled={!answer.trim()}
-                className="w-full py-4 bg-[#5C4033] text-[#A4C639] text-xl font-black rounded-xl border-4 border-[#5C4033] shadow-[8px_8px_0px_#A4C639] hover:-translate-y-1 hover:shadow-[12px_12px_0px_#A4C639] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full py-4 bg-[#5C4033] text-[#A4C639] text-xl font-black rounded-xl border-4 border-[#5C4033] shadow-[6px_6px_0px_#A4C639] hover:-translate-y-1 hover:shadow-[8px_8px_0px_#A4C639] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 NEXT ➔
               </button>
@@ -171,7 +171,7 @@ export default function Home() {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full py-4 mt-2 bg-[#5C4033] text-[#A4C639] text-xl font-black rounded-xl border-4 border-[#5C4033] shadow-[8px_8px_0px_#A4C639] hover:-translate-y-1 hover:shadow-[12px_12px_0px_#A4C639] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full py-4 mt-2 bg-[#5C4033] text-[#A4C639] text-xl font-black rounded-xl border-4 border-[#5C4033] shadow-[6px_6px_0px_#A4C639] hover:-translate-y-1 hover:shadow-[8px_8px_0px_#A4C639] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {loading ? "Matching..." : "Join Drop ✨"}
               </button>
