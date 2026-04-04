@@ -75,16 +75,16 @@ export default function Home() {
       </div>
 
       {/* ── HEADER ── */}
-      <nav className="relative z-50 w-full px-8 py-6 flex items-center justify-between">
+      <nav className="relative z-50 w-full max-w-5xl mx-auto px-8 py-8 flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <StickerBobaCup size={40} />
-          <span className="text-2xl font-bold tracking-tight text-[#5C4033]">bobamatcha</span>
+          <StickerBobaCup size={45} />
+          <span className="text-3xl font-black tracking-tighter text-[#5C4033]">bobamatcha</span>
         </div>
         <button
           onClick={() => setShowLearnMore(!showLearnMore)}
-          className="neubrutalism-button px-6 py-2.5 text-sm"
+          className="neubrutalism-button px-8 py-3 text-base font-bold"
         >
-          {showLearnMore ? "Close Info" : "Learn More"}
+          {showLearnMore ? "Close" : "Learn More"}
         </button>
       </nav>
 
@@ -92,15 +92,16 @@ export default function Home() {
       <section className="relative z-10 flex flex-col items-center justify-center pt-10 pb-20 px-6 w-full">
         <div className="w-full max-w-[450px] mx-auto flex flex-col items-stretch">
           {/* Title */}
-          <div className="text-center mb-10 animate-pop-in" style={{ animationDelay: "0.2s" }}>
-            <h1 className="text-6xl md:text-7xl lg:text-8xl leading-[0.8] tracking-tighter text-[#5C4033]" style={{ fontFamily: "var(--font-marker)" }}>
+          <div className="text-center mb-14 animate-pop-in" style={{ animationDelay: "0.2s" }}>
+            <h1 className="text-8xl md:text-9xl lg:text-[11rem] leading-[0.7] tracking-[ -0.05em] text-[#5C4033]" style={{ fontFamily: "var(--font-marker)" }}>
               Get Your Boba<br />
               <span className="font-bold">
                 <span className="text-[var(--color-matcha)]">Match</span>a
               </span>
             </h1>
-            <p className="mt-6 text-lg font-bold text-[#5C4033]/60 leading-relaxed px-4">
-              The exclusive 12 PM daily drop for <span className="text-[var(--color-matcha)]">ABGs and ABBs</span>. One question, one IG handle.
+            <p className="mt-10 text-2xl md:text-3xl font-black text-[#5C4033] leading-[1.1] px-2 italic">
+              The exclusive <span className="bg-[var(--color-matcha)] text-white px-2 rounded-lg">12 PM</span> daily drop for ABGs and ABBs.<br />
+              <span className="text-[#5C4033]/60 text-xl font-bold mt-2 block italic">One question, one IG handle.</span>
             </p>
           </div>
 
