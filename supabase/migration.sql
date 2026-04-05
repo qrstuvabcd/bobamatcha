@@ -18,6 +18,7 @@ CREATE TABLE users (
 CREATE TABLE daily_questions (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   question_text TEXT NOT NULL,
+  ai_answer TEXT, -- New: Store the AI's daily take
   question_date DATE UNIQUE NOT NULL DEFAULT CURRENT_DATE,
   created_at TIMESTAMPTZ DEFAULT NOW()
 );

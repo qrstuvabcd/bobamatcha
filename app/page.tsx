@@ -12,6 +12,7 @@ export default function Home() {
   const [email, setEmail] = useState("");
   const [instagram, setInstagram] = useState("");
   const [gender, setGender] = useState("");
+  const [aiTake, setAiTake] = useState("");
   const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -23,10 +24,13 @@ export default function Home() {
         const data = await res.json();
         const qText = data.question?.question_text || data.question || "What's your go-to boba order and what does it say about you as a partner? 🧋";
         const qId = data.question?.id || null;
+        const qAi = data.question?.ai_answer || "";
         setQuestion(qText);
         setQuestionId(qId);
+        setAiTake(qAi);
       } catch (err) {
         setQuestion("What's your go-to boba order and what does it say about you as a partner? 🧋");
+        setAiTake("Today's AI Take: Your boba order reveals your heart's deepest desires... 🧋");
       }
     }
     fetchQuestion();
@@ -108,6 +112,12 @@ export default function Home() {
               <h2 className="text-2xl font-black text-[#5C4033] leading-tight text-center">
                 “{question}”
               </h2>
+              
+              {aiTake && (
+                <div className="bg-[#A4C639]/10 border-2 border-dashed border-[#A4C639] rounded-2xl p-4 text-[#5C4033] italic text-sm font-bold text-center animate-pulse-soft">
+                  {aiTake}
+                </div>
+              )}
               
               <input
                 placeholder="Drop your answer..."

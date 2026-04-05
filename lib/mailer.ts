@@ -18,8 +18,9 @@ export async function sendMatchEmail(
     }
 
     try {
+        const fromEmail = process.env.MATCH_FROM_EMAIL || "BobaMatcha <hello@bobamatcha.xyz>";
         await resend.emails.send({
-            from: "onboarding@resend.dev", // Using Resend testing sandbox
+            from: fromEmail, 
             to: [toEmail],
             subject: "Your Daily Boba Match is Here! 🧋",
             html: `

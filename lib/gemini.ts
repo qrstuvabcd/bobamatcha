@@ -39,6 +39,36 @@ Respond with ONLY the question text, nothing else.`;
 }
 
 /**
+ * Generate a fun, "Boba Astrology" style take on a DAILY question.
+ */
+export async function generateAiBobaAnswer(questionText: string): Promise<string> {
+    try {
+        const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
+
+        const prompt = `You are the AI Matchmaker for BobaMatcha. Your job is to provide a cheeky "AI Take" for today's daily question.
+
+Today's Question: "${questionText}"
+
+Write a fun, cheeky, flirty interpretation or answer to this question from the perspective of an AI matchmaker. 
+
+Example for "What's your go-to karaoke song?":
+"Today's AI Take: If you picked 'Mr. Brightside' by The Killers, you're the high-energy partner who keeps the party going until 4 AM. We love the enthusiasm, but we're concerned about your vocal cords."
+
+Requirements:
+- Start with "Today's AI Take: ..."
+- Keep it under 2 sentences.
+- Make it funny and relatable to ABG/ABB culture.
+- Respond with ONLY the interpretation.`;
+
+        const result = await model.generateContent(prompt);
+        return result.response.text().trim();
+    } catch (error) {
+        console.error("Gemini AI answer generation error:", error);
+        return "Today's AI Take: Your answer reveals a sweet, complex soul with just the right amount of ice. 🧋";
+    }
+}
+
+/**
  * Given male and female users with their answers, generate optimal cross-gender pairs.
  */
 export async function generateMatchPairs(
@@ -51,21 +81,22 @@ export async function generateMatchPairs(
     try {
         const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
 
-        const prompt = `You are the AI matchmaker for BobaMatcha, a daily boba dating app for ABGs and ABBs.
+        const prompt = `You are the AI Matchmaker for BobaMatcha, a daily boba dating app for ABGs (Asian Baby Girls) and ABBs (Asian Baby Boys).
 
-Today's question was: "${question}"
+Today's Question: "${question}"
 
-Here are the MALE users and their answers:
-${males.map(m => `- ID: "${m.id}" | Name: ${m.name} | Answer: "${m.answer}" | Boba order: ${m.order}`).join("\n")}
+Here are the MALE participants (ABBs) and their answers:
+${males.map(m => `- ID: "${m.id}" | Name: ${m.name} | Answer: "${m.answer}"`).join("\n")}
 
-Here are the FEMALE users and their answers:
-${females.map(f => `- ID: "${f.id}" | Name: ${f.name} | Answer: "${f.answer}" | Boba order: ${f.order}`).join("\n")}
+Here are the FEMALE participants (ABGs) and their answers:
+${females.map(f => `- ID: "${f.id}" | Name: ${f.name} | Answer: "${f.answer}"`).join("\n")}
 
-Match each male with exactly ONE female based on answer compatibility, shared vibes, and complementary personalities. Each person can only be in one pair. If there are unequal numbers, some people will be unmatched.
+GOAL: Match every possible person into pairs (one male with one female).
+- If there's an unequal number of genders, match as many as you can.
+- BASE MATCHES ON: Shared humor, complementary boba energy (e.g., matching a high-energy matcha lover with someone who appreciates the pace), and overall vibe check from their answers.
+- For each pair, write a short, cheeky 1-sentence reasoning (funny boba-related chemistry).
 
-For each pair, write a cute, short reasoning (1-2 sentences) explaining why they'd vibe together. Make it fun and flirty.
-
-Respond ONLY with valid JSON in this exact format, no markdown:
+Respond ONLY with valid JSON in this exact format (no markdown):
 [
   {"maleId": "...", "femaleId": "...", "reasoning": "..."},
   {"maleId": "...", "femaleId": "...", "reasoning": "..."}

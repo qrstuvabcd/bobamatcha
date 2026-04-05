@@ -42,20 +42,23 @@ export async function GET() {
             return NextResponse.json({ question: existing });
         }
 
-        // Generate a new question via Gemini for this period
+        // Generate a new question and AI answer for this period
         const questionText = await generateDailyQuestion();
+        const { generateAiBobaAnswer } = await import("@/lib/gemini");
+        const aiAnswer = await generateAiBobaAnswer(questionText);
 
-        const { data: question, error } = await supabase
+        const { data: question, error: insertError } = await supabase
             .from("daily_questions")
             .insert({
                 question_text: questionText,
+                ai_answer: aiAnswer,
                 question_date: period,
             })
             .select()
             .single();
 
-        if (error) {
-            console.error("Question insert error:", error);
+        if (insertError) {
+            console.error("Question insert error:", insertError);
             return NextResponse.json({ error: "Failed to generate question" }, { status: 500 });
         }
 
