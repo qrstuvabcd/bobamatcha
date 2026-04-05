@@ -19,8 +19,9 @@ export const metadata: Metadata = {
   description:
     "The cutest AI matchmaker that sets you up on boba & matcha dates. Get matched every day at noon. No swiping — just boba and vibes.",
   icons: {
-    icon: "/icon.png",
-    apple: "/icon.png",
+    icon: "/favicon.ico",
+    shortcut: "/favicon.ico",
+    apple: "/apple-icon.png",
   },
   openGraph: {
     title: "BobaMatcha — It's a Matcha",
