@@ -10,7 +10,8 @@ export async function POST() {
         const utcHour = now.getUTCHours();
         let period: string;
 
-        if (utcHour < 20) {
+        // Vercel runners use UTC. Midnight PST is 08:00 UTC.
+        if (utcHour < 8) {
             const yesterday = new Date(now);
             yesterday.setUTCDate(yesterday.getUTCDate() - 1);
             period = yesterday.toISOString().split("T")[0];

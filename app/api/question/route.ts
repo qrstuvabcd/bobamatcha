@@ -13,17 +13,17 @@ export const dynamic = 'force-dynamic';
  */
 function getQuestionPeriod(): string {
     const now = new Date();
-    // Vercel runners use UTC. Noon PST is 20:00 UTC.
-    // If it's before 20:00 UTC, we are still in "yesterday's" PST period.
+    // Vercel runners use UTC. Midnight PST is 08:00 UTC.
+    // If it's before 08:00 UTC, we are still in "yesterday's" PST period.
     const utcHour = now.getUTCHours();
 
-    if (utcHour < 20) {
-        // Before Noon PST — use yesterday's date
+    if (utcHour < 8) {
+        // Before Midnight PST — use yesterday's date
         const yesterday = new Date(now);
         yesterday.setUTCDate(yesterday.getUTCDate() - 1);
         return yesterday.toISOString().split("T")[0];
     }
-    // After Noon PST — use today's date
+    // After Midnight PST — use today's date
     return now.toISOString().split("T")[0];
 }
 

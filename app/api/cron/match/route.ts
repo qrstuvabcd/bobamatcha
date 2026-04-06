@@ -11,8 +11,10 @@ export const runtime = 'nodejs';
  */
 function getQuestionPeriod(): string {
     const now = new Date();
+    // Vercel runners use UTC. Midnight PST is 08:00 UTC.
+    // If it's before 08:00 UTC, we are still in "yesterday's" PST period.
     const utcHour = now.getUTCHours();
-    if (utcHour < 20) {
+    if (utcHour < 8) {
         const yesterday = new Date(now);
         yesterday.setUTCDate(yesterday.getUTCDate() - 1);
         return yesterday.toISOString().split("T")[0];
