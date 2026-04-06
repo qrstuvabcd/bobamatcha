@@ -59,7 +59,7 @@ export async function GET() {
 
         if (insertError) {
             console.error("Question insert error:", insertError);
-            return NextResponse.json({ error: "Failed to generate question" }, { status: 500 });
+            return NextResponse.json({ error: "Failed to generate question", details: insertError }, { status: 500 });
         }
 
         return NextResponse.json({ question });

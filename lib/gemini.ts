@@ -43,7 +43,7 @@ Respond with ONLY the question text, nothing else.`;
  */
 export async function generateAiBobaAnswer(questionText: string): Promise<string> {
     try {
-        const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
+        const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
         const prompt = `You are the AI Matchmaker for BobaMatcha. Your job is to provide a cheeky "AI Take" for today's daily question.
 
