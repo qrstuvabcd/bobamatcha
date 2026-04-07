@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
 import { sendMatchEmail } from "@/lib/mailer";
 import { generateDailyQuestion, saveDailyQuestionToSupabase } from "@/lib/gemini";
+import { logCronEvent } from "@/lib/monitoring";
 
 // 🔐 使用 Service Role Key 繞過 RLS（後台任務專用）
 const supabase = createClient(
@@ -352,6 +353,7 @@ export async function GET(request: Request) {
     }, { onConflict: "lock_key" });
 
     try {
+        logCronEvent('match_started', { today });
         console.log(`[Cron] 🚀 Starting daily match for ${today}`);
 
         // 📝 4. 獲取今日問題
@@ -362,6 +364,7 @@ export async function GET(request: Request) {
 
         // 👥 5. 獲取可用用戶
         const users = await getAvailableUsers(question.id);
+        logCronEvent('users_found', { count: users.length });
         console.log(`[Cron] 👥 Found ${users.length} available users`);
 
         if (users.length < 2) {
@@ -378,6 +381,7 @@ export async function GET(request: Request) {
 
         // 🎲 6. 執行配對算法
         const { pairs, leftovers } = performPairing(users);
+        logCronEvent('pairing_complete', { pairs: pairs.length, solos: leftovers.length });
         console.log(`[Cron] 🎲 Generated ${pairs.length} pairs, ${leftovers.length} leftovers`);
 
         // 💾 7. 原子性保存結果
@@ -403,14 +407,12 @@ export async function GET(request: Request) {
         });
 
     } catch (error: any) {
+        logCronEvent('match_critical_failure', { error: error.message });
         console.error("[Cron] 💥 CRITICAL FAILURE:", error);
-
+        
         // 🧹 清理鎖
         await supabase.from("cron_locks").delete().eq("lock_key", lockKey);
-
-        // 📊 記錄到監控（如 Sentry）
-        // captureException(error, { extra: { date: today } });
-
+        
         return NextResponse.json(
             {
                 error: "Daily match process failed",

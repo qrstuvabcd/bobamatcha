@@ -89,7 +89,7 @@ export async function saveDailyQuestionToSupabase(
  */
 export async function generateAiBobaAnswer(questionText: string): Promise<string> {
     try {
-        const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+        const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash-latest" });
 
         const prompt = `You are the AI Matchmaker for BobaMatcha. Your job is to provide a cheeky "AI Take" for today's daily question.
 
@@ -125,7 +125,7 @@ export async function generateMatchPairs(
     if (males.length === 0 || females.length === 0) return [];
 
     try {
-        const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+        const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash-latest" });
 
         const prompt = `You are the AI Matchmaker for BobaMatcha, a daily boba dating app for ABGs (Asian Baby Girls) and ABBs (Asian Baby Boys).
 
