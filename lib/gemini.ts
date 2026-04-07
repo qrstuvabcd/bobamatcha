@@ -2,6 +2,20 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || "");
 
+const QUESTION_BANK = [
+    "What's your controversial boba take? (e.g., 'less ice is superior' or 'taro is overrated')",
+    "You're taking someone on a first date in your city — where are you going?",
+    "What's your go-to karaoke song?",
+    "Hot take: pho or ramen for a late-night date?",
+    "What's your love language but make it boba? (e.g., 'acts of service = ordering for you')",
+    "Are you a '2 AM ramen run' person or a 'Sunday dim sum' person?",
+    "What's your ideal Saturday night — clubbing, hotpot at home, or boba and a walk?",
+    "What's your go-to boba order and what does it say about you as a partner? 🧋",
+    "We're on a boba run and need a cute photo for the gram: Are you the one setting up the perfect shot or just enjoying the moment?",
+    "What's your red flag when it comes to boba orders? (e.g. '0% sugar 100% ice')",
+    "If you were a boba topping, would you be classic pearls, popping boba, or jelly?",
+];
+
 /**
  * Generate a fun ABG/ABB cultural daily question.
  */
@@ -32,9 +46,41 @@ Respond with ONLY the question text, nothing else.`;
 
         const result = await model.generateContent(prompt);
         return result.response.text().trim();
+    } catch (error: any) {
+        console.error(`[AI ERROR] Gemini question generation failed (${error.status || 'unknown status'}). Falling back to rotation bank.`);
+        // Fallback: Deterministic rotation based on current day
+        const dayIndex = Math.floor(Date.now() / (1000 * 60 * 60 * 24));
+        const bankQuestion = QUESTION_BANK[dayIndex % QUESTION_BANK.length];
+        return bankQuestion;
+    }
+}
+
+/**
+ * Save a daily question and its AI answer to Supabase.
+ */
+export async function saveDailyQuestionToSupabase(
+    supabase: any,
+    questionText: string
+): Promise<{ success: boolean; questionId?: string; error?: any }> {
+    try {
+        const aiAnswer = await generateAiBobaAnswer(questionText);
+        const today = new Date().toISOString().split("T")[0];
+
+        const { data, error } = await supabase
+            .from("daily_questions")
+            .insert({
+                question_text: questionText,
+                ai_answer: aiAnswer,
+                question_date: today,
+            })
+            .select()
+            .single();
+
+        if (error) throw error;
+        return { success: true, questionId: data.id };
     } catch (error) {
-        console.error("Gemini question generation error:", error);
-        return "What's your go-to boba order and what does it say about you as a partner? 🧋";
+        console.error("[Gemini] Save question failed:", error);
+        return { success: false, error };
     }
 }
 
@@ -62,9 +108,9 @@ Requirements:
 
         const result = await model.generateContent(prompt);
         return result.response.text().trim();
-    } catch (error) {
-        console.error("Gemini AI answer generation error:", error);
-        return "Today's AI Take: Your answer reveals a sweet, complex soul with just the right amount of ice. 🧋";
+    } catch (error: any) {
+        console.error(`[AI ERROR] Gemini AI answer generation failed (${error.status || 'unknown status'}). Using fallback take.`);
+        return "Today's AI Take: Your answer reveals a unique soul with just the right amount of sweetness. 🧋";
     }
 }
 
