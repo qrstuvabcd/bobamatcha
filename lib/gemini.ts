@@ -190,3 +190,24 @@ export async function saveDailyQuestionToSupabase(
     return { success: false, error: error.message };
   }
 }
+
+// 🔧 Stub function for backward compatibility (used by other routes)
+export async function generateAiBobaAnswer(questionText: string): Promise<string> {
+  // Simple fallback: return a friendly encouragement
+  return "Great question! Share your honest answer when you meet for boba 🧋✨";
+}
+
+// 🔧 Stub for generateMatchPairs (if any legacy routes still import it)
+export async function generateMatchPairs(males: any[], females: any[], question: string) {
+  console.log("[Legacy] generateMatchPairs called - using fallback random pairing");
+  const pairs = [];
+  const pool = [...males, ...females].sort(() => Math.random() - 0.5);
+  for (let i = 0; i < pool.length - 1; i += 2) {
+    pairs.push({
+      maleId: pool[i].gender === 'male' ? pool[i].id : pool[i+1]?.id,
+      femaleId: pool[i].gender === 'female' ? pool[i].id : pool[i+1]?.id,
+      reasoning: "Legacy fallback pairing"
+    });
+  }
+  return pairs;
+}

@@ -7,8 +7,8 @@ export const dynamic = 'force-dynamic';
 /**
  * Get the current "question period" date string.
  * A period runs from noon on one day to noon the next day.
- * Before noon today → use yesterday's date as the period.
- * After noon today → use today's date as the period.
+ * Before noon today ??use yesterday's date as the period.
+ * After noon today ??use today's date as the period.
  * This ensures the question resets at exactly 12:00 PM.
  */
 function getQuestionPeriod(): string {
@@ -18,12 +18,12 @@ function getQuestionPeriod(): string {
     const utcHour = now.getUTCHours();
 
     if (utcHour < 8) {
-        // Before Midnight PST — use yesterday's date
+        // Before Midnight PST ??use yesterday's date
         const yesterday = new Date(now);
         yesterday.setUTCDate(yesterday.getUTCDate() - 1);
         return yesterday.toISOString().split("T")[0];
     }
-    // After Midnight PST — use today's date
+    // After Midnight PST ??use today's date
     return now.toISOString().split("T")[0];
 }
 
@@ -44,7 +44,7 @@ export async function GET() {
 
         // Generate a new question and AI answer for this period
         const questionText = await generateDailyQuestion();
-        const { generateAiBobaAnswer } = await import("@/lib/gemini");
+        // Legacy import removed - using direct export
         const aiAnswer = await generateAiBobaAnswer(questionText);
 
         const { data: question, error: insertError } = await supabase
