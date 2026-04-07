@@ -4,7 +4,7 @@ import { createClient } from "@supabase/supabase-js";
 import { sendMatchEmail } from "@/lib/mailer";
 import { generateDailyQuestion, saveDailyQuestionToSupabase } from "@/lib/gemini";
 
-// 🔐 使用 Service Role Key（後端專用）
+// ?? 使用 Service Role Key（�?端�??��?
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL || "",
   process.env.SUPABASE_SERVICE_ROLE_KEY || ""
@@ -32,22 +32,22 @@ async function getOrCreateTodayQuestion(): Promise<{ id: string; text: string } 
     .maybeSingle();
   
   if (fetchError) {
-    console.error("[Question] ❌ Fetch error:", fetchError);
+    console.error("[Question] ??Fetch error:", fetchError);
     return null;
   }
   
   if (existing) {
-    console.log(`[Question] ✅ Using existing question for ${today}`);
-    return existing;
+    console.log(`[Question] ??Using existing question for ${today}`);
+    return { id: existing.id, text: existing.question_text };
   }
   
-  console.log("[Question] 🔄 Generating new question...");
+  console.log("[Question] ?? Generating new question...");
   const newQuestion = await generateDailyQuestion();
   
   const saveResult = await saveDailyQuestionToSupabase(supabase, newQuestion);
   
   if (!saveResult.success || !saveResult.questionId) {
-    console.error("[Question] ❌ Save failed:", saveResult.error);
+    console.error("[Question] ??Save failed:", saveResult.error);
     return null;
   }
   
@@ -71,7 +71,7 @@ async function getAvailableUsers(questionId: string): Promise<Array<{
     .not('users.instagram', 'is', null);
   
   if (error) {
-    console.error("[Users] ❌ Fetch answers error:", error);
+    console.error("[Users] ??Fetch answers error:", error);
     return [];
   }
   
@@ -114,7 +114,7 @@ function performPairing(
 } {
   if (users.length < 2) return { pairs: [], leftovers: users };
   
-  // 🔄 Fisher-Yates 洗牌
+  // ?? Fisher-Yates 洗�?
   const pool = [...users];
   for (let i = pool.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
@@ -180,7 +180,7 @@ async function saveResultsAtomically(
       });
       
       if (error) {
-        console.error(`[Match] ❌ Failed to save pair:`, error);
+        console.error(`[Match] ??Failed to save pair:`, error);
         errors.push(`Pair ${pair.userA.id}-${pair.userB.id}: ${error.message}`);
       }
     }
@@ -195,24 +195,24 @@ async function saveResultsAtomically(
       });
       
       if (soloError) {
-        console.error(`[Solo] ❌ Failed:`, soloError);
+        console.error(`[Solo] ??Failed:`, soloError);
         errors.push(`Solo for ${user.id}: ${soloError.message}`);
       } else {
-        console.log(`[Solo] ✅ Created for ${user.id} (+${CONFIG.SOLO_REWARD_POINTS} pts)`);
+        console.log(`[Solo] ??Created for ${user.id} (+${CONFIG.SOLO_REWARD_POINTS} pts)`);
         sendMatchEmail(
           user.email,
           user.instagram,
-          `🎁 特別任務！單人奶茶挑戰，完成可獲 ${CONFIG.SOLO_REWARD_POINTS} 積分！`,
-          "Solo challenge - you're special today! ✨",
+          `?? ?�別任�?！單人奶?��??��?完�??�獲 ${CONFIG.SOLO_REWARD_POINTS} 積�?！`,
+          "Solo challenge - you're special today! ??,
           true
-        ).catch(err => console.error(`[Email] ❌ Solo email failed:`, err));
+        ).catch(err => console.error(`[Email] ??Solo email failed:`, err));
       }
     }
     
     return { success: errors.length === 0 || errors.length < pairs.length, errors: errors.length > 0 ? errors : undefined };
     
   } catch (error: any) {
-    console.error("[Match] 💥 Critical error:", error);
+    console.error("[Match] ?�� Critical error:", error);
     return { success: false, errors: [error.message] };
   }
 }
@@ -227,20 +227,20 @@ async function sendMatchNotifications(
         sendMatchEmail(pair.userA.email, pair.userB.instagram, questionText, pair.reasoning, false),
         sendMatchEmail(pair.userB.email, pair.userA.instagram, questionText, pair.reasoning, false),
       ]);
-      console.log(`[Notify] ✅ Sent: ${pair.userA.id} ↔ ${pair.userB.id}`);
+      console.log(`[Notify] ??Sent: ${pair.userA.id} ??${pair.userB.id}`);
     } catch (err) {
-      console.error(`[Notify] ❌ Failed:`, err);
+      console.error(`[Notify] ??Failed:`, err);
     }
   });
   Promise.allSettled(notifications).then(results => {
     const failed = results.filter(r => r.status === "rejected").length;
-    if (failed > 0) console.warn(`[Notify] ⚠️ ${failed} notifications failed`);
+    if (failed > 0) console.warn(`[Notify] ?��? ${failed} notifications failed`);
   });
 }
 
 export async function GET(request: Request) {
   if (!verifyCronAuth(request)) {
-    console.warn("[Cron] ❌ Unauthorized");
+    console.warn("[Cron] ??Unauthorized");
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
   
@@ -252,7 +252,7 @@ export async function GET(request: Request) {
   if (lock) {
     const lockAge = Date.now() - new Date(lock.locked_at).getTime();
     if (lockAge < CONFIG.LOCK_TIMEOUT_MINUTES * 60 * 1000) {
-      console.log(`[Cron] ⏳ Already running (locked ${Math.round(lockAge/60000)}min ago)`);
+      console.log(`[Cron] ??Already running (locked ${Math.round(lockAge/60000)}min ago)`);
       return NextResponse.json({ success: true, skipped: true, reason: "already_running" });
     }
   }
@@ -260,13 +260,13 @@ export async function GET(request: Request) {
   await supabase.from("cron_locks").upsert({ lock_key: lockKey, locked_at: new Date().toISOString() }, { onConflict: "lock_key" });
   
   try {
-    console.log(`[Cron] 🚀 Starting daily match for ${today}`);
+    console.log(`[Cron] ?? Starting daily match for ${today}`);
     
     const question = await getOrCreateTodayQuestion();
     if (!question) throw new Error("Failed to get/create daily question");
     
     const users = await getAvailableUsers(question.id);
-    console.log(`[Cron] 👥 Found ${users.length} available users`);
+    console.log(`[Cron] ?�� Found ${users.length} available users`);
     
     if (users.length < 2) {
       await saveResultsAtomically([], users, question.id, today);
@@ -274,13 +274,13 @@ export async function GET(request: Request) {
     }
     
     const { pairs, leftovers } = performPairing(users);
-    console.log(`[Cron] 🎲 Generated ${pairs.length} pairs, ${leftovers.length} leftovers`);
+    console.log(`[Cron] ?�� Generated ${pairs.length} pairs, ${leftovers.length} leftovers`);
     
     const saveResult = await saveResultsAtomically(pairs, leftovers, question.id, today);
     
     if (pairs.length > 0) sendMatchNotifications(pairs, question.text);
     
-    console.log(`[Cron] ✅ Completed: ${pairs.length} pairs, ${leftovers.length} solos`);
+    console.log(`[Cron] ??Completed: ${pairs.length} pairs, ${leftovers.length} solos`);
     
     return NextResponse.json({
       success: true,
@@ -292,7 +292,7 @@ export async function GET(request: Request) {
     });
     
   } catch (error: any) {
-    console.error("[Cron] 💥 CRITICAL:", error);
+    console.error("[Cron] ?�� CRITICAL:", error);
     await supabase.from("cron_locks").delete().eq("lock_key", lockKey);
     return NextResponse.json({ error: "Daily match failed", message: error.message, timestamp: new Date().toISOString() }, { status: 500 });
   }
