@@ -47,7 +47,7 @@ async function getOrCreateTodayQuestion(): Promise<{ id: string; text: string } 
 
     if (existing) {
         console.log(`[Question] ✅ Using existing question for ${today}`);
-        return existing;
+        return { id: existing.id, text: existing.question_text };
     }
 
     // 2️⃣ 生成新問題
