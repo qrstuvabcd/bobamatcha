@@ -1,4 +1,4 @@
-import { supabase } from "./lib/supabase.ts";
+import { supabase } from "./lib/supabase";
 
 async function checkQuestions() {
     console.log("Checking daily questions...");

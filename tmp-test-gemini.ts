@@ -1,4 +1,4 @@
-import { generateDailyQuestion } from "./lib/gemini.ts";
+import { generateDailyQuestion } from "./lib/gemini";
 
 async function testGemini() {
     console.log("Testing Gemini question generation...");
