@@ -45,7 +45,7 @@ export async function GET() {
         // Generate a new question and AI answer for this period
         const questionText = await generateDailyQuestion();
         // Legacy import removed - using direct export
-        const aiAnswer = await generateAiBobaAnswer(questionText);
+        const aiAnswer = "Great question! Share your answer when you meet for boba 🧋"; // generateAiBobaAnswer stub
 
         const { data: question, error: insertError } = await supabase
             .from("daily_questions")
