@@ -4,7 +4,7 @@ const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || "");
 
 const QUESTION_BANK = [
   "What's your controversial boba take?",
-  "You're taking someone on a first date — where are you going?",
+  "You're taking someone on a first date ??where are you going?",
   "What's your go-to karaoke song?",
   "Hot take: pho or ramen for a late-night date?",
   "What's your love language but make it boba?",
